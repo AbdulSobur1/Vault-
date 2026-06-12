@@ -49,22 +49,22 @@ export function FadeUpStagger({
   const isInView = useInView(ref, { once: true, margin: "-60px" });
 
   return (
-    <div ref={ref} className={className}>
-      <motion.div
-        initial="hidden"
-        animate={isInView ? "visible" : "hidden"}
-        variants={{
-          hidden: {},
-          visible: {
-            transition: {
-              staggerChildren: staggerDelay,
-            },
+    <motion.div
+      ref={ref}
+      className={className}
+      initial="hidden"
+      animate={isInView ? "visible" : "hidden"}
+      variants={{
+        hidden: {},
+        visible: {
+          transition: {
+            staggerChildren: staggerDelay,
           },
-        }}
-      >
-        {children}
-      </motion.div>
-    </div>
+        },
+      }}
+    >
+      {children}
+    </motion.div>
   );
 }
 
