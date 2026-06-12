@@ -1,8 +1,8 @@
+import { ThemeScript } from "@/components/ThemeScript";
 import type { Metadata } from "next";
 import { Inter, Playfair_Display, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { SessionProvider } from "@/components/SessionProvider";
-import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/toaster";
 import { JsonLd } from "@/components/landing/json-ld";
 
@@ -112,14 +112,14 @@ export default function RootLayout({
       className={`${inter.variable} ${playfair.variable} ${jetbrainsMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <head />
+      <head>
+        <ThemeScript />
+      </head>
       <body className="min-h-full font-sans bg-bg-base text-text-primary">
         <SessionProvider>
-          <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
-            <JsonLd />
-            {children}
-            <Toaster />
-          </ThemeProvider>
+          <JsonLd />
+          {children}
+          <Toaster />
         </SessionProvider>
       </body>
     </html>

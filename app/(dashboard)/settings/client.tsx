@@ -7,8 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/components/ui/toast";
 import { Moon, Sun, User, Shield, Settings as SettingsIcon } from "lucide-react";
-import { useTheme } from "next-themes";
-import { useState, useEffect } from "react";
+import { useThemeMode } from "@/lib/use-theme";
 import type { User as UserType } from "@/lib/schema";
 
 interface SettingsClientProps {
@@ -17,9 +16,7 @@ interface SettingsClientProps {
 
 export function SettingsClient({ user }: SettingsClientProps) {
   const { toast } = useToast();
-  const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  const { theme, setTheme, mounted } = useThemeMode();
 
   const handleChangePassword = (e: React.FormEvent) => {
     e.preventDefault();
