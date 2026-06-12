@@ -1,4 +1,3 @@
-import { ThemeScript } from "@/components/ThemeScript";
 import type { Metadata } from "next";
 import { Inter, Playfair_Display, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
@@ -109,11 +108,10 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${playfair.variable} ${jetbrainsMono.variable} h-full antialiased dark`}
+      className={`${inter.variable} ${playfair.variable} ${jetbrainsMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <body className="min-h-full font-sans bg-bg-base text-text-primary">
-        <ThemeScript />
         <SessionProvider>
           <JsonLd />
           {children}

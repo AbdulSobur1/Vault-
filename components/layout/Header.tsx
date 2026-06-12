@@ -1,12 +1,9 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { Sun, Moon } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import Link from "next/link";
 import { MobileNav } from "@/components/layout/MobileNav";
-import { useThemeMode } from "@/lib/use-theme";
 
 interface HeaderProps {
   user: {
@@ -27,7 +24,6 @@ const pageTitles: Record<string, string> = {
 
 export function Header({ user }: HeaderProps) {
   const pathname = usePathname();
-  const { theme, toggleTheme, mounted } = useThemeMode();
 
   const title = Object.entries(pageTitles).find(([path]) =>
     pathname === path || pathname.startsWith(path)
@@ -54,11 +50,6 @@ export function Header({ user }: HeaderProps) {
       </div>
 
       <div className="flex items-center gap-2">
-        {mounted && (
-          <Button variant="ghost" size="icon" onClick={toggleTheme}>
-            {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-          </Button>
-        )}
         <Link href="/settings">
           <Avatar className="h-8 w-8">
             <AvatarFallback className="text-xs">{initials}</AvatarFallback>

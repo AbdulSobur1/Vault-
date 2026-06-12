@@ -6,8 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/components/ui/toast";
-import { Moon, Sun, User, Shield, Settings as SettingsIcon } from "lucide-react";
-import { useThemeMode } from "@/lib/use-theme";
+import { User, Shield, Settings as SettingsIcon } from "lucide-react";
 import type { User as UserType } from "@/lib/schema";
 
 interface SettingsClientProps {
@@ -16,7 +15,6 @@ interface SettingsClientProps {
 
 export function SettingsClient({ user }: SettingsClientProps) {
   const { toast } = useToast();
-  const { theme, setTheme, mounted } = useThemeMode();
 
   const handleChangePassword = (e: React.FormEvent) => {
     e.preventDefault();
@@ -142,23 +140,6 @@ export function SettingsClient({ user }: SettingsClientProps) {
               <CardDescription>Customize your experience</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium">Theme</p>
-                  <p className="text-xs text-text-secondary">Toggle between light and dark mode</p>
-                </div>                    {mounted && (
-                      <Button variant="outline" size="sm" onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
-                        {theme === "dark" ? (
-                          <><Sun className="h-4 w-4 mr-2" /> Light Mode</>
-                        ) : (
-                          <><Moon className="h-4 w-4 mr-2" /> Dark Mode</>
-                        )}
-                      </Button>
-                    )}
-              </div>
-
-              <div className="border-t border-border" />
-
               <div>
                 <p className="text-sm font-medium mb-3">Notification Preferences</p>
                 <div className="space-y-3">
