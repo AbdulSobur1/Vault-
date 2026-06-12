@@ -3,7 +3,6 @@
 import { usePathname } from "next/navigation";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import Link from "next/link";
-import { MobileNav } from "@/components/layout/MobileNav";
 
 interface HeaderProps {
   user: {
@@ -39,14 +38,16 @@ export function Header({ user }: HeaderProps) {
     : "U";
 
   return (
-    <header className="md:hidden flex items-center justify-between h-16 px-4 border-b border-border bg-bg-surface">
+    <header className="h-14 flex items-center justify-between px-4 lg:px-8 border-b border-border bg-bg-base lg:bg-transparent">
       <div className="flex items-center gap-2">
-        <MobileNav />
         <Link href="/dashboard" className="flex items-center gap-2">
-          <span className="text-lg font-medium tracking-tight">
-            Vault<span className="text-accent-gold">é</span>
+          <span className="lg:hidden text-lg font-semibold tracking-tight">
+            Vault<span className="text-accent-gold">é</span>.
           </span>
         </Link>
+        <span className="hidden lg:block text-sm text-text-secondary font-medium">
+          {title}
+        </span>
       </div>
 
       <div className="flex items-center gap-2">

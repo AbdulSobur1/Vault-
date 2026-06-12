@@ -108,10 +108,10 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${playfair.variable} ${jetbrainsMono.variable} h-full antialiased`}
+      className={`${inter.variable} ${playfair.variable} ${jetbrainsMono.variable} dark h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-h-full font-sans bg-bg-base text-text-primary">
+      <body className="min-h-full font-sans bg-[#0F0F0F] text-white antialiased">
         <SessionProvider>
           <JsonLd />
           {children}

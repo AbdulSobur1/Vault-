@@ -1,16 +1,17 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-bg-base: #0A0A0B;
-  --color-bg-surface: #111113;
-  --color-bg-elevated: #1A1A1E;
+  --color-bg-base: #0F0F0F;
+  --color-bg-surface: #161616;
+  --color-bg-elevated: #1C1C1C;
   --color-accent-gold: #C9A84C;
   --color-accent-gold-muted: #C9A84C22;
-  --color-text-primary: #F5F0E8;
-  --color-text-secondary: #8A8680;
-  --color-text-tertiary: #4A4643;
-  --color-border: #222220;
-  --color-success: #4CAF7D;
+  --color-text-primary: #FFFFFF;
+  --color-text-secondary: #8A8682;
+  --color-text-tertiary: #555250;
+  --color-border: #2A2A2A;
+  --color-success: #4CAF82;
+  --color-danger: #E05252;
 
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Playfair Display", ui-serif, Georgia, serif;
@@ -20,6 +21,31 @@
   --radius-md: 0.5rem;
   --radius-lg: 0.75rem;
   --radius-xl: 1rem;
+}
+
+/* shadcn/ui CSS variables — dark only, no light override needed */
+:root,
+.dark {
+  --background: #0F0F0F;
+  --foreground: #FFFFFF;
+  --card: #161616;
+  --card-foreground: #FFFFFF;
+  --popover: #161616;
+  --popover-foreground: #FFFFFF;
+  --primary: #C9A84C;
+  --primary-foreground: #0A0A0A;
+  --secondary: #1C1C1C;
+  --secondary-foreground: #FFFFFF;
+  --muted: #1C1C1C;
+  --muted-foreground: #8A8682;
+  --accent: #C9A84C;
+  --accent-foreground: #0A0A0A;
+  --destructive: #E05252;
+  --destructive-foreground: #FFFFFF;
+  --border: #2A2A2A;
+  --input: #1C1C1C;
+  --ring: #C9A84C;
+  --radius: 0.5rem;
 }
 
 @layer base {
@@ -37,7 +63,7 @@
 
   ::selection {
     background-color: #C9A84C33;
-    color: #F5F0E8;
+    color: #FFFFFF;
   }
 }
 

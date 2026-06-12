@@ -31,7 +31,7 @@ export function BalanceCard({ accountNumber, accountType, balance }: BalanceCard
         <Button
           variant="outline"
           size="sm"
-          className="border-white/20 text-text-primary hover:bg-white/10"
+          className="border-border text-text-primary hover:bg-bg-surface"
           asChild
         >
           <Link href="/fund">Fund Account</Link>

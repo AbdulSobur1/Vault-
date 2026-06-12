@@ -20,7 +20,7 @@ export function SpendingChart({ data, title = "Monthly Spending" }: SpendingChar
       <div className="flex items-end justify-between gap-2 h-32">
         {data.map((item) => (
           <div key={item.label} className="flex flex-col items-center gap-2 flex-1">
-            <span className="text-xs text-muted">
+            <span className="text-xs text-text-secondary">
               ₦{(item.amount / 1000).toFixed(0)}k
             </span>
             <div
