@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { signOut } from "next-auth/react";
 import {
   LayoutDashboard,
   Wallet,
@@ -10,14 +9,12 @@ import {
   CreditCard,
   Landmark,
   Settings,
-  LogOut,
   PlusCircle,
   Send,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
+import { SignOutButton } from "@/components/auth/SignOutButton";
 
 interface SidebarProps {
   user: {
@@ -95,15 +92,7 @@ export function Sidebar({ user }: SidebarProps) {
             <p className="text-xs text-text-secondary truncate">{user.email || ""}</p>
           </div>
         </div>
-        <Button
-          variant="ghost"
-          size="sm"
-          className="w-full justify-start text-text-secondary hover:text-red-500"
-          onClick={() => signOut({ callbackUrl: "/login" })}
-        >
-          <LogOut className="h-4 w-4 mr-2" />
-          Sign Out
-        </Button>
+        <SignOutButton variant="sidebar" />
       </div>
     </aside>
   );
