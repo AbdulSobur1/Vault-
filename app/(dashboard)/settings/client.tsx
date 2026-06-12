@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -8,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/components/ui/toast";
 import { Moon, Sun, User, Shield, Settings as SettingsIcon } from "lucide-react";
+import { useTheme } from "next-themes";
+import { useState, useEffect } from "react";
 import type { User as UserType } from "@/lib/schema";
 
 interface SettingsClientProps {
@@ -16,25 +17,9 @@ interface SettingsClientProps {
 
 export function SettingsClient({ user }: SettingsClientProps) {
   const { toast } = useToast();
-  const [dark, setDark] = useState(false);
-
-  useEffect(() => {
-    const isDark = document.documentElement.classList.contains("dark");
-    setDark(isDark);
-  }, []);
-
-  const toggleTheme = () => {
-    const newDark = !dark;
-    setDark(newDark);
-    document.documentElement.classList.toggle("dark", newDark);
-    try {
-      localStorage.setItem("vaulte-theme", newDark ? "dark" : "light");
-    } catch (e) {}
-    toast({
-      title: "Theme updated",
-      description: `Switched to ${newDark ? "dark" : "light"} mode.`,
-    });
-  };
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   const handleChangePassword = (e: React.FormEvent) => {
     e.preventDefault();
@@ -164,14 +149,15 @@ export function SettingsClient({ user }: SettingsClientProps) {
                 <div>
                   <p className="text-sm font-medium">Theme</p>
                   <p className="text-xs text-text-secondary">Toggle between light and dark mode</p>
-                </div>
-                <Button variant="outline" size="sm" onClick={toggleTheme}>
-                  {dark ? (
-                    <><Sun className="h-4 w-4 mr-2" /> Light Mode</>
-                  ) : (
-                    <><Moon className="h-4 w-4 mr-2" /> Dark Mode</>
-                  )}
-                </Button>
+                </div>                    {mounted && (
+                      <Button variant="outline" size="sm" onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
+                        {theme === "dark" ? (
+                          <><Sun className="h-4 w-4 mr-2" /> Light Mode</>
+                        ) : (
+                          <><Moon className="h-4 w-4 mr-2" /> Dark Mode</>
+                        )}
+                      </Button>
+                    )}
               </div>
 
               <div className="border-t border-border" />

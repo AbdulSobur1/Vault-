@@ -6,6 +6,7 @@ import {
   boolean,
   numeric,
   date,
+  integer,
 } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
@@ -84,6 +85,18 @@ export const verificationTokens = pgTable("verification_tokens", {
   expires: timestamp("expires").notNull(),
 });
 
+export const loanApplications = pgTable("loan_applications", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id").references(() => users.id).notNull(),
+  accountId: uuid("account_id").references(() => accounts.id).notNull(),
+  loanType: text("loan_type").notNull(),
+  amount: numeric("amount", { precision: 15, scale: 2 }).notNull(),
+  tenure: integer("tenure").notNull(),
+  purpose: text("purpose"),
+  status: text("status").default("pending"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 // Types for TypeScript
 export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
@@ -93,3 +106,5 @@ export type Transaction = typeof transactions.$inferSelect;
 export type NewTransaction = typeof transactions.$inferInsert;
 export type Card = typeof cards.$inferSelect;
 export type NewCard = typeof cards.$inferInsert;
+export type LoanApplication = typeof loanApplications.$inferSelect;
+export type NewLoanApplication = typeof loanApplications.$inferInsert;

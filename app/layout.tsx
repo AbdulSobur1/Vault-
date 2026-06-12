@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Playfair_Display, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { SessionProvider } from "@/components/SessionProvider";
+import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/toaster";
 import { JsonLd } from "@/components/landing/json-ld";
 
@@ -114,9 +115,11 @@ export default function RootLayout({
       <head />
       <body className="min-h-full font-sans bg-bg-base text-text-primary">
         <SessionProvider>
-          <JsonLd />
-          {children}
-          <Toaster />
+          <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+            <JsonLd />
+            {children}
+            <Toaster />
+          </ThemeProvider>
         </SessionProvider>
       </body>
     </html>

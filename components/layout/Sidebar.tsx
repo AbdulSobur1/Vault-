@@ -11,6 +11,8 @@ import {
   Landmark,
   Settings,
   LogOut,
+  PlusCircle,
+  Send,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -28,9 +30,11 @@ interface SidebarProps {
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/accounts", label: "Accounts", icon: Wallet },
-  { href: "/transfer", label: "Transfer", icon: ArrowLeftRight },
-  { href: "/transactions", label: "Transactions", icon: Landmark },
+  { href: "/fund", label: "Fund Account", icon: PlusCircle },
+  { href: "/transfer", label: "Transfer", icon: Send },
+  { href: "/transactions", label: "Transactions", icon: ArrowLeftRight },
   { href: "/cards", label: "Cards", icon: CreditCard },
+  { href: "/loans", label: "Loans", icon: Landmark },
   { href: "/settings", label: "Settings", icon: Settings },
 ];
 

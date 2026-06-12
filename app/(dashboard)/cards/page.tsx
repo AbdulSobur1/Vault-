@@ -12,9 +12,21 @@ export default async function CardsPage() {
     redirect("/login");
   }
 
-  const userCards = await db.query.cards.findMany({
-    where: eq(cards.userId, session.user.id),
-  });
+  const [userCards, userAccounts] = await Promise.all([
+    db.query.cards.findMany({
+      where: eq(cards.userId, session.user.id),
+    }),
+    db.query.accounts.findMany({
+      where: eq(accounts.userId, session.user.id),
+    }),
+  ]);
 
-  return <CardsClient cards={userCards} userId={session.user.id} />;
+  const serializedAccounts = userAccounts.map((a) => ({
+    id: a.id,
+    accountType: a.accountType,
+    accountNumber: a.accountNumber,
+    balance: a.balance.toString(),
+  }));
+
+  return <CardsClient cards={userCards} userId={session.user.id} accounts={serializedAccounts} />;
 }

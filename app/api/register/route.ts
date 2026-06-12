@@ -26,6 +26,21 @@ export async function POST(request: Request) {
       );
     }
 
+    // Validate age (must be at least 18)
+    if (dob) {
+      const birth = new Date(dob);
+      const today = new Date();
+      const age = today.getFullYear() - birth.getFullYear();
+      const m = today.getMonth() - birth.getMonth();
+      const adjustedAge = m < 0 || (m === 0 && today.getDate() < birth.getDate()) ? age - 1 : age;
+      if (adjustedAge < 18) {
+        return NextResponse.json(
+          { success: false, message: "You must be at least 18 years old to open an account." },
+          { status: 400 }
+        );
+      }
+    }
+
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {

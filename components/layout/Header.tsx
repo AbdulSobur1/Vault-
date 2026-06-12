@@ -1,11 +1,15 @@
 "use client";
 
+"use client";
+
 import { usePathname } from "next/navigation";
-import { Moon, Sun } from "lucide-react";
+import { Sun, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { useEffect, useState } from "react";
 import Link from "next/link";
+import { MobileNav } from "@/components/layout/MobileNav";
+import { useTheme } from "next-themes";
+import { useState, useEffect } from "react";
 
 interface HeaderProps {
   user: {
@@ -26,18 +30,9 @@ const pageTitles: Record<string, string> = {
 
 export function Header({ user }: HeaderProps) {
   const pathname = usePathname();
-  const [dark, setDark] = useState(false);
-
-  useEffect(() => {
-    const isDark = document.documentElement.classList.contains("dark");
-    setDark(isDark);
-  }, []);
-
-  const toggleTheme = () => {
-    const newDark = !dark;
-    setDark(newDark);
-    document.documentElement.classList.toggle("dark", newDark);
-  };
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   const title = Object.entries(pageTitles).find(([path]) =>
     pathname === path || pathname.startsWith(path)
@@ -54,16 +49,21 @@ export function Header({ user }: HeaderProps) {
 
   return (
     <header className="md:hidden flex items-center justify-between h-16 px-4 border-b border-border bg-bg-surface">
-      <Link href="/dashboard" className="flex items-center gap-2">
-        <span className="text-lg font-medium tracking-tight">
-          Vault<span className="text-accent-gold">é</span>
-        </span>
-      </Link>
+      <div className="flex items-center gap-2">
+        <MobileNav />
+        <Link href="/dashboard" className="flex items-center gap-2">
+          <span className="text-lg font-medium tracking-tight">
+            Vault<span className="text-accent-gold">é</span>
+          </span>
+        </Link>
+      </div>
 
       <div className="flex items-center gap-2">
-        <Button variant="ghost" size="icon" onClick={toggleTheme}>
-          {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-        </Button>
+        {mounted && (
+          <Button variant="ghost" size="icon" onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
+            {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+          </Button>
+        )}
         <Link href="/settings">
           <Avatar className="h-8 w-8">
             <AvatarFallback className="text-xs">{initials}</AvatarFallback>

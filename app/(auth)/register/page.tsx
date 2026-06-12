@@ -8,37 +8,20 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { useToast } from "@/components/ui/toast";
+import { countries } from "@/lib/countries";
 
-const nationalities = [
-  "Afghan", "Albanian", "Algerian", "American", "Angolan", "Argentine", "Australian", "Austrian",
-  "Bangladeshi", "Belgian", "Beninese", "Brazilian", "British", "Bulgarian", "Burkinabe",
-  "Cambodian", "Cameroonian", "Canadian", "Chadian", "Chilean", "Chinese", "Colombian",
-  "Congolese", "Costa Rican", "Croatian", "Cuban", "Czech",
-  "Danish", "Dominican", "Dutch",
-  "Ecuadorian", "Egyptian", "Emirati", "English", "Eritrean", "Estonian", "Ethiopian",
-  "Filipino", "Finnish", "French",
-  "Gabonese", "Gambian", "Georgian", "German", "Ghanaian", "Greek", "Guatemalan", "Guinean",
-  "Haitian", "Honduran", "Hungarian",
-  "Icelandic", "Indian", "Indonesian", "Iranian", "Iraqi", "Irish", "Israeli", "Italian", "Ivorian",
-  "Jamaican", "Japanese", "Jordanian",
-  "Kazakh", "Kenyan", "Korean", "Kuwaiti",
-  "Laotian", "Latvian", "Lebanese", "Liberian", "Libyan", "Lithuanian", "Luxembourgish",
-  "Malagasy", "Malawian", "Malaysian", "Malian", "Maltese", "Mauritanian", "Mexican", "Mongolian",
-  "Moroccan", "Mozambican", "Myanmar",
-  "Namibian", "Nepalese", "New Zealander", "Nicaraguan", "Nigerien", "Nigerian", "Norwegian",
-  "Omani",
-  "Pakistani", "Palestinian", "Panamanian", "Papua New Guinean", "Paraguayan", "Peruvian", "Polish",
-  "Portuguese",
-  "Qatari",
-  "Romanian", "Russian", "Rwandan",
-  "Saudi", "Scottish", "Senegalese", "Serbian", "Sierra Leonean", "Singaporean", "Slovak",
-  "Slovenian", "Somali", "South African", "Spanish", "Sri Lankan", "Sudanese", "Swedish",
-  "Swiss", "Syrian",
-  "Taiwanese", "Tajik", "Tanzanian", "Thai", "Togolese", "Tunisian", "Turkish", "Turkmen",
-  "Ugandan", "Ukrainian", "Uruguayan", "Uzbek",
-  "Venezuelan", "Vietnamese", "Welsh",
-  "Yemeni", "Zambian", "Zimbabwean",
-];
+function isAtLeast18(dob: string): boolean {
+  const birth = new Date(dob);
+  const today = new Date();
+  const age = today.getFullYear() - birth.getFullYear();
+  const m = today.getMonth() - birth.getMonth();
+  const adjustedAge = m < 0 || (m === 0 && today.getDate() < birth.getDate()) ? age - 1 : age;
+  return adjustedAge >= 18;
+}
+
+const maxDOB = new Date();
+maxDOB.setFullYear(maxDOB.getFullYear() - 18);
+const maxDOBString = maxDOB.toISOString().split('T')[0];
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -53,7 +36,7 @@ export default function RegisterPage() {
     confirmPassword: "",
     dob: "",
     gender: "",
-    nationality: "",
+    nationality: "Nigeria",
     phone: "",
     nin: "",
     address: "",
@@ -63,8 +46,29 @@ export default function RegisterPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const selectedCountry = countries.find(c => c.name === form.nationality) || countries.find(c => c.code === 'NG')!;
+
   const updateField = (field: string, value: string | boolean) => {
     setForm((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleCountryChange = (countryName: string) => {
+    updateField("nationality", countryName);
+  };
+
+  const [ageError, setAgeError] = useState("");
+
+  const handleDobChange = (value: string) => {
+    updateField("dob", value);
+    if (value) {
+      if (!isAtLeast18(value)) {
+        setAgeError("You must be at least 18 years old to open an account.");
+      } else {
+        setAgeError("");
+      }
+    } else {
+      setAgeError("");
+    }
   };
 
   const validate = (): string | null => {
@@ -83,6 +87,9 @@ export default function RegisterPage() {
     if (!form.terms) {
       return "You must agree to the terms and conditions.";
     }
+    if (form.dob && !isAtLeast18(form.dob)) {
+      return "You must be at least 18 years old to open an account.";
+    }
     return null;
   };
 
@@ -99,10 +106,13 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
+      // Prepend dial code to phone number before sending
+      const phoneWithCode = form.phone ? `${selectedCountry.dialCode}${form.phone}` : "";
+
       const res = await fetch("/api/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, phone: phoneWithCode }),
       });
 
       const data = await res.json();
@@ -120,6 +130,7 @@ export default function RegisterPage() {
       });
 
       router.push("/login");
+      router.refresh();
     } catch {
       setError("An unexpected error occurred. Please try again.");
       setLoading(false);
@@ -209,9 +220,13 @@ export default function RegisterPage() {
                 <Input
                   id="dob"
                   type="date"
+                  max={maxDOBString}
                   value={form.dob}
-                  onChange={(e) => updateField("dob", e.target.value)}
+                  onChange={(e) => handleDobChange(e.target.value)}
                 />
+                {ageError && (
+                  <p className="text-xs text-red-500">{ageError}</p>
+                )}
               </div>
               <div className="space-y-2">
                 <Label>Gender</Label>
@@ -247,12 +262,12 @@ export default function RegisterPage() {
               <select
                 id="nationality"
                 value={form.nationality}
-                onChange={(e) => updateField("nationality", e.target.value)}
+                onChange={(e) => handleCountryChange(e.target.value)}
                 className="flex h-9 w-full rounded-md border border-border bg-transparent px-3 py-1 text-sm shadow-sm focus:outline-none focus:ring-1 focus:ring-accent-gold text-text-primary"
               >
                 <option value="">Select nationality</option>
-                {nationalities.map((n) => (
-                  <option key={n} value={n}>{n}</option>
+                {countries.map((c) => (
+                  <option key={c.code} value={c.name}>{c.name}</option>
                 ))}
               </select>
             </div>
@@ -260,13 +275,19 @@ export default function RegisterPage() {
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-2">
                 <Label htmlFor="phone">Phone</Label>
-                <Input
-                  id="phone"
-                  type="tel"
-                  placeholder="+234..."
-                  value={form.phone}
-                  onChange={(e) => updateField("phone", e.target.value)}
-                />
+                <div className="flex items-stretch border border-border rounded-md focus-within:ring-1 focus-within:ring-accent-gold">
+                  <span className="flex items-center px-3 border-r border-border bg-bg-surface rounded-l-md text-sm text-text-secondary select-none min-w-[64px]">
+                    {selectedCountry.dialCode}
+                  </span>
+                  <input
+                    type="tel"
+                    inputMode="numeric"
+                    placeholder="8012345678"
+                    value={form.phone}
+                    onChange={(e) => updateField("phone", e.target.value)}
+                    className="flex-1 bg-transparent border-0 rounded-r-md px-3 py-2 text-sm focus:outline-none text-text-primary"
+                  />
+                </div>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="nin">NIN/BVN *</Label>
@@ -317,7 +338,7 @@ export default function RegisterPage() {
               </div>
             )}
 
-            <Button type="submit" className="w-full" variant="accent" disabled={loading}>
+            <Button type="submit" className="w-full" variant="accent" disabled={loading || !!ageError}>
               {loading ? "Creating account..." : "Create Account"}
             </Button>
           </form>
