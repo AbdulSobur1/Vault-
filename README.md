@@ -1,36 +1,122 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Vaulté — Where wealth is kept.
+
+A modern, minimalist private banking web application built with Next.js 16, Auth.js, Neon (PostgreSQL), Drizzle ORM, and Tailwind CSS.
+
+## Tech Stack
+
+- **Framework:** Next.js 16 (App Router, TypeScript)
+- **Auth:** Auth.js v5 (next-auth@beta) — credentials provider
+- **Database:** Neon (PostgreSQL, serverless)
+- **ORM:** Drizzle ORM
+- **Styling:** Tailwind CSS v4
+- **UI:** shadcn/ui (custom components)
+- **Icons:** Lucide React
+- **Password:** bcryptjs
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+
+- A [Neon](https://neon.tech) PostgreSQL database (or any PostgreSQL instance)
+
+### 1. Clone & Install
+
+```bash
+git clone <repository-url>
+cd vaulte
+npm install
+```
+
+### 2. Environment Variables
+
+Copy `.env.local` and fill in your values:
+
+```bash
+DATABASE_URL=postgresql://<user>:<password>@<host>/<database>?sslmode=require
+AUTH_SECRET=<a-random-32-char-secret>
+AUTH_URL=http://localhost:3000
+NEXTAUTH_URL=http://localhost:3000
+```
+
+Generate a secure random secret:
+```bash
+openssl rand -base64 32
+```
+
+### 3. Push Database Schema
+
+```bash
+npx drizzle-kit push
+```
+
+### 4. Seed Demo Data
+
+```bash
+npx tsx scripts/seed.ts
+```
+
+This creates a demo user:
+- **Email:** demo@vaulte.app
+- **Password:** Demo1234!
+- **Account balance:** ₦250,000.00
+- **Sample transactions:** 10
+
+### 5. Run Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+/app
+  /(auth)           → Login, Register, Forgot Password pages
+  /(dashboard)      → Dashboard, Accounts, Transfer, Transactions, Cards, Loans, Settings
+  /api              → API routes (auth, register, transfer, transactions)
+/components
+  /ui               → shadcn/ui base components
+  /layout           → Sidebar, Header, MobileNav
+  /dashboard        → BalanceCard, TransactionRow, QuickActions, SpendingChart
+/lib
+  schema.ts         → Drizzle ORM schema
+  db.ts             → Database client
+  auth.ts           → Auth.js configuration
+  utils.ts          → Utility functions
+/scripts
+  seed.ts           → Database seed script
+/drizzle            → Migration files (generated)
+```
 
-## Learn More
+## Features
 
-To learn more about Next.js, take a look at the following resources:
+- 🔐 **Authentication** — Email/password login with Auth.js v5
+- 💰 **Dashboard** — Balance overview, recent transactions, monthly stats
+- 💳 **Accounts** — View and manage bank accounts
+- 💸 **Transfers** — Send money to other accounts
+- 📊 **Transactions** — Full transaction history with filters
+- 💳 **Cards** — Virtual and physical card management
+- 🏦 **Loans** — Loan product information
+- ⚙️ **Settings** — Profile, security, and preferences
+- 🌓 **Dark Mode** — Full dark mode support
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Design
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Primary:** #0A0A0A (near black)
+- **Accent:** #C9A84C (muted gold)
+- **Surface:** #F9F8F6 (warm off-white)
+- **Font:** Inter (Google Fonts)
+- Clean, minimalist private banking aesthetic
 
-## Deploy on Vercel
+## Deployment
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Deploy to Vercel:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run build
+```
+
+Set the same environment variables (`DATABASE_URL`, `AUTH_SECRET`, `AUTH_URL`) in your Vercel project settings.
