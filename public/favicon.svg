@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
+  <!-- Vault body -->
+  <rect x="4" y="8" width="40" height="32" rx="5" stroke="#C9A84C" stroke-width="2.5" fill="#0A0A0B"/>
+  <!-- Door lock circle -->
+  <circle cx="24" cy="24" r="8" stroke="#C9A84C" stroke-width="2" fill="none"/>
+  <!-- Keyhole -->
+  <circle cx="24" cy="24" r="2.5" fill="#C9A84C"/>
+  <rect x="22.5" y="24" width="3" height="5" rx="1" fill="#C9A84C"/>
+  <!-- Top accent bar -->
+  <rect x="8" y="12" width="10" height="4" rx="1" fill="#C9A84C" opacity="0.4"/>
+  <!-- Bottom accent dots -->
+  <circle cx="10" cy="36" r="1.5" fill="#C9A84C" opacity="0.4"/>
+  <circle cx="38" cy="36" r="1.5" fill="#C9A84C" opacity="0.4"/>
+</svg>
