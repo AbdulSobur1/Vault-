@@ -33,7 +33,7 @@ export function CardsClient({ cards }: CardsClientProps) {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-medium">Cards</h1>
-          <p className="text-sm text-muted mt-1">Manage your debit cards</p>
+          <p className="text-sm text-text-secondary mt-1">Manage your debit cards</p>
         </div>
         <Button variant="accent" onClick={handleRequestCard} disabled={requesting}>
           <Plus className="h-4 w-4 mr-2" />
@@ -46,13 +46,13 @@ export function CardsClient({ cards }: CardsClientProps) {
           {cards.map((card) => (
             <div
               key={card.id}
-              className="rounded-lg border border-border bg-primary text-white dark:bg-dark-card dark:border-dark-border p-6 min-h-[200px] flex flex-col justify-between"
+              className="rounded-lg border border-border bg-bg-elevated text-text-primary p-6 min-h-[200px] flex flex-col justify-between"
             >
               <div className="flex items-center justify-between">
                 <span className="text-xs text-white/60 uppercase tracking-wider">
                   {card.cardType} Card
                 </span>
-                <CreditCard className="h-6 w-6 text-accent" />
+                <CreditCard className="h-6 w-6 text-accent-gold" />
               </div>
 
               <div className="space-y-4">
@@ -73,10 +73,10 @@ export function CardsClient({ cards }: CardsClientProps) {
           ))}
         </div>
       ) : (
-        <div className="text-center py-16 rounded-lg border border-border bg-white dark:bg-dark-card dark:border-dark-border">
-          <CreditCard className="h-12 w-12 text-muted mx-auto mb-4" />
+        <div className="text-center py-16 rounded-lg border border-border bg-bg-elevated">
+          <CreditCard className="h-12 w-12 text-text-secondary mx-auto mb-4" />
           <h3 className="text-lg font-medium mb-2">No cards yet</h3>
-          <p className="text-sm text-muted mb-6">Request a virtual card to get started</p>
+          <p className="text-sm text-text-secondary mb-6">Request a virtual card to get started</p>
           <Button variant="accent" onClick={handleRequestCard} disabled={requesting}>
             <Plus className="h-4 w-4 mr-2" />
             Request Virtual Card

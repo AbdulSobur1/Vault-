@@ -30,7 +30,7 @@ export function TransactionRow({
   };
 
   return (
-    <div className="flex items-center justify-between py-3 px-4 hover:bg-surface dark:hover:bg-dark-card rounded-lg transition-colors">
+    <div className="flex items-center justify-between py-3 px-4 hover:bg-bg-surface rounded-lg transition-colors">
       <div className="flex items-center gap-3">
         <div
           className={`flex items-center justify-center w-9 h-9 rounded-full ${
@@ -45,7 +45,7 @@ export function TransactionRow({
         </div>
         <div>
           <p className="text-sm font-medium">{description || "Transfer"}</p>
-          <p className="text-xs text-muted">{formatDate(date)}</p>
+          <p className="text-xs text-text-secondary">{formatDate(date)}</p>
         </div>
       </div>
 
@@ -59,7 +59,7 @@ export function TransactionRow({
             {isCredit ? "+" : "−"}
             {formatCurrency(parseFloat(amount))}
           </p>
-          <p className="text-xs text-muted font-mono">{reference.slice(0, 8)}...</p>
+          <p className="text-xs text-text-secondary font-mono">{reference.slice(0, 8)}...</p>
         </div>
         <Badge variant={statusVariant[status]}>{status}</Badge>
       </div>

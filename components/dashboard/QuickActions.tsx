@@ -22,16 +22,16 @@ export function QuickActions() {
             href={action.href}
             className={cn(
               "flex flex-col items-center gap-2 p-4 rounded-lg border border-border",
-              "bg-white dark:bg-dark-card dark:border-dark-border",
-              "hover:bg-surface dark:hover:bg-dark-surface transition-colors"
+              "bg-bg-elevated",
+              "hover:bg-bg-surface transition-colors"
             )}
           >
-            <div className="flex items-center justify-center w-10 h-10 rounded-full bg-surface dark:bg-dark-surface">
-              <Icon className="h-5 w-5 text-accent" />
+            <div className="flex items-center justify-center w-10 h-10 rounded-full bg-bg-base">
+              <Icon className="h-5 w-5 text-accent-gold" />
             </div>
             <div className="text-center">
               <p className="text-sm font-medium">{action.label}</p>
-              <p className="text-xs text-muted">{action.description}</p>
+              <p className="text-xs text-text-secondary">{action.description}</p>
             </div>
           </Link>
         );

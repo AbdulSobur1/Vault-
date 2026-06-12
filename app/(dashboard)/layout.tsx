@@ -22,7 +22,7 @@ export default async function DashboardLayout({
   };
 
   return (
-    <div className="min-h-screen bg-surface dark:bg-dark-surface">
+    <div className="min-h-screen bg-bg-base">
       <Sidebar user={user} />
       <Header user={user} />
 

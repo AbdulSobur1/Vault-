@@ -24,12 +24,12 @@ export default async function AccountsPage() {
       <div className="space-y-8">
         <div>
           <h1 className="text-2xl font-medium">Accounts</h1>
-          <p className="text-sm text-muted mt-1">Manage your bank accounts</p>
+          <p className="text-sm text-text-secondary mt-1">Manage your bank accounts</p>
         </div>
-        <div className="rounded-lg border border-border bg-white dark:bg-dark-card dark:border-dark-border p-12 text-center">
-          <Wallet className="h-12 w-12 text-muted mx-auto mb-4" />
+        <div className="rounded-lg border border-border bg-bg-elevated p-12 text-center">
+          <Wallet className="h-12 w-12 text-text-secondary mx-auto mb-4" />
           <h3 className="text-lg font-medium mb-2">No accounts yet</h3>
-          <p className="text-sm text-muted">Please contact support to open an account.</p>
+          <p className="text-sm text-text-secondary">Please contact support to open an account.</p>
         </div>
       </div>
     );
@@ -39,26 +39,26 @@ export default async function AccountsPage() {
     <div className="space-y-8">
       <div>
         <h1 className="text-2xl font-medium">Accounts</h1>
-        <p className="text-sm text-muted mt-1">Manage your bank accounts</p>
+        <p className="text-sm text-text-secondary mt-1">Manage your bank accounts</p>
       </div>
 
       <div className="grid gap-4">
         {userAccounts.map((account) => (
           <div
             key={account.id}
-            className="rounded-lg border border-border bg-white dark:bg-dark-card dark:border-dark-border p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+            className="rounded-lg border border-border bg-bg-elevated p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
           >
             <div className="flex items-start gap-4">
-              <div className="flex items-center justify-center w-12 h-12 rounded-full bg-surface dark:bg-dark-surface shrink-0">
-                <Wallet className="h-6 w-6 text-accent" />
+              <div className="flex items-center justify-center w-12 h-12 rounded-full bg-bg-base shrink-0">
+                <Wallet className="h-6 w-6 text-accent-gold" />
               </div>
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <span className="text-sm font-medium capitalize">{account.accountType} Account</span>
-                  <span className="text-xs text-muted font-mono">{account.accountNumber}</span>
+                  <span className="text-xs text-text-secondary font-mono">{account.accountNumber}</span>
                 </div>
                 <p className="text-2xl font-medium">{formatCurrency(parseFloat(account.balance))}</p>
-                <p className="text-xs text-muted">{account.currency} • {account.isActive ? "Active" : "Inactive"}</p>
+                <p className="text-xs text-text-secondary">{account.currency} • {account.isActive ? "Active" : "Inactive"}</p>
               </div>
             </div>
             <Button variant="outline" size="sm" asChild>

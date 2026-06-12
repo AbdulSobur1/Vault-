@@ -4,17 +4,17 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-gold disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
-        default: "bg-primary text-white hover:bg-primary/90 dark:bg-white dark:text-primary dark:hover:bg-white/90",
-        destructive: "bg-danger text-white hover:bg-danger/90",
-        outline: "border border-border bg-transparent hover:bg-surface dark:hover:bg-dark-card",
-        secondary: "bg-surface text-primary dark:bg-dark-card dark:text-white hover:bg-border dark:hover:bg-dark-border",
-        ghost: "hover:bg-surface dark:hover:bg-dark-card",
-        link: "text-primary underline-offset-4 hover:underline dark:text-white",
-        accent: "bg-accent text-primary hover:bg-accent-light",
+        default: "bg-bg-elevated text-text-primary hover:bg-bg-elevated/90",
+        destructive: "bg-red-500 text-white hover:bg-red-600",
+        outline: "border border-border bg-transparent hover:bg-bg-surface",
+        secondary: "bg-bg-surface text-text-primary hover:bg-border",
+        ghost: "hover:bg-bg-surface",
+        link: "text-text-primary underline-offset-4 hover:underline",
+        accent: "bg-accent-gold text-bg-base hover:bg-accent-gold/90",
       },
       size: {
         default: "h-9 px-4 py-2",

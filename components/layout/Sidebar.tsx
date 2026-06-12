@@ -47,12 +47,11 @@ export function Sidebar({ user }: SidebarProps) {
     : "U";
 
   return (
-    <aside className="hidden md:flex md:flex-col md:w-60 md:fixed md:inset-y-0 bg-white border-r border-border dark:bg-dark-surface dark:border-dark-border z-30">
+    <aside className="hidden md:flex md:flex-col md:w-60 md:fixed md:inset-y-0 bg-bg-surface border-r border-border z-30">
       {/* Logo */}
-      <div className="flex items-center h-16 px-6 border-b border-border dark:border-dark-border">
-        <Link href="/dashboard" className="flex items-center gap-2">
-          <span className="text-xl font-medium tracking-tight">
-            Vault<span className="text-accent">é</span>
+      <div className="flex items-center h-16 px-6 border-b border-border">
+        <Link href="/dashboard" className="flex items-center gap-2">            <span className="text-xl font-medium tracking-tight">
+            Vault<span className="text-accent-gold">é</span>
           </span>
         </Link>
       </div>
@@ -70,8 +69,8 @@ export function Sidebar({ user }: SidebarProps) {
               className={cn(
                 "flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors",
                 isActive
-                  ? "bg-surface text-primary border-l-2 border-accent dark:bg-dark-card dark:text-white"
-                  : "text-muted hover:text-primary hover:bg-surface dark:hover:bg-dark-card"
+                  ? "bg-bg-surface text-text-primary border-l-2 border-accent-gold"
+                  : "text-text-secondary hover:text-text-primary hover:bg-bg-surface"
               )}
             >
               <Icon className="h-4 w-4 shrink-0" />
@@ -82,20 +81,20 @@ export function Sidebar({ user }: SidebarProps) {
       </nav>
 
       {/* User Section */}
-      <div className="p-4 border-t border-border dark:border-dark-border">
+      <div className="p-4 border-t border-border">
         <div className="flex items-center gap-3 mb-3">
           <Avatar className="h-8 w-8">
             <AvatarFallback className="text-xs">{initials}</AvatarFallback>
           </Avatar>
           <div className="flex-1 min-w-0">
             <p className="text-sm font-medium truncate">{user.name || "User"}</p>
-            <p className="text-xs text-muted truncate">{user.email || ""}</p>
+            <p className="text-xs text-text-secondary truncate">{user.email || ""}</p>
           </div>
         </div>
         <Button
           variant="ghost"
           size="sm"
-          className="w-full justify-start text-muted hover:text-danger"
+          className="w-full justify-start text-text-secondary hover:text-red-500"
           onClick={() => signOut({ callbackUrl: "/login" })}
         >
           <LogOut className="h-4 w-4 mr-2" />

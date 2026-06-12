@@ -48,7 +48,7 @@ export function SettingsClient({ user }: SettingsClientProps) {
     <div className="space-y-8">
       <div>
         <h1 className="text-2xl font-medium">Settings</h1>
-        <p className="text-sm text-muted mt-1">Manage your account settings</p>
+        <p className="text-sm text-text-secondary mt-1">Manage your account settings</p>
       </div>
 
       <Tabs defaultValue="profile" className="w-full">
@@ -120,7 +120,7 @@ export function SettingsClient({ user }: SettingsClientProps) {
                 <Label>Address</Label>
                 <Input value={user.address || "Not set"} readOnly />
               </div>
-              <p className="text-xs text-muted">Profile editing will be available in a future update.</p>
+              <p className="text-xs text-text-secondary">Profile editing will be available in a future update.</p>
             </CardContent>
           </Card>
         </TabsContent>
@@ -163,7 +163,7 @@ export function SettingsClient({ user }: SettingsClientProps) {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium">Theme</p>
-                  <p className="text-xs text-muted">Toggle between light and dark mode</p>
+                  <p className="text-xs text-text-secondary">Toggle between light and dark mode</p>
                 </div>
                 <Button variant="outline" size="sm" onClick={toggleTheme}>
                   {dark ? (
@@ -174,7 +174,7 @@ export function SettingsClient({ user }: SettingsClientProps) {
                 </Button>
               </div>
 
-              <div className="border-t border-border dark:border-dark-border" />
+              <div className="border-t border-border" />
 
               <div>
                 <p className="text-sm font-medium mb-3">Notification Preferences</p>
@@ -182,23 +182,23 @@ export function SettingsClient({ user }: SettingsClientProps) {
                   <label className="flex items-center justify-between">
                     <div>
                       <p className="text-sm">Email Notifications</p>
-                      <p className="text-xs text-muted">Receive account updates via email</p>
+                      <p className="text-xs text-text-secondary">Receive account updates via email</p>
                     </div>
-                    <input type="checkbox" defaultChecked className="text-accent focus:ring-accent rounded" />
+                    <input type="checkbox" defaultChecked className="text-accent-gold focus:ring-accent-gold rounded" />
                   </label>
                   <label className="flex items-center justify-between">
                     <div>
                       <p className="text-sm">SMS Alerts</p>
-                      <p className="text-xs text-muted">Get transaction alerts via SMS</p>
+                      <p className="text-xs text-text-secondary">Get transaction alerts via SMS</p>
                     </div>
-                    <input type="checkbox" defaultChecked className="text-accent focus:ring-accent rounded" />
+                    <input type="checkbox" defaultChecked className="text-accent-gold focus:ring-accent-gold rounded" />
                   </label>
                   <label className="flex items-center justify-between">
                     <div>
                       <p className="text-sm">Marketing</p>
-                      <p className="text-xs text-muted">Receive promotional offers and updates</p>
+                      <p className="text-xs text-text-secondary">Receive promotional offers and updates</p>
                     </div>
-                    <input type="checkbox" className="text-accent focus:ring-accent rounded" />
+                    <input type="checkbox" className="text-accent-gold focus:ring-accent-gold rounded" />
                   </label>
                 </div>
               </div>

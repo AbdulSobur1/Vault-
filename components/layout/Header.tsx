@@ -53,10 +53,10 @@ export function Header({ user }: HeaderProps) {
     : "U";
 
   return (
-    <header className="md:hidden flex items-center justify-between h-16 px-4 border-b border-border bg-white dark:bg-dark-surface dark:border-dark-border">
+    <header className="md:hidden flex items-center justify-between h-16 px-4 border-b border-border bg-bg-surface">
       <Link href="/dashboard" className="flex items-center gap-2">
         <span className="text-lg font-medium tracking-tight">
-          Vault<span className="text-accent">é</span>
+          Vault<span className="text-accent-gold">é</span>
         </span>
       </Link>
 

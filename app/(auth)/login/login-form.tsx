@@ -48,9 +48,8 @@ export function LoginForm() {
   return (
     <Card className="w-full max-w-sm">
       <CardHeader className="text-center">
-        <Link href="/" className="inline-block mb-4">
-          <span className="text-2xl font-medium tracking-tight">
-            Vault<span className="text-accent">é</span>
+        <Link href="/" className="inline-block mb-4">              <span className="text-2xl font-medium tracking-tight">
+            Vault<span className="text-accent-gold">é</span>
           </span>
         </Link>
         <CardTitle>Welcome back</CardTitle>
@@ -75,7 +74,7 @@ export function LoginForm() {
               <Label htmlFor="password">Password</Label>
               <Link
                 href="/forgot-password"
-                className="text-xs text-accent hover:text-accent-light"
+                className="text-xs text-accent-gold hover:text-accent-gold"
               >
                 Forgot password?
               </Link>
@@ -100,11 +99,9 @@ export function LoginForm() {
           <Button type="submit" className="w-full" variant="accent" disabled={loading}>
             {loading ? "Signing in..." : "Sign In"}
           </Button>
-        </form>
-
-        <p className="mt-6 text-center text-sm text-muted">
+        </form>          <p className="mt-6 text-center text-sm text-text-secondary">
           Don&apos;t have an account?{" "}
-          <Link href="/register" className="text-accent hover:text-accent-light font-medium">
+          <Link href="/register" className="text-accent-gold hover:text-accent-gold font-medium">
             Open Account
           </Link>
         </p>

@@ -127,12 +127,11 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-surface dark:bg-dark-surface">
+    <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-bg-base">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <Link href="/" className="inline-block mb-4">
-            <span className="text-2xl font-medium tracking-tight">
-              Vault<span className="text-accent">é</span>
+          <Link href="/" className="inline-block mb-4">              <span className="text-2xl font-medium tracking-tight">
+              Vault<span className="text-accent-gold">é</span>
             </span>
           </Link>
           <CardTitle>Open an Account</CardTitle>
@@ -224,7 +223,7 @@ export default function RegisterPage() {
                       value="male"
                       checked={form.gender === "male"}
                       onChange={(e) => updateField("gender", e.target.value)}
-                      className="text-accent focus:ring-accent"
+                      className="text-accent-gold focus:ring-accent-gold"
                     />
                     Male
                   </label>
@@ -235,7 +234,7 @@ export default function RegisterPage() {
                       value="female"
                       checked={form.gender === "female"}
                       onChange={(e) => updateField("gender", e.target.value)}
-                      className="text-accent focus:ring-accent"
+                      className="text-accent-gold focus:ring-accent-gold"
                     />
                     Female
                   </label>
@@ -249,7 +248,7 @@ export default function RegisterPage() {
                 id="nationality"
                 value={form.nationality}
                 onChange={(e) => updateField("nationality", e.target.value)}
-                className="flex h-9 w-full rounded-md border border-border bg-transparent px-3 py-1 text-sm shadow-sm focus:outline-none focus:ring-1 focus:ring-accent dark:border-dark-border dark:text-white"
+                className="flex h-9 w-full rounded-md border border-border bg-transparent px-3 py-1 text-sm shadow-sm focus:outline-none focus:ring-1 focus:ring-accent-gold text-text-primary"
               >
                 <option value="">Select nationality</option>
                 {nationalities.map((n) => (
@@ -288,7 +287,7 @@ export default function RegisterPage() {
                 id="address"
                 value={form.address}
                 onChange={(e) => updateField("address", e.target.value)}
-                className="flex min-h-[60px] w-full rounded-md border border-border bg-transparent px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-1 focus:ring-accent dark:border-dark-border dark:text-white"
+                className="flex min-h-[60px] w-full rounded-md border border-border bg-transparent px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-1 focus:ring-accent-gold text-text-primary"
                 rows={2}
               />
             </div>
@@ -298,22 +297,22 @@ export default function RegisterPage() {
                 type="checkbox"
                 checked={form.terms}
                 onChange={(e) => updateField("terms", e.target.checked)}
-                className="mt-1 text-accent focus:ring-accent"
+                className="mt-1 text-accent-gold focus:ring-accent-gold"
               />
-              <span className="text-muted">
+              <span className="text-text-secondary">
                 I agree to the{" "}
-                <Link href="#" className="text-accent hover:text-accent-light">
+                <Link href="#" className="text-accent-gold">
                   Terms & Conditions
                 </Link>{" "}
                 and{" "}
-                <Link href="#" className="text-accent hover:text-accent-light">
+                <Link href="#" className="text-accent-gold">
                   Privacy Policy
                 </Link>
               </span>
             </label>
 
             {error && (
-              <div className="rounded-md border border-danger/20 bg-danger/5 px-3 py-2 text-sm text-danger">
+              <div className="rounded-md border border-red-500/20 bg-red-500/5 px-3 py-2 text-sm text-red-500">
                 {error}
               </div>
             )}
@@ -323,9 +322,9 @@ export default function RegisterPage() {
             </Button>
           </form>
 
-          <p className="mt-6 text-center text-sm text-muted">
+          <p className="mt-6 text-center text-sm text-text-secondary">
             Already have an account?{" "}
-            <Link href="/login" className="text-accent hover:text-accent-light font-medium">
+            <Link href="/login" className="text-accent-gold hover:text-accent-gold font-medium">
               Sign In
             </Link>
           </p>

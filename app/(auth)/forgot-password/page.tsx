@@ -25,12 +25,12 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 bg-surface dark:bg-dark-surface">
+    <div className="min-h-screen flex items-center justify-center px-4 bg-bg-base">
       <Card className="w-full max-w-sm">
         <CardHeader className="text-center">
           <Link href="/" className="inline-block mb-4">
             <span className="text-2xl font-medium tracking-tight">
-              Vault<span className="text-accent">é</span>
+              Vault<span className="text-accent-gold">é</span>
             </span>
           </Link>
           <CardTitle>Reset password</CardTitle>
@@ -59,7 +59,7 @@ export default function ForgotPasswordPage() {
             </form>
           ) : (
             <div className="text-center py-4">
-              <p className="text-sm text-muted mb-4">
+              <p className="text-sm text-text-secondary mb-4">
                 If an account exists with that email, we&apos;ve sent a password reset link.
               </p>
               <Button
@@ -71,9 +71,9 @@ export default function ForgotPasswordPage() {
             </div>
           )}
 
-          <p className="mt-6 text-center text-sm text-muted">
+          <p className="mt-6 text-center text-sm text-text-secondary">
             Remember your password?{" "}
-            <Link href="/login" className="text-accent hover:text-accent-light font-medium">
+            <Link href="/login" className="text-accent-gold hover:text-accent-gold font-medium">
               Sign In
             </Link>
           </p>

@@ -88,12 +88,10 @@ export function TransferClient({ accounts }: TransferClientProps) {
             <div className="flex items-center justify-center w-16 h-16 rounded-full bg-success/10 mx-auto mb-6">
               <CheckCircle className="h-8 w-8 text-success" />
             </div>
-            <h2 className="text-xl font-medium mb-2">Transfer Completed</h2>
-            <p className="text-sm text-muted mb-2">
-              Transaction Reference: <span className="font-mono text-primary dark:text-white">{success.reference}</span>
-            </p>
-            <p className="text-sm text-muted mb-6">
-              New Balance: <span className="font-medium text-primary dark:text-white">{formatCurrency(parseFloat(success.newBalance))}</span>
+            <h2 className="text-xl font-medium mb-2">Transfer Completed</h2>              <p className="text-sm text-text-secondary mb-2">
+              Transaction Reference: <span className="font-mono text-text-primary">{success.reference}</span>
+            </p>              <p className="text-sm text-text-secondary mb-6">
+              New Balance: <span className="font-medium text-text-primary">{formatCurrency(parseFloat(success.newBalance))}</span>
             </p>
             <Button
               variant="accent"
@@ -117,13 +115,13 @@ export function TransferClient({ accounts }: TransferClientProps) {
     <div className="space-y-8">
       <div>
         <h1 className="text-2xl font-medium">Transfer</h1>
-        <p className="text-sm text-muted mt-1">Send money to another account</p>
+        <p className="text-sm text-text-secondary mt-1">Send money to another account</p>
       </div>
 
       <Card className="max-w-lg">
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-base">
-            <ArrowLeftRight className="h-5 w-5 text-accent" />
+            <ArrowLeftRight className="h-5 w-5 text-accent-gold" />
             New Transfer
           </CardTitle>
         </CardHeader>
@@ -144,7 +142,7 @@ export function TransferClient({ accounts }: TransferClientProps) {
                 </SelectContent>
               </Select>
               {selectedAccount && (
-                <p className="text-xs text-muted">Balance: {formatCurrency(balance)}</p>
+                <p className="text-xs text-text-secondary">Balance: {formatCurrency(balance)}</p>
               )}
             </div>
 
@@ -173,7 +171,7 @@ export function TransferClient({ accounts }: TransferClientProps) {
                 required
               />
               {exceedsBalance && (
-                <p className="text-xs text-danger">Amount exceeds available balance</p>
+                <p className="text-xs text-red-500">Amount exceeds available balance</p>
               )}
             </div>
 
@@ -188,7 +186,7 @@ export function TransferClient({ accounts }: TransferClientProps) {
             </div>
 
             {error && (
-              <div className="rounded-md border border-danger/20 bg-danger/5 px-3 py-2 text-sm text-danger">
+              <div className="rounded-md border border-red-500/20 bg-red-500/5 px-3 py-2 text-sm text-red-500">
                 {error}
               </div>
             )}

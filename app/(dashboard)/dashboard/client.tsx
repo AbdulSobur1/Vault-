@@ -37,7 +37,7 @@ export function DashboardClient({
         <h1 className="text-2xl font-medium">
           {greeting}, {firstname}
         </h1>
-        <p className="text-sm text-muted mt-1">Here&apos;s your financial overview</p>
+        <p className="text-sm text-text-secondary mt-1">Here&apos;s your financial overview</p>
       </div>
 
       {/* Balance Card */}
@@ -49,25 +49,25 @@ export function DashboardClient({
 
       {/* Quick Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div className="rounded-lg border border-border bg-white dark:bg-dark-card dark:border-dark-border p-4">
+        <div className="rounded-lg border border-border bg-bg-elevated p-4">
           <div className="flex items-center gap-3">
             <div className="flex items-center justify-center w-10 h-10 rounded-full bg-success/10">
               <TrendingUp className="h-5 w-5 text-success" />
             </div>
             <div>
-              <p className="text-xs text-muted">Total Credits (Month)</p>
+              <p className="text-xs text-text-secondary">Total Credits (Month)</p>
               <p className="text-lg font-medium text-success">{formatCurrency(totalCredits)}</p>
             </div>
           </div>
         </div>
-        <div className="rounded-lg border border-border bg-white dark:bg-dark-card dark:border-dark-border p-4">
+        <div className="rounded-lg border border-border bg-bg-elevated p-4">
           <div className="flex items-center gap-3">
-            <div className="flex items-center justify-center w-10 h-10 rounded-full bg-danger/10">
-              <TrendingDown className="h-5 w-5 text-danger" />
+            <div className="flex items-center justify-center w-10 h-10 rounded-full bg-red-500/10">
+              <TrendingDown className="h-5 w-5 text-red-500" />
             </div>
             <div>
-              <p className="text-xs text-muted">Total Debits (Month)</p>
-              <p className="text-lg font-medium text-danger">{formatCurrency(totalDebits)}</p>
+              <p className="text-xs text-text-secondary">Total Debits (Month)</p>
+              <p className="text-lg font-medium text-red-500">{formatCurrency(totalDebits)}</p>
             </div>
           </div>
         </div>
@@ -90,17 +90,17 @@ export function DashboardClient({
       <QuickActions />
 
       {/* Recent Transactions */}
-      <div className="rounded-lg border border-border bg-white dark:bg-dark-card dark:border-dark-border">
-        <div className="flex items-center justify-between px-4 py-3 border-b border-border dark:border-dark-border">
+      <div className="rounded-lg border border-border bg-bg-elevated">
+        <div className="flex items-center justify-between px-4 py-3 border-b border-border">
           <h3 className="text-sm font-medium">Recent Transactions</h3>
           <Link
             href="/transactions"
-            className="text-xs text-accent hover:text-accent-light flex items-center gap-1"
+            className="text-xs text-accent-gold flex items-center gap-1"
           >
             View all <ArrowRight className="h-3 w-3" />
           </Link>
         </div>
-        <div className="divide-y divide-border dark:divide-dark-border">
+        <div className="divide-y divide-border">
           {transactions.length > 0 ? (
             transactions.map((t) => (
               <TransactionRow
@@ -114,7 +114,7 @@ export function DashboardClient({
               />
             ))
           ) : (
-            <p className="text-sm text-muted text-center py-8">No transactions yet</p>
+            <p className="text-sm text-text-secondary text-center py-8">No transactions yet</p>
           )}
         </div>
       </div>

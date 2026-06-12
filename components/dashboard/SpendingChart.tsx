@@ -15,7 +15,7 @@ export function SpendingChart({ data, title = "Monthly Spending" }: SpendingChar
   const maxAmount = Math.max(...data.map((d) => d.amount), 1);
 
   return (
-    <div className="rounded-lg border border-border bg-white dark:bg-dark-card dark:border-dark-border p-6">
+    <div className="rounded-lg border border-border bg-bg-elevated p-6">
       <h3 className="text-sm font-medium mb-6">{title}</h3>
       <div className="flex items-end justify-between gap-2 h-32">
         {data.map((item) => (
@@ -26,14 +26,14 @@ export function SpendingChart({ data, title = "Monthly Spending" }: SpendingChar
             <div
               className={`w-full rounded-sm transition-all ${
                 item.isCurrentMonth
-                  ? "bg-accent"
-                  : "bg-border dark:bg-dark-border"
+                  ? "bg-accent-gold"
+                  : "bg-border"
               }`}
               style={{
                 height: `${Math.max((item.amount / maxAmount) * 100, 4)}%`,
               }}
             />
-            <span className="text-xs text-muted">{item.label}</span>
+            <span className="text-xs text-text-secondary">{item.label}</span>
           </div>
         ))}
       </div>
