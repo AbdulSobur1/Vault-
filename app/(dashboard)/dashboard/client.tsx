@@ -43,8 +43,9 @@ export function DashboardClient({
       {/* Balance Card */}
       <BalanceCard
         accountNumber={primaryAccount.accountNumber}
-        accountType={primaryAccount.accountType}
-        balance={primaryAccount.balance}
+        accountType={primaryAccount.accountType as "savings" | "current"}
+        balance={Number(primaryAccount.balance)}
+        currency={primaryAccount.currency ?? "NGN"}
       />
 
       {/* Quick Stats */}

@@ -28,5 +28,9 @@ export default async function CardsPage() {
     balance: a.balance.toString(),
   }));
 
-  return <CardsClient cards={userCards} userId={session.user.id} accounts={serializedAccounts} />;
+  return (
+    <div className="max-w-2xl mx-auto">
+      <CardsClient cards={userCards} userId={session.user.id} accounts={serializedAccounts} />
+    </div>
+  );
 }

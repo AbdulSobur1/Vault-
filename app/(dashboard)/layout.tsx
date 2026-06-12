@@ -31,7 +31,7 @@ export default async function DashboardLayout({
         <Header user={user} />
 
         {/* Page content — bottom padding on mobile to clear bottom nav */}
-        <main className="flex-1 p-4 lg:p-8 lg:pl-60 pb-20 lg:pb-8 overflow-y-auto">
+        <main className="flex-1 p-4 lg:p-8 lg:pl-60 pb-20 lg:pb-8 overflow-x-hidden overflow-y-auto min-w-0">
           <div className="max-w-5xl mx-auto">
             {children}
           </div>

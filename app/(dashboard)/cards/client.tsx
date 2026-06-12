@@ -236,35 +236,44 @@ export function CardsClient({ cards, accounts }: CardsClientProps) {
       {hasCards && displayCard && (
         <div className="space-y-6">
           {/* Visual Card */}
-          <div className="relative w-full max-w-sm h-48 rounded-2xl p-6 bg-gradient-to-br from-[#0A0A0A] to-[#1a1a1a] text-white shadow-xl">
-            {/* Card chip */}
-            <div className="w-10 h-7 rounded-md bg-[#C9A84C] mb-4 flex items-center justify-center">
-              <div className="w-6 h-5 rounded-sm border border-[#a88a3c] grid grid-cols-2 gap-0.5 p-0.5">
-                {[...Array(4)].map((_, i) => (
-                  <div key={i} className="bg-[#a88a3c] rounded-sm" />
-                ))}
-              </div>
+          <div className="relative w-full max-w-[380px] h-52 rounded-2xl p-6 bg-gradient-to-br from-[#0A0A0A] to-[#1C1C1C] border border-[#2A2A2A] shadow-xl overflow-hidden">
+            {/* Background texture lines — decorative */}
+            <div className="absolute inset-0 opacity-5">
+              <div className="absolute top-8 right-0 w-48 h-48 rounded-full border border-white translate-x-16" />
+              <div className="absolute top-16 right-0 w-64 h-64 rounded-full border border-white translate-x-24" />
             </div>
+
+            {/* Chip */}
+            <div className="relative z-10 w-10 h-7 rounded-md bg-[#C9A84C] mb-5 grid grid-cols-2 gap-0.5 p-1">
+              {[...Array(4)].map((_, i) => (
+                <div key={i} className="bg-[#a88a3c] rounded-sm" />
+              ))}
+            </div>
+
             {/* Card number */}
-            <p className="text-lg font-mono tracking-widest mb-4">{displayCard.cardNumber}</p>
+            <p className="relative z-10 text-base font-mono tracking-[0.2em] text-white mb-5">
+              {displayCard.cardNumber}
+            </p>
+
             {/* Bottom row */}
-            <div className="flex justify-between items-end">
+            <div className="relative z-10 flex justify-between items-end">
               <div>
-                <p className="text-xs text-white/50 uppercase tracking-wide">Card Holder</p>
-                <p className="text-sm font-medium">Vaulté User</p>
+                <p className="text-[9px] text-white/40 uppercase tracking-widest mb-0.5">Card Holder</p>
+                <p className="text-sm font-medium text-white">Vaulté User</p>
               </div>
               <div>
-                <p className="text-xs text-white/50 uppercase tracking-wide">Expires</p>
-                <p className="text-sm font-medium">{displayCard.expiryDate}</p>
+                <p className="text-[9px] text-white/40 uppercase tracking-widest mb-0.5">Expires</p>
+                <p className="text-sm font-medium text-white">{displayCard.expiryDate}</p>
               </div>
               <div className="text-right">
-                <p className="text-xs text-white/50 tracking-wide font-bold">VISA</p>
+                <p className="text-base font-bold text-white/60 italic">VISA</p>
               </div>
             </div>
+
             {/* Status badge */}
-            <div className="absolute top-4 right-4">
+            <div className="absolute top-4 right-4 z-10">
               <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
-                displayCard.isActive ? "bg-success/20 text-success" : "bg-red-500/20 text-red-400"
+                displayCard.isActive ? "bg-[#4CAF82]/20 text-[#4CAF82]" : "bg-[#E05252]/20 text-[#E05252]"
               }`}>
                 {displayCard.isActive ? "Active" : "Inactive"}
               </span>
