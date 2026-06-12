@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { accounts, transactions } from "@/lib/schema";
-import { eq, sql } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { generateReference } from "@/lib/utils";
 
 export async function POST(request: Request) {
@@ -85,22 +85,23 @@ export async function POST(request: Request) {
 
     const reference = generateReference();
 
+    // Compute new balances (use same pattern as fund route — JS arithmetic, not sql template)
+    const newSenderBalance = String(senderBalance - transferAmount);
+    const receiverBalance = parseFloat(receiverAccount.balance);
+    const newReceiverBalance = String(receiverBalance + transferAmount);
+
     // Perform the transfer in a transaction
     await db.transaction(async (tx) => {
       // Debit sender
       await tx
         .update(accounts)
-        .set({
-          balance: sql`${accounts.balance} - ${transferAmount.toString()}`,
-        })
+        .set({ balance: newSenderBalance })
         .where(eq(accounts.id, senderAccount.id));
 
       // Credit receiver
       await tx
         .update(accounts)
-        .set({
-          balance: sql`${accounts.balance} + ${transferAmount.toString()}`,
-        })
+        .set({ balance: newReceiverBalance })
         .where(eq(accounts.id, receiverAccount.id));
 
       // Insert debit transaction for sender
@@ -124,16 +125,11 @@ export async function POST(request: Request) {
       });
     });
 
-    // Get updated balance
-    const updatedAccount = await db.query.accounts.findFirst({
-      where: eq(accounts.id, senderAccount.id),
-    });
-
     return NextResponse.json({
       success: true,
       message: "Transfer completed successfully.",
       reference,
-      newBalance: updatedAccount?.balance || senderAccount.balance,
+      newBalance: newSenderBalance,
     });
   } catch (error) {
     console.error("Transfer error:", error);
