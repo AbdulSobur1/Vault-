@@ -109,13 +109,11 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${playfair.variable} ${jetbrainsMono.variable} h-full antialiased`}
+      className={`${inter.variable} ${playfair.variable} ${jetbrainsMono.variable} h-full antialiased dark`}
       suppressHydrationWarning
     >
-      <head>
-        <ThemeScript />
-      </head>
       <body className="min-h-full font-sans bg-bg-base text-text-primary">
+        <ThemeScript />
         <SessionProvider>
           <JsonLd />
           {children}
