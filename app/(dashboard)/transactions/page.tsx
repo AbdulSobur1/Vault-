@@ -25,5 +25,5 @@ export default async function TransactionsPage() {
     balance: a.balance.toString(),
   }));
 
-  return <TransactionsClient accounts={serializedAccounts} />;
+  return <TransactionsClient accounts={serializedAccounts} userName={session.user.name ?? ""} />;
 }

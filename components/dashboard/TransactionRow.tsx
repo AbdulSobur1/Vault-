@@ -1,8 +1,7 @@
 "use client";
 
 import { formatCurrency, formatDate } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
-import { ArrowDownRight, ArrowUpRight } from "lucide-react";
+import { ArrowDownLeft, ArrowUpRight, ChevronRight } from "lucide-react";
 
 interface TransactionRowProps {
   date: Date | string;
@@ -11,6 +10,7 @@ interface TransactionRowProps {
   amount: string;
   type: "credit" | "debit";
   status: "completed" | "pending" | "failed";
+  onClick?: () => void;
 }
 
 export function TransactionRow({
@@ -19,49 +19,50 @@ export function TransactionRow({
   reference,
   amount,
   type,
-  status,
+  onClick,
 }: TransactionRowProps) {
   const isCredit = type === "credit";
 
-  const statusVariant = {
-    completed: "success" as const,
-    pending: "warning" as const,
-    failed: "danger" as const,
-  };
-
   return (
-    <div className="flex items-center justify-between py-3 px-4 hover:bg-bg-surface rounded-lg transition-colors">
-      <div className="flex items-center gap-3">
+    <div
+      onClick={onClick}
+      className="flex items-center justify-between px-4 py-4 rounded-lg cursor-pointer hover:bg-[#1C1C1C] transition-colors group"
+    >
+      {/* Left: icon + description + date */}
+      <div className="flex items-center gap-4">
         <div
-          className={`flex items-center justify-center w-9 h-9 rounded-full ${
-            isCredit ? "bg-success/10" : "bg-danger/10"
+          className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 ${
+            isCredit ? "bg-[#2D6A4F]/20" : "bg-[#E05252]/10"
           }`}
         >
           {isCredit ? (
-            <ArrowUpRight className="h-4 w-4 text-success" />
+            <ArrowDownLeft size={16} className="text-[#4CAF82]" />
           ) : (
-            <ArrowDownRight className="h-4 w-4 text-danger" />
+            <ArrowUpRight size={16} className="text-[#E05252]" />
           )}
         </div>
         <div>
-          <p className="text-sm font-medium">{description || "Transfer"}</p>
-          <p className="text-xs text-text-secondary">{formatDate(date)}</p>
+          <p className="text-sm font-medium text-white">{description || "Transfer"}</p>
+          <p className="text-xs text-[#555250] mt-0.5">{formatDate(date)}</p>
         </div>
       </div>
 
-      <div className="flex items-center gap-3">
+      {/* Right: amount + reference + chevron */}
+      <div className="flex items-center gap-4">
         <div className="text-right">
           <p
-            className={`text-sm font-medium ${
-              isCredit ? "text-success" : "text-danger"
+            className={`text-sm font-semibold ${
+              isCredit ? "text-[#4CAF82]" : "text-[#E05252]"
             }`}
           >
             {isCredit ? "+" : "−"}
             {formatCurrency(parseFloat(amount))}
           </p>
-          <p className="text-xs text-text-secondary font-mono">{reference.slice(0, 8)}...</p>
+          <p className="text-[10px] text-[#555250] font-mono mt-0.5">
+            {reference.slice(0, 12)}...
+          </p>
         </div>
-        <Badge variant={statusVariant[status]}>{status}</Badge>
+        <ChevronRight size={15} className="text-[#2A2A2A] group-hover:text-[#555250] transition-colors" />
       </div>
     </div>
   );

@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { TransactionRow } from "@/components/dashboard/TransactionRow";
+import { TransactionReceipt } from "@/components/dashboard/TransactionReceipt";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -13,16 +14,23 @@ interface Transaction {
   amount: string;
   description: string | null;
   reference: string;
-  type: string;
-  status: string;
+  type: "credit" | "debit";
+  status: "completed" | "pending" | "failed";
   createdAt: string;
+  accountId: string;
+  // Optional receipt enrichment fields
+  accountNumber?: string;
+  accountType?: string;
+  counterpartyName?: string | null;
+  counterpartyAccount?: string | null;
 }
 
 interface TransactionsClientProps {
   accounts: (Omit<Account, "balance"> & { balance: string })[];
+  userName: string;
 }
 
-export function TransactionsClient({ accounts }: TransactionsClientProps) {
+export function TransactionsClient({ accounts, userName }: TransactionsClientProps) {
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -34,6 +42,7 @@ export function TransactionsClient({ accounts }: TransactionsClientProps) {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
   const [totalPages, setTotalPages] = useState(1);
+  const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
 
   const fetchTransactions = useCallback(async () => {
     if (!selectedAccountId) return;
@@ -66,11 +75,24 @@ export function TransactionsClient({ accounts }: TransactionsClientProps) {
     fetchTransactions();
   }, [fetchTransactions]);
 
+  const handleSelectTransaction = async (txn: Transaction) => {
+    setSelectedTransaction(txn); // show sheet immediately with basic data
+
+    // Then enrich with full details
+    try {
+      const res = await fetch(`/api/transactions/${txn.id}`);
+      const full = await res.json();
+      setSelectedTransaction(full); // update with counterparty info
+    } catch {
+      // Sheet already shows basic data — fail silently
+    }
+  };
+
   return (
     <div className="w-full max-w-4xl space-y-6">
       <div>
-        <h1 className="text-2xl font-medium">Transactions</h1>
-        <p className="text-sm text-text-secondary mt-1">View your transaction history</p>
+        <h1 className="text-xl font-semibold text-white">Transactions</h1>
+        <p className="text-sm text-[#8A8682] mt-1">View your transaction history</p>
       </div>
 
       {/* Filters */}
@@ -101,11 +123,11 @@ export function TransactionsClient({ accounts }: TransactionsClientProps) {
       </div>
 
       {/* Transactions List */}
-      <div className="rounded-lg border border-border bg-bg-elevated">
+      <div className="rounded-lg border border-[#2A2A2A] bg-[#111113]">
         {loading ? (
-          <div className="p-8 text-center text-sm text-text-secondary">Loading transactions...</div>
+          <div className="p-8 text-center text-sm text-[#8A8682]">Loading transactions...</div>
         ) : transactions.length > 0 ? (
-          <div className="divide-y divide-border">
+          <div className="divide-y divide-[#2A2A2A]">
             {transactions.map((t) => (
               <TransactionRow
                 key={t.id}
@@ -115,11 +137,12 @@ export function TransactionsClient({ accounts }: TransactionsClientProps) {
                 amount={t.amount}
                 type={t.type as "credit" | "debit"}
                 status={t.status as "completed" | "pending" | "failed"}
+                onClick={() => handleSelectTransaction(t)}
               />
             ))}
           </div>
         ) : (
-          <div className="p-8 text-center text-sm text-text-secondary">No transactions found</div>
+          <div className="p-8 text-center text-sm text-[#8A8682]">No transactions found</div>
         )}
       </div>
 
@@ -133,7 +156,7 @@ export function TransactionsClient({ accounts }: TransactionsClientProps) {
         >
           <ChevronLeft className="h-4 w-4 mr-1" /> Previous
         </Button>
-        <span className="text-sm text-text-secondary">Page {page}</span>
+        <span className="text-sm text-[#8A8682]">Page {page}</span>
         <Button
           variant="outline"
           size="sm"
@@ -143,6 +166,13 @@ export function TransactionsClient({ accounts }: TransactionsClientProps) {
           Next <ChevronRight className="h-4 w-4 ml-1" />
         </Button>
       </div>
+
+      {/* Receipt sheet — rendered outside the list, overlays everything */}
+      <TransactionReceipt
+        transaction={selectedTransaction}
+        userName={userName}
+        onClose={() => setSelectedTransaction(null)}
+      />
     </div>
   );
 }
