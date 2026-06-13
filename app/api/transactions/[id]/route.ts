@@ -4,17 +4,22 @@ import { db } from '@/lib/db';
 import { transactions, accounts, users } from '@/lib/schema';
 import { eq, and, ne } from 'drizzle-orm';
 
-export async function GET(_req: Request, { params }: { params: { id: string } }) {
+export async function GET(
+  _req: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
   const session = await auth();
   if (!session?.user?.id) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
+  const { id } = await params;
+
   // Fetch the transaction
   const [txn] = await db
     .select()
     .from(transactions)
-    .where(eq(transactions.id, params.id));
+    .where(eq(transactions.id, id));
 
   if (!txn) {
     return NextResponse.json({ error: 'Not found' }, { status: 404 });
