@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 
 const navLinks = [
@@ -13,23 +12,21 @@ const navLinks = [
 ];
 
 export function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
+  // Close mobile menu when user scrolls
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
+    const handleScroll = () => {
+      if (mobileOpen) setMobileOpen(false);
+    };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [mobileOpen]);
+
+  const handleLinkClick = () => setMobileOpen(false);
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-[#0A0A0B]/80 backdrop-blur-xl border-b border-[#222220]"
-          : "bg-transparent"
-      }`}
-    >
+    <header className="fixed top-0 left-0 right-0 z-50 bg-[#0A0A0B]/95 backdrop-blur-sm border-b border-[#222220]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
@@ -101,45 +98,36 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Mobile full-screen menu */}
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.2 }}
-            className="md:hidden fixed inset-0 top-16 bg-[#0A0A0B] z-40 flex flex-col items-center justify-center gap-8"
+      {/* Mobile dropdown menu */}
+      {mobileOpen && (
+        <div className="md:hidden absolute top-full left-0 right-0 bg-[#0A0A0B] border-b border-[#222220] flex flex-col items-center gap-6 py-10">
+          {navLinks.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              onClick={handleLinkClick}
+              className="text-lg text-text-secondary hover:text-text-primary transition-colors"
+            >
+              {link.label}
+            </a>
+          ))}
+          <hr className="w-16 border-[#222220]" />
+          <a
+            href="/login"
+            onClick={handleLinkClick}
+            className="text-sm text-text-secondary hover:text-text-primary transition-colors"
           >
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={() => setMobileOpen(false)}
-                className="text-2xl text-text-secondary hover:text-text-primary transition-colors"
-              >
-                {link.label}
-              </Link>
-            ))}
-            <div className="flex flex-col gap-4 mt-4">
-              <Link
-                href="/login"
-                onClick={() => setMobileOpen(false)}
-                className="px-8 py-3 text-center text-text-secondary hover:text-text-primary transition-colors"
-              >
-                Sign In
-              </Link>
-              <Link
-                href="/register"
-                onClick={() => setMobileOpen(false)}
-                className="px-8 py-3 text-center font-medium text-[#0A0A0B] bg-accent-gold hover:bg-[#D4B96A] rounded-full transition-all"
-              >
-                Open Account
-              </Link>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            Sign In
+          </a>
+          <a
+            href="/register"
+            onClick={handleLinkClick}
+            className="h-9 px-6 rounded-md bg-accent-gold text-[#0A0A0B] text-sm font-medium flex items-center"
+          >
+            Open Account
+          </a>
+        </div>
+      )}
     </header>
   );
 }
