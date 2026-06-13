@@ -90,14 +90,14 @@ export function BalanceCard({
       <div className="border-t border-[#2A2A2A] mb-5" />
 
       {/* Action buttons */}
-      <div className="flex items-center gap-3">
-        <Link href="/fund" className="flex-1 sm:flex-none">
-          <button className="w-full sm:w-auto h-9 px-5 rounded-md border border-[#C9A84C] text-[#C9A84C] text-sm font-medium tracking-wide hover:bg-[#C9A84C]/10 transition-colors">
+      <div className="flex flex-wrap items-center gap-3 mt-6">
+        <Link href="/fund">
+          <button className="h-9 px-4 rounded-md border border-[#C9A84C] text-[#C9A84C] text-sm font-medium whitespace-nowrap hover:bg-[#C9A84C]/10 transition-colors">
             Fund Account
           </button>
         </Link>
-        <Link href="/transfer" className="flex-1 sm:flex-none">
-          <button className="w-full sm:w-auto h-9 px-5 rounded-md bg-[#C9A84C] text-[#0A0A0A] text-sm font-medium tracking-wide hover:bg-[#b8973d] transition-colors">
+        <Link href="/transfer">
+          <button className="h-9 px-4 rounded-md bg-[#C9A84C] text-[#0A0A0A] text-sm font-medium whitespace-nowrap hover:bg-[#b8973d] transition-colors">
             Transfer
           </button>
         </Link>

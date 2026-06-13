@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { ExternalLink, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -45,6 +46,7 @@ export default function RegisterPage() {
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [ninVisible, setNinVisible] = useState(false);
 
   const selectedCountry = countries.find(c => c.name === form.nationality) || countries.find(c => c.code === 'NG')!;
 
@@ -149,6 +151,16 @@ export default function RegisterPage() {
           <CardDescription>Create your Vaulté account to get started</CardDescription>
         </CardHeader>
         <CardContent>
+          {/* Trust banner */}
+          <div className="flex items-center gap-2 bg-[#C9A84C]/5 border border-[#C9A84C]/20 rounded-lg px-4 py-3 mb-6">
+            <span className="text-[#C9A84C] shrink-0">🛡️</span>
+            <p className="text-xs text-[#8A8682] leading-relaxed">
+              <span className="text-white font-medium">Your data is safe.</span>{' '}
+              Vaulté uses 256-bit encryption. Regulated under CBN guidelines.{' '}
+              NDIC-insured up to ₦5,000,000.
+            </p>
+          </div>
+
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-2">
@@ -272,11 +284,11 @@ export default function RegisterPage() {
               </select>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
-              <div className="space-y-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="space-y-1.5">
                 <Label htmlFor="phone">Phone</Label>
                 <div className="flex items-stretch border border-border rounded-md focus-within:ring-1 focus-within:ring-accent-gold">
-                  <span className="flex items-center px-3 border-r border-border bg-bg-surface rounded-l-md text-sm text-text-secondary select-none min-w-[64px]">
+                  <span className="flex items-center px-3 border-r border-border rounded-l-md text-sm text-text-secondary select-none whitespace-nowrap min-w-fit">
                     {selectedCountry.dialCode}
                   </span>
                   <input
@@ -285,20 +297,43 @@ export default function RegisterPage() {
                     placeholder="8012345678"
                     value={form.phone}
                     onChange={(e) => updateField("phone", e.target.value)}
-                    className="flex-1 bg-transparent border-0 rounded-r-md px-3 py-2 text-sm focus:outline-none text-text-primary"
+                    className="flex-1 min-w-0 bg-transparent px-3 py-2.5 text-sm text-white placeholder-[#555250] focus:outline-none"
                   />
                 </div>
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="nin">NIN/BVN *</Label>
-                <Input
-                  id="nin"
-                  placeholder="11 digits"
-                  maxLength={11}
-                  value={form.nin}
-                  onChange={(e) => updateField("nin", e.target.value.replace(/\D/g, ""))}
-                  required
-                />
+              <div className="space-y-1.5">
+                <Label htmlFor="nin">
+                  NIN / BVN <span className="text-[#E05252]">*</span>
+                </Label>
+                <div className="relative">
+                  <input
+                    type={ninVisible ? "text" : "password"}
+                    inputMode="numeric"
+                    maxLength={11}
+                    placeholder="11 digits"
+                    value={form.nin}
+                    onChange={(e) => updateField("nin", e.target.value.replace(/\D/g, ""))}
+                    className="w-full bg-transparent border border-border rounded-md px-4 py-2.5 pr-9 text-sm text-white placeholder-[#555250] focus:outline-none focus:ring-1 focus:ring-accent-gold"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setNinVisible(!ninVisible)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#555250] hover:text-white"
+                  >
+                    {ninVisible ? <EyeOff size={15} /> : <Eye size={15} />}
+                  </button>
+                </div>
+                {/* Trust note */}
+                <div className="flex items-start gap-2 mt-1.5">
+                  <span className="text-[#C9A84C] mt-0.5 shrink-0">🔒</span>
+                  <p className="text-[11px] text-[#555250] leading-relaxed">
+                    Required by CBN regulations for identity verification. Your NIN/BVN is encrypted and never shared with third parties.{' '}
+                    <a href="/privacy" target="_blank" rel="noopener noreferrer" className="text-[#C9A84C] hover:underline">
+                      Learn more
+                    </a>
+                  </p>
+                </div>
               </div>
             </div>
 
@@ -322,13 +357,13 @@ export default function RegisterPage() {
               />
               <span className="text-text-secondary">
                 I agree to the{" "}
-                <Link href="/terms" className="text-accent-gold">
-                  Terms & Conditions
-                </Link>{" "}
+                <a href="/terms" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-accent-gold hover:underline">
+                  Terms & Conditions <ExternalLink size={11} />
+                </a>{" "}
                 and{" "}
-                <Link href="/privacy" className="text-accent-gold">
-                  Privacy Policy
-                </Link>
+                <a href="/privacy" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-accent-gold hover:underline">
+                  Privacy Policy <ExternalLink size={11} />
+                </a>
               </span>
             </label>
 

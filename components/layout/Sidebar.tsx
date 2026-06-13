@@ -25,6 +25,8 @@ interface SidebarProps {
   };
 }
 
+import { Receipt } from "lucide-react";
+
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/accounts", label: "Accounts", icon: Wallet },
@@ -33,6 +35,7 @@ const navItems = [
   { href: "/transfer", label: "Transfer", icon: Send },
   { href: "/transactions", label: "Transactions", icon: ArrowLeftRight },
   { href: "/cards", label: "Cards", icon: CreditCard },
+  { href: "/bills", label: "Bills", icon: Receipt },
   { href: "/loans", label: "Loans", icon: Landmark },
   { href: "/settings", label: "Settings", icon: Settings },
 ];
@@ -73,7 +76,7 @@ export function Sidebar({ user }: SidebarProps) {
                 "flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors",
                 isActive
                   ? "bg-bg-surface text-text-primary border-l-2 border-accent-gold"
-                  : "text-text-secondary hover:text-text-primary hover:bg-bg-surface"
+                  : "text-[#8A8682] hover:text-white hover:bg-bg-surface"
               )}
             >
               <Icon className="h-4 w-4 shrink-0" />

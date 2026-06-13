@@ -26,16 +26,14 @@ export default async function SettingsPage() {
       <SettingsClient user={user} />
 
       {/* Sign out section — always visible on settings page */}
-      <div className="border-t border-[#2A2A2A] pt-6 mt-8">
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-sm font-medium text-white">Sign Out</p>
-            <p className="text-xs text-[#8A8682] mt-0.5">
-              Sign out of your Vaulté account on this device
-            </p>
-          </div>
-          <SignOutButton variant="settings" />
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pt-6 mt-8 border-t border-[#2A2A2A]">
+        <div className="min-w-0">
+          <p className="text-sm font-medium text-white">Sign Out</p>
+          <p className="text-xs text-[#8A8682] mt-0.5">
+            Sign out of your Vaulté account on this device
+          </p>
         </div>
+        <SignOutButton variant="settings" />
       </div>
     </div>
   );

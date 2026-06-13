@@ -6,18 +6,16 @@ import { FadeUp } from "@/components/ui/fade-up";
 
 export function Hero() {
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden">
-      {/* Background glow */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/4 w-[800px] h-[800px] rounded-full bg-accent-gold opacity-[0.03] blur-[120px] animate-pulse-glow pointer-events-none" />
+    <section className="relative min-h-screen flex items-center overflow-hidden bg-gradient-to-br from-[#1a1400] via-[#0F0F0F] to-[#0A0A0A]">
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16 w-full">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
           {/* Left: Text content */}
           <div className="relative z-10">
             <FadeUp delay={0.1}>
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#222220] bg-[#111113] text-xs text-text-secondary mb-8">
-                <span className="w-1.5 h-1.5 rounded-full bg-success animate-pulse" />
-                Bank-grade security · 256-bit encryption
+              <div className="inline-flex items-center gap-2 border border-[#C9A84C]/30 rounded-full px-4 py-1.5 mb-6">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#C9A84C] animate-pulse" />
+                <span className="text-xs text-[#C9A84C] font-medium tracking-wide">Global Digital Banking</span>
               </div>
             </FadeUp>
 
@@ -30,15 +28,14 @@ export function Hero() {
             </FadeUp>
 
             <FadeUp delay={0.3}>
-              <p className="text-lg sm:text-xl text-text-secondary leading-relaxed max-w-xl mb-10">
-                Private banking built for the modern era. Instant transfers,
-                multi-currency accounts, and cards that work everywhere — secured
-                by military-grade encryption.
+              <p className="text-white/90 text-base sm:text-lg leading-relaxed max-w-lg mb-10">
+                Vaulté is a digital bank for the world. Send money globally, hold 20+ currencies,
+                convert at live rates, and manage virtual cards — all in one account.
               </p>
             </FadeUp>
 
             <FadeUp delay={0.4}>
-              <div className="flex flex-col sm:flex-row gap-4 mb-12">
+              <div className="flex flex-col sm:flex-row gap-4 mb-8">
                 <Link
                   href="/register"
                   className="group inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-accent-gold text-[#0A0A0B] font-medium rounded-full text-base hover:bg-[#D4B96A] transition-all duration-200"
@@ -56,6 +53,9 @@ export function Hero() {
                   See how it works
                 </Link>
               </div>
+              <p className="text-xs text-[#555250] mt-0">
+                Not just another Nigerian fintech — built for Nigerians going global.
+              </p>
             </FadeUp>
 
             <FadeUp delay={0.5}>
@@ -67,7 +67,7 @@ export function Hero() {
                 ].map((stat) => (
                   <div key={stat.label} className="flex items-center gap-2">
                     <span className="text-sm font-mono text-accent-gold">{stat.value}</span>
-                    <span className="text-sm text-text-tertiary">{stat.label}</span>
+                    <span className="text-sm text-white/80">{stat.label}</span>
                   </div>
                 ))}
               </div>

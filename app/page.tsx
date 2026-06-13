@@ -11,6 +11,8 @@ import { Testimonials } from "@/components/landing/testimonials";
 import { CTASection } from "@/components/landing/cta-section";
 import { Footer } from "@/components/landing/footer";
 
+export const revalidate = 3600;
+
 export default function LandingPage() {
   return (
     <main className="min-h-screen bg-bg-base pt-16 md:pt-20">

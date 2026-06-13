@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/toast";
 import { formatCurrency } from "@/lib/utils";
+import { AmountInput } from "@/components/ui/AmountInput";
 import { ArrowLeftRight, CheckCircle, Loader2, AlertCircle } from "lucide-react";
 import type { Account } from "@/lib/schema";
 
@@ -46,20 +47,7 @@ export function TransferClient({ accounts }: TransferClientProps) {
   const exceedsBalance = transferAmount > balance;
   const isOwnAccount = !!(verifiedAccount && selectedAccount?.accountNumber === verifiedAccount.accountNumber);
 
-  // Amount input validation (FIX 9)
-  const handleAmountKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
-    const allowed = ["Backspace","Delete","Tab","Enter","ArrowLeft","ArrowRight","ArrowUp","ArrowDown","."];
-    if (!allowed.includes(e.key) && !/^\d$/.test(e.key)) {
-      e.preventDefault();
-    }
-  }, []);
-
-  const handleAmountChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = e.target.value;
-    if ((val.match(/\./g) || []).length > 1) return;
-    if (val.includes(".") && val.split(".")[1].length > 2) return;
-    setAmount(val);
-  }, []);
+  // Amount input handler using AmountInput component
 
   // Verify recipient account
   const verifyRecipient = useCallback(async (accountNumber: string) => {
@@ -77,7 +65,7 @@ export function TransferClient({ accounts }: TransferClientProps) {
       const data = await res.json();
 
       if (!res.ok) {
-        setVerifyError(data.error || "Account not found. Check the number and try again.");
+        setVerifyError(data.error || "No Vaulté account found with this number. Please check and try again.");
         setVerifiedAccount(null);
       } else {
         setVerifiedAccount(data);
@@ -278,10 +266,23 @@ export function TransferClient({ accounts }: TransferClientProps) {
                 </div>
               )}
               {verifiedAccount && !verifyError && (
-                <div className="flex items-center gap-1.5 text-xs text-success mt-1">
-                  <CheckCircle className="h-3.5 w-3.5" />
-                  <span className="font-medium">{verifiedAccount.accountName}</span>
-                  <span className="text-text-secondary">— {verifiedAccount.accountType} Account</span>
+                <div className="flex items-center gap-3 mt-2 p-3 bg-[#0F0F0F] rounded-lg border border-[#2D6A4F]/30">
+                  {/* Bank logo placeholder */}
+                  <div className="w-8 h-8 rounded-full bg-[#C9A84C]/10 border border-[#C9A84C]/20 flex items-center justify-center shrink-0">
+                    <span className="text-[10px] font-bold text-[#C9A84C]">V</span>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-white">{verifiedAccount.accountName}</p>
+                    <p className="text-xs text-[#555250]">
+                      Vaulté · {verifiedAccount.accountType === "savings" ? "Savings" : "Current"} Account
+                    </p>
+                  </div>
+                  <div className="ml-auto">
+                    <span className="flex items-center gap-1 text-xs text-[#4CAF82]">
+                      <CheckCircle size={12} />
+                      Verified
+                    </span>
+                  </div>
                 </div>
               )}
               {verifyError && (
@@ -294,17 +295,10 @@ export function TransferClient({ accounts }: TransferClientProps) {
 
             <div className="space-y-2">
               <Label htmlFor="amount">Amount (NGN)</Label>
-              <Input
-                id="amount"
-                type="number"
-                inputMode="decimal"
-                min="0"
-                step="0.01"
-                placeholder="0.00"
+              <AmountInput
                 value={amount}
-                onKeyDown={handleAmountKeyDown}
-                onChange={handleAmountChange}
-                required
+                onChange={setAmount}
+                placeholder="0.00"
               />
               {exceedsBalance && (
                 <p className="flex items-center gap-1 text-xs text-red-500 mt-1">

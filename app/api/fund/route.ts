@@ -33,6 +33,12 @@ export async function POST(request: Request) {
       );
     }
 
+    // Calculate fee
+    const FUNDING_FEE_RATE = 0.015;
+    const FUNDING_FEE_CAP = 2000;
+    const fee = Math.min(fundAmount * FUNDING_FEE_RATE, FUNDING_FEE_CAP);
+    const netCredit = fundAmount - fee;
+
     // Verify account belongs to user
     const account = await db.query.accounts.findFirst({
       where: and(eq(accounts.id, accountId), eq(accounts.userId, session.user.id)),
@@ -52,18 +58,28 @@ export async function POST(request: Request) {
       await tx
         .update(accounts)
         .set({
-          balance: String(parseFloat(account.balance) + fundAmount),
+          balance: String(parseFloat(account.balance) + netCredit),
         })
         .where(eq(accounts.id, account.id));
 
-      await tx.insert(transactions).values({
-        accountId: account.id,
-        type: "credit",
-        amount: fundAmount.toString(),
-        description: "Account funding - simulated top-up",
-        reference,
-        status: "completed",
-      });
+      await tx.insert(transactions).values([
+        {
+          accountId: account.id,
+          type: "credit",
+          amount: fundAmount.toString(),
+          description: "Account funding",
+          reference,
+          status: "completed",
+        },
+        {
+          accountId: account.id,
+          type: "debit",
+          amount: fee.toString(),
+          description: "Processing fee",
+          reference: `${reference}-FEE`,
+          status: "completed",
+        },
+      ]);
     });
 
     const updatedAccount = await db.query.accounts.findFirst({

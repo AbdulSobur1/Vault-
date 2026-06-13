@@ -6,6 +6,7 @@ import { Loader2, ArrowLeft, CheckCircle, AlertCircle, Download } from "lucide-r
 import { SUPPORTED_CURRENCIES, formatCurrency, getCurrency } from "@/lib/currencies";
 import { countries } from "@/lib/countries";
 import { useToast } from "@/components/ui/toast";
+import { AmountInput } from "@/components/ui/AmountInput";
 
 export default function InternationalTransferPage() {
   const router = useRouter();
@@ -293,15 +294,11 @@ export default function InternationalTransferPage() {
               <span className="text-lg leading-none">{fromFlag}</span>
               <span className="font-medium">{fromCurrency}</span>
             </div>
-            <input
-              type="number"
-              inputMode="decimal"
-              min="0"
-              step="0.01"
-              placeholder="0.00"
+            <AmountInput
               value={fromAmount}
-              onChange={(e) => setFromAmount(e.target.value)}
-              className="flex-1 bg-[#1C1C1C] border border-[#2A2A2A] rounded-md px-4 py-2.5 text-sm text-white placeholder-[#555250] focus:outline-none focus:border-[#C9A84C]"
+              onChange={setFromAmount}
+              placeholder="0.00"
+              className="flex-1"
             />
           </div>
           {exceedsBalance && (

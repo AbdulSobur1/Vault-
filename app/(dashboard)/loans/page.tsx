@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { Landmark, Briefcase, Home, CheckCircle, Clock, XCircle, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { AmountInput } from "@/components/ui/AmountInput";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -61,19 +61,6 @@ export default function LoansPage() {
     : amount && parsedAmount < 10000
     ? "Minimum loan amount is ₦10,000"
     : "";
-
-  const amountPattern = {
-    onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => {
-      const allowed = ["Backspace","Delete","Tab","Enter","ArrowLeft","ArrowRight","ArrowUp","ArrowDown","."];
-      if (!allowed.includes(e.key) && !/^\d$/.test(e.key)) e.preventDefault();
-    },
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
-      const val = e.target.value;
-      if ((val.match(/\./g) || []).length > 1) return;
-      if (val.includes(".") && val.split(".")[1].length > 2) return;
-      setAmount(val);
-    },
-  };
 
   const statusIcon: Record<string, typeof CheckCircle> = {
     pending: Clock,
@@ -254,17 +241,10 @@ export default function LoansPage() {
 
             <div className="space-y-2">
               <Label htmlFor="amount">Amount (NGN)</Label>
-              <Input
-                id="amount"
-                type="number"
-                inputMode="decimal"
-                min="10000"
-                step="0.01"
-                placeholder="10000"
+              <AmountInput
                 value={amount}
-                onKeyDown={amountPattern.onKeyDown}
-                onChange={amountPattern.onChange}
-                required
+                onChange={setAmount}
+                placeholder="10000"
               />
               {amountError && <p className="text-xs text-red-500">{amountError}</p>}
               {!amountError && parsedAmount >= 10000 && (

@@ -38,7 +38,7 @@ export function SignOutButton({ variant = "settings" }: SignOutButtonProps) {
           </button>
         ) : (
           // Settings page: outlined danger button
-          <button className="h-9 px-4 rounded-md border border-[#E05252]/40 text-[#E05252] text-sm font-medium hover:bg-[#E05252]/10 hover:border-[#E05252] transition-colors">
+          <button className="shrink-0 h-9 px-5 rounded-md border border-[#E05252]/40 text-[#E05252] text-sm font-medium whitespace-nowrap hover:bg-[#E05252]/10 hover:border-[#E05252] transition-colors">
             Sign Out
           </button>
         )}

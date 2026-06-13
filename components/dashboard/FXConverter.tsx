@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { ArrowLeftRight, Loader2 } from "lucide-react";
 import { SUPPORTED_CURRENCIES, formatCurrency } from "@/lib/currencies";
 import { useToast } from "@/components/ui/toast";
+import { AmountInput } from "@/components/ui/AmountInput";
 
 export function FXConverter() {
   const [fromCurrency, setFromCurrency] = useState("USD");
@@ -85,7 +86,7 @@ export function FXConverter() {
   };
 
   return (
-    <div className="rounded-xl border border-[#2A2A2A] bg-[#161616] p-6 space-y-5">
+    <div className="rounded-xl border border-[#2A2A2A] bg-[#161616] p-6 space-y-4">
       <h2 className="text-sm font-medium text-[#8A8682] uppercase tracking-wider">Currency Converter</h2>
 
       {/* From */}
@@ -106,26 +107,26 @@ export function FXConverter() {
               </option>
             ))}
           </select>
-          <input
-            type="number"
-            inputMode="decimal"
-            min="0"
-            step="0.01"
-            placeholder="0.00"
+          <AmountInput
             value={fromAmount}
-            onChange={(e) => setFromAmount(e.target.value)}
-            className="flex-1 bg-[#1C1C1C] border border-[#2A2A2A] rounded-md px-4 py-2.5 text-sm text-white placeholder-[#555250] focus:outline-none focus:border-[#C9A84C]"
+            onChange={setFromAmount}
+            placeholder="0.00"
+            className="flex-1"
           />
         </div>
       </div>
 
       {/* Swap button */}
-      <div className="flex items-center justify-center">
+      <div className="relative flex items-center justify-center my-1">
+        {/* Horizontal line */}
+        <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 border-t border-[#2A2A2A]" />
+        {/* Swap button sits on the line */}
         <button
           onClick={handleSwap}
-          className="w-9 h-9 rounded-full border border-[#2A2A2A] bg-[#1C1C1C] flex items-center justify-center text-[#8A8682] hover:text-[#C9A84C] hover:border-[#C9A84C]/50 transition-colors"
+          type="button"
+          className="relative z-10 w-8 h-8 rounded-full border border-[#2A2A2A] bg-[#161616] flex items-center justify-center text-[#8A8682] hover:text-[#C9A84C] hover:border-[#C9A84C]/50 transition-colors"
         >
-          <ArrowLeftRight size={15} />
+          <ArrowLeftRight size={14} />
         </button>
       </div>
 

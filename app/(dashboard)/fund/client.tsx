@@ -8,9 +8,18 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { useToast } from "@/components/ui/toast";
 import { formatCurrency } from "@/lib/utils";
+import { AmountInput } from "@/components/ui/AmountInput";
 import { Wallet, CheckCircle, Banknote, CreditCard as CreditCardIcon } from "lucide-react";
 
 import type { Account } from "@/lib/schema";
+
+const FUNDING_FEE_RATE = 0.015; // 1.5%
+const FUNDING_FEE_CAP = 2000; // ₦2,000 cap
+
+const calculateFee = (amount: number) => {
+  const fee = Math.min(amount * FUNDING_FEE_RATE, FUNDING_FEE_CAP);
+  return { fee, totalDeducted: fee, amountCredited: amount - fee };
+};
 
 export function FundClient({ accounts }: { accounts: (Omit<Account, "balance"> & { balance: string })[] }) {
   const { toast } = useToast();
@@ -23,21 +32,7 @@ export function FundClient({ accounts }: { accounts: (Omit<Account, "balance"> &
 
   const selectedAccount = accounts.find((a) => a.id === accountId);
   const fundAmount = parseFloat(amount) || 0;
-
-  const amountPattern = {
-    onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => {
-      const allowed = ["Backspace","Delete","Tab","Enter","ArrowLeft","ArrowRight","ArrowUp","ArrowDown","."];
-      if (!allowed.includes(e.key) && !/^\d$/.test(e.key)) {
-        e.preventDefault();
-      }
-    },
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
-      const val = e.target.value;
-      if ((val.match(/\./g) || []).length > 1) return;
-      if (val.includes(".") && val.split(".")[1].length > 2) return;
-      setAmount(val);
-    },
-  };
+  const feeBreakdown = fundAmount > 0 ? calculateFee(fundAmount) : null;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -86,6 +81,10 @@ export function FundClient({ accounts }: { accounts: (Omit<Account, "balance"> &
   };
 
   if (success) {
+    const grossAmount = fundAmount;
+    const finalFee = feeBreakdown?.fee || 0;
+    const creditedAmount = feeBreakdown?.amountCredited || grossAmount;
+
     return (
       <div className="max-w-lg mx-auto mt-12">
         <Card className="text-center">
@@ -94,9 +93,20 @@ export function FundClient({ accounts }: { accounts: (Omit<Account, "balance"> &
               <CheckCircle className="h-8 w-8 text-success" />
             </div>
             <h2 className="text-xl font-medium mb-2">Account Funded</h2>
-            <p className="text-sm text-text-secondary mb-2">
-              {formatCurrency(fundAmount)} has been added to your account.
-            </p>
+            <div className="bg-[#0F0F0F] rounded-lg p-4 space-y-2 text-sm text-left mb-6 mx-auto max-w-xs">
+              <div className="flex justify-between">
+                <span className="text-[#555250]">Amount entered</span>
+                <span className="text-white">{formatCurrency(grossAmount)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-[#555250]">Processing fee</span>
+                <span className="text-[#E05252]">− {formatCurrency(finalFee)}</span>
+              </div>
+              <div className="border-t border-[#2A2A2A] pt-2 flex justify-between font-medium">
+                <span className="text-[#555250]">Credited</span>
+                <span className="text-[#4CAF82]">{formatCurrency(creditedAmount)}</span>
+              </div>
+            </div>
             <p className="text-sm text-text-secondary mb-6">
               New Balance: <span className="font-medium text-text-primary">{formatCurrency(parseFloat(success.newBalance))}</span>
             </p>
@@ -153,17 +163,10 @@ export function FundClient({ accounts }: { accounts: (Omit<Account, "balance"> &
 
             <div className="space-y-2">
               <Label htmlFor="amount">Amount (NGN)</Label>
-              <Input
-                id="amount"
-                type="number"
-                inputMode="decimal"
-                min="0"
-                step="0.01"
-                placeholder="0.00"
+              <AmountInput
                 value={amount}
-                onKeyDown={amountPattern.onKeyDown}
-                onChange={amountPattern.onChange}
-                required
+                onChange={setAmount}
+                placeholder="0.00"
               />
             </div>
 
@@ -222,6 +225,24 @@ export function FundClient({ accounts }: { accounts: (Omit<Account, "balance"> &
                 <p className="text-xs text-text-secondary italic">
                   Simulated — no real payment will be processed.
                 </p>
+              </div>
+            )}
+
+            {/* Fee breakdown */}
+            {feeBreakdown && fundAmount > 0 && (
+              <div className="bg-[#0F0F0F] rounded-lg p-4 space-y-2 text-xs mt-1">
+                <div className="flex justify-between text-[#555250]">
+                  <span>Amount entered</span>
+                  <span className="text-white">{formatCurrency(fundAmount)}</span>
+                </div>
+                <div className="flex justify-between text-[#555250]">
+                  <span>Processing fee (1.5%, max ₦2,000)</span>
+                  <span className="text-[#E05252]">− {formatCurrency(feeBreakdown.fee)}</span>
+                </div>
+                <div className="border-t border-[#2A2A2A] pt-2 flex justify-between font-medium">
+                  <span className="text-[#555250]">You will receive</span>
+                  <span className="text-[#4CAF82]">{formatCurrency(feeBreakdown.amountCredited)}</span>
+                </div>
               </div>
             )}
 

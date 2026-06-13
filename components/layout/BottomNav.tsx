@@ -7,15 +7,15 @@ import {
   ArrowLeftRight,
   CreditCard,
   Globe,
-  Settings,
+  Receipt,
 } from "lucide-react";
 
 const tabs = [
   { href: "/dashboard", label: "Home", icon: LayoutDashboard },
   { href: "/wallets", label: "Wallets", icon: Globe },
   { href: "/transactions", label: "Transactions", icon: ArrowLeftRight },
+  { href: "/bills", label: "Bills", icon: Receipt },
   { href: "/cards", label: "Cards", icon: CreditCard },
-  { href: "/settings", label: "Settings", icon: Settings },
 ];
 
 export function BottomNav() {
