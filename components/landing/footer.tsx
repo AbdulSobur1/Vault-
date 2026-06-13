@@ -4,19 +4,19 @@ const footerColumns = [
   {
     title: "Product",
     links: [
-      { label: "Features", href: "#features" },
-      { label: "Security", href: "#security" },
-      { label: "Cards", href: "#cards" },
-      { label: "Pricing", href: "#pricing" },
+      { label: "Features", href: "/#features" },
+      { label: "Security", href: "/#security" },
+      { label: "Cards", href: "/#cards" },
+      { label: "Pricing", href: "/#pricing" },
     ],
   },
   {
     title: "Company",
     links: [
-      { label: "About", href: "#" },
-      { label: "Blog", href: "#" },
-      { label: "Careers", href: "#" },
-      { label: "Press", href: "#" },
+      { label: "About", href: "/about" },
+      { label: "Blog", href: "/blog" },
+      { label: "Careers", href: "/careers" },
+      { label: "Press", href: "/press" },
     ],
   },
   {
@@ -24,8 +24,8 @@ const footerColumns = [
     links: [
       { label: "Terms", href: "/terms" },
       { label: "Privacy", href: "/privacy" },
-      { label: "Cookie Policy", href: "#" },
-      { label: "NDIC Notice", href: "#" },
+      { label: "Cookie Policy", href: "/cookie-policy" },
+      { label: "NDIC Notice", href: "/ndic-notice" },
     ],
   },
 ];

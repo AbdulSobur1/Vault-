@@ -322,11 +322,11 @@ export default function RegisterPage() {
               />
               <span className="text-text-secondary">
                 I agree to the{" "}
-                <Link href="#" className="text-accent-gold">
+                <Link href="/terms" className="text-accent-gold">
                   Terms & Conditions
                 </Link>{" "}
                 and{" "}
-                <Link href="#" className="text-accent-gold">
+                <Link href="/privacy" className="text-accent-gold">
                   Privacy Policy
                 </Link>
               </span>
