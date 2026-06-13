@@ -1,15 +1,11 @@
-import { neon } from "@neondatabase/serverless";
-import { drizzle } from "drizzle-orm/neon-http";
-import * as schema from "./schema";
+import { Pool, neonConfig } from '@neondatabase/serverless';
+import { drizzle } from 'drizzle-orm/neon-serverless';
+import ws from 'ws';
+import * as schema from './schema';
 
-const databaseUrl = process.env.DATABASE_URL;
+// Required for WebSocket support in serverless/Node environments
+neonConfig.webSocketConstructor = ws;
 
-if (!databaseUrl) {
-  throw new Error(
-    "DATABASE_URL is not set. Please add it to your environment variables " +
-    "(locally in .env.local, on Vercel via Project Settings > Environment Variables)."
-  );
-}
+const pool = new Pool({ connectionString: process.env.DATABASE_URL! });
 
-const sql = neon(databaseUrl);
-export const db = drizzle(sql, { schema });
+export const db = drizzle(pool, { schema });
