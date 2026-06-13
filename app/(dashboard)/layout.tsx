@@ -22,19 +22,18 @@ export default async function DashboardLayout({
   };
 
   return (
-    <div className="min-h-screen bg-bg-base flex">
+    <div className="flex h-screen bg-bg-base overflow-hidden">
       {/* Desktop sidebar — hidden on mobile */}
       <Sidebar user={user} />
 
-      <div className="flex-1 flex flex-col min-w-0">
+      {/* Right side — takes remaining width, must not overflow */}
+      <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
         {/* Header — no hamburger */}
         <Header user={user} />
 
         {/* Page content — bottom padding on mobile to clear bottom nav */}
-        <main className="flex-1 p-4 lg:p-8 lg:pl-60 pb-20 lg:pb-8 overflow-x-hidden overflow-y-auto min-w-0">
-          <div className="max-w-5xl mx-auto">
-            {children}
-          </div>
+        <main className="flex-1 overflow-y-auto overflow-x-hidden p-4 lg:p-8 pb-20 lg:pb-8">
+          {children}
         </main>
       </div>
 

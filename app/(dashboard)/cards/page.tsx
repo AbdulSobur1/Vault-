@@ -29,7 +29,7 @@ export default async function CardsPage() {
   }));
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className="w-full max-w-2xl space-y-6">
       <CardsClient cards={userCards} userId={session.user.id} accounts={serializedAccounts} />
     </div>
   );

@@ -181,7 +181,7 @@ export default function LoansPage() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="w-full max-w-2xl space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-medium">Loans</h1>
@@ -342,7 +342,7 @@ export default function LoansPage() {
             <Loader2 className="h-6 w-6 animate-spin text-text-secondary" />
           </div>
         ) : applications.length > 0 ? (
-          <div className="rounded-lg border border-border overflow-hidden">
+          <div className="rounded-lg border border-border overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="bg-bg-surface border-b border-border">

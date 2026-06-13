@@ -48,7 +48,7 @@ export function Sidebar({ user }: SidebarProps) {
     : "U";
 
   return (
-    <aside className="hidden lg:flex lg:flex-col lg:w-60 lg:fixed lg:inset-y-0 bg-bg-surface border-r border-border z-30">
+    <aside className="w-60 shrink-0 hidden lg:flex flex-col h-screen sticky top-0 border-r border-border bg-bg-surface">
       {/* Logo */}
       <div className="flex items-center h-16 px-6 border-b border-border">
         <Link href="/dashboard" className="flex items-center gap-2">            <span className="text-xl font-medium tracking-tight">

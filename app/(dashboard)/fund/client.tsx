@@ -117,7 +117,7 @@ export function FundClient({ accounts }: { accounts: (Omit<Account, "balance"> &
   }
 
   return (
-    <div className="space-y-8">
+    <div className="w-full max-w-2xl space-y-6">
       <div>
         <h1 className="text-2xl font-medium">Fund Account</h1>
         <p className="text-sm text-text-secondary mt-1">Add money to your Vaulté account</p>

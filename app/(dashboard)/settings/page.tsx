@@ -22,7 +22,7 @@ export default async function SettingsPage() {
   }
 
   return (
-    <>
+    <div className="w-full max-w-2xl space-y-6">
       <SettingsClient user={user} />
 
       {/* Sign out section — always visible on settings page */}
@@ -37,6 +37,6 @@ export default async function SettingsPage() {
           <SignOutButton variant="settings" />
         </div>
       </div>
-    </>
+    </div>
   );
 }

@@ -31,7 +31,7 @@ export function DashboardClient({
   const primaryAccount = accounts.find((a) => a.id === primaryAccountId) || accounts[0];
 
   return (
-    <div className="space-y-8">
+    <div className="w-full max-w-4xl space-y-6">
       {/* Greeting */}
       <div>
         <h1 className="text-2xl font-medium">

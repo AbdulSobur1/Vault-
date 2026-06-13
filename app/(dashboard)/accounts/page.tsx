@@ -21,7 +21,7 @@ export default async function AccountsPage() {
 
   if (userAccounts.length === 0) {
     return (
-      <div className="space-y-8">
+      <div className="w-full max-w-4xl space-y-6">
         <div>
           <h1 className="text-2xl font-medium">Accounts</h1>
           <p className="text-sm text-text-secondary mt-1">Manage your bank accounts</p>
@@ -36,7 +36,7 @@ export default async function AccountsPage() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="w-full max-w-4xl space-y-6">
       <div>
         <h1 className="text-2xl font-medium">Accounts</h1>
         <p className="text-sm text-text-secondary mt-1">Manage your bank accounts</p>

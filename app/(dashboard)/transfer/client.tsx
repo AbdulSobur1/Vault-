@@ -225,7 +225,7 @@ export function TransferClient({ accounts }: TransferClientProps) {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="w-full max-w-2xl space-y-6">
       <div>
         <h1 className="text-2xl font-medium">Transfer</h1>
         <p className="text-sm text-text-secondary mt-1">Send money to another Vaulté account</p>
