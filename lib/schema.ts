@@ -7,6 +7,7 @@ import {
   numeric,
   date,
   integer,
+  unique,
 } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
@@ -36,7 +37,9 @@ export const accounts = pgTable("accounts", {
   balance: numeric("balance", { precision: 15, scale: 2 }).default("0.00").notNull(),
   currency: text("currency").default("NGN").notNull(),
   isActive: boolean("is_active").default(true).notNull(),
+  isPrimary: boolean("is_primary").notNull().default(false),
   createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
 export const transactions = pgTable("transactions", {
@@ -97,6 +100,59 @@ export const loanApplications = pgTable("loan_applications", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+export const currencyWallets = pgTable("currency_wallets", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id")
+    .references(() => users.id, { onDelete: "cascade" })
+    .notNull(),
+  currency: text("currency").notNull(),
+  balance: numeric("balance", { precision: 20, scale: 8 }).notNull().default("0"),
+  isActive: boolean("is_active").notNull().default(true),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+}, (table) => ({
+  uniqueUserCurrency: unique().on(table.userId, table.currency),
+}));
+
+export const fxTransactions = pgTable("fx_transactions", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id")
+    .references(() => users.id)
+    .notNull(),
+  fromCurrency: text("from_currency").notNull(),
+  toCurrency: text("to_currency").notNull(),
+  fromAmount: numeric("from_amount", { precision: 20, scale: 8 }).notNull(),
+  toAmount: numeric("to_amount", { precision: 20, scale: 8 }).notNull(),
+  exchangeRate: numeric("exchange_rate", { precision: 20, scale: 8 }).notNull(),
+  spreadRate: numeric("spread_rate", { precision: 5, scale: 4 }).notNull().default("0.015"),
+  spreadAmount: numeric("spread_amount", { precision: 20, scale: 8 }).notNull(),
+  reference: text("reference").unique().notNull(),
+  status: text("status").notNull().default("completed"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const internationalTransfers = pgTable("international_transfers", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id")
+    .references(() => users.id)
+    .notNull(),
+  fromCurrency: text("from_currency").notNull(),
+  toCurrency: text("to_currency").notNull(),
+  fromAmount: numeric("from_amount", { precision: 20, scale: 8 }).notNull(),
+  toAmount: numeric("to_amount", { precision: 20, scale: 8 }).notNull(),
+  exchangeRate: numeric("exchange_rate", { precision: 20, scale: 8 }).notNull(),
+  recipientName: text("recipient_name").notNull(),
+  recipientBank: text("recipient_bank"),
+  recipientAccount: text("recipient_account").notNull(),
+  recipientCountry: text("recipient_country").notNull(),
+  swiftCode: text("swift_code"),
+  routingNumber: text("routing_number"),
+  narration: text("narration"),
+  reference: text("reference").unique().notNull(),
+  status: text("status").notNull().default("processing"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
 // Types for TypeScript
 export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
@@ -108,3 +164,9 @@ export type Card = typeof cards.$inferSelect;
 export type NewCard = typeof cards.$inferInsert;
 export type LoanApplication = typeof loanApplications.$inferSelect;
 export type NewLoanApplication = typeof loanApplications.$inferInsert;
+export type CurrencyWallet = typeof currencyWallets.$inferSelect;
+export type NewCurrencyWallet = typeof currencyWallets.$inferInsert;
+export type FxTransaction = typeof fxTransactions.$inferSelect;
+export type NewFxTransaction = typeof fxTransactions.$inferInsert;
+export type InternationalTransfer = typeof internationalTransfers.$inferSelect;
+export type NewInternationalTransfer = typeof internationalTransfers.$inferInsert;

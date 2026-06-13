@@ -6,15 +6,15 @@ import {
   LayoutDashboard,
   ArrowLeftRight,
   CreditCard,
-  Landmark,
+  Globe,
   Settings,
 } from "lucide-react";
 
 const tabs = [
   { href: "/dashboard", label: "Home", icon: LayoutDashboard },
+  { href: "/wallets", label: "Wallets", icon: Globe },
   { href: "/transactions", label: "Transactions", icon: ArrowLeftRight },
   { href: "/cards", label: "Cards", icon: CreditCard },
-  { href: "/loans", label: "Loans", icon: Landmark },
   { href: "/settings", label: "Settings", icon: Settings },
 ];
 

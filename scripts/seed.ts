@@ -1,5 +1,5 @@
 import { db } from "../lib/db";
-import { users, accounts, transactions } from "../lib/schema";
+import { users, accounts, transactions, currencyWallets } from "../lib/schema";
 import { hash } from "bcryptjs";
 import { generateAccountNumber, generateReference } from "../lib/utils";
 
@@ -80,6 +80,16 @@ async function seed() {
   }
 
   console.log("✓ Created 10 sample transactions");
+
+  // Create multi-currency wallets for demo user
+  await db.insert(currencyWallets).values([
+    { userId: user.id, currency: "NGN", balance: "250000" },
+    { userId: user.id, currency: "USD", balance: "500" },
+    { userId: user.id, currency: "GBP", balance: "200" },
+    { userId: user.id, currency: "EUR", balance: "350" },
+  ]);
+
+  console.log("✓ Created multi-currency wallets (NGN, USD, GBP, EUR)");
   console.log("\n✅ Seed completed successfully!");
   console.log("\n📧 Demo login: demo@vaulte.app");
   console.log("🔑 Password: Demo1234!");

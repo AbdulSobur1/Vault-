@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Copy, Check } from "lucide-react";
+import { Copy, Check, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 interface BalanceCardProps {
@@ -76,6 +76,15 @@ export function BalanceCard({
           )}
         </button>
       </div>
+
+      {/* View all wallets link */}
+      <Link
+        href="/wallets"
+        className="flex items-center gap-1.5 text-xs text-[#C9A84C] hover:text-[#b8973d] transition-colors mb-4 group"
+      >
+        View all wallets
+        <ArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform" />
+      </Link>
 
       {/* Divider */}
       <div className="border-t border-[#2A2A2A] mb-5" />
