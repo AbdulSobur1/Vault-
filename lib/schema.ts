@@ -57,20 +57,47 @@ export const transactions = pgTable("transactions", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
-export const cards = pgTable("cards", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  userId: uuid("user_id")
-    .references(() => users.id)
-    .notNull(),
-  accountId: uuid("account_id")
-    .references(() => accounts.id)
-    .notNull(),
-  cardNumber: text("card_number").notNull(),
-  cardType: text("card_type", { enum: ["virtual", "physical"] }).notNull(),
-  expiryDate: text("expiry_date").notNull(),
-  cvv: text("cvv").notNull(),
-  isActive: boolean("is_active").default(true).notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
+export const cards = pgTable('cards', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  userId: uuid('user_id').references(() => users.id, { onDelete: 'cascade' }).notNull(),
+
+  // Sudo Africa IDs
+  sudoCustomerId: text('sudo_customer_id'),
+  sudoCardId: text('sudo_card_id').unique(),
+
+  // Card details (non-sensitive — safe to store)
+  last4: text('last4'),
+  expiryMonth: text('expiry_month'),
+  expiryYear: text('expiry_year'),
+  cardType: text('card_type').notNull().default('virtual'),
+  currency: text('currency').notNull().default('USD'),
+  brand: text('brand').default('Visa'),
+
+  // Status
+  status: text('status').notNull().default('active'),
+  isActive: boolean('is_active').notNull().default(true),
+
+  // Spending controls
+  spendingLimitAmount: numeric('spending_limit_amount', { precision: 15, scale: 2 }),
+  spendingLimitInterval: text('spending_limit_interval'),
+
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+});
+
+// Card transactions from Sudo webhooks
+export const cardTransactions = pgTable('card_transactions', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  userId: uuid('user_id').references(() => users.id).notNull(),
+  sudoCardId: text('sudo_card_id').notNull(),
+  sudoTransactionId: text('sudo_transaction_id').unique(),
+  type: text('type').notNull(),
+  amount: numeric('amount', { precision: 15, scale: 2 }).notNull(),
+  currency: text('currency').notNull(),
+  merchant: text('merchant'),
+  category: text('category'),
+  status: text('status').notNull(),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
 });
 
 export const sessions = pgTable("sessions", {
@@ -260,6 +287,10 @@ export type CryptoTransaction = typeof cryptoTransactions.$inferSelect;
 export type NewCryptoTransaction = typeof cryptoTransactions.$inferInsert;
 export type CryptoFxTransaction = typeof cryptoFxTransactions.$inferSelect;
 export type NewCryptoFxTransaction = typeof cryptoFxTransactions.$inferInsert;
+
+// Card types
+export type CardTransaction = typeof cardTransactions.$inferSelect;
+export type NewCardTransaction = typeof cardTransactions.$inferInsert;
 
 export type CryptoPriceCache = typeof cryptoPriceCache.$inferSelect;
 export type NewCryptoPriceCache = typeof cryptoPriceCache.$inferInsert;
