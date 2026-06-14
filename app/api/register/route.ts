@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
 import { hash } from "bcryptjs";
 import { db } from "@/lib/db";
-import { users, accounts, currencyWallets } from "@/lib/schema";
+import { users, accounts, currencyWallets, cryptoWallets } from "@/lib/schema";
 import { eq, or } from "drizzle-orm";
 import { generateAccountNumber } from "@/lib/utils";
+import { generateWallet } from "@/lib/crypto-wallet";
 
 export async function POST(request: Request) {
   try {
@@ -98,6 +99,20 @@ export async function POST(request: Request) {
       { userId: newUser.id, currency: "NGN", balance: "0" },
       { userId: newUser.id, currency: "USD", balance: "0" },
     ]);
+
+    // Auto-generate crypto wallet
+    try {
+      const { address, encryptedPrivateKey, encryptedMnemonic } = generateWallet();
+      await db.insert(cryptoWallets).values({
+        userId: newUser.id,
+        address,
+        encryptedPrivateKey,
+        encryptedMnemonic,
+        network: 'ethereum',
+      });
+    } catch (cryptoError) {
+      console.warn('Crypto wallet generation skipped:', cryptoError);
+    }
 
     return NextResponse.json(
       { success: true, message: "Registration successful" },

@@ -19,6 +19,8 @@ const pageTitles: Record<string, string> = {
   "/cards": "Cards",
   "/loans": "Loans",
   "/settings": "Settings",
+  "/crypto": "Crypto",
+  "/wallets": "Wallets",
 };
 
 export function Header({ user }: HeaderProps) {

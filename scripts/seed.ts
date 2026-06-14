@@ -1,7 +1,8 @@
 import { db } from "../lib/db";
-import { users, accounts, transactions, currencyWallets } from "../lib/schema";
+import { users, accounts, transactions, currencyWallets, cryptoWallets } from "../lib/schema";
 import { hash } from "bcryptjs";
 import { generateAccountNumber, generateReference } from "../lib/utils";
+import { generateWallet } from "../lib/crypto-wallet";
 
 async function seed() {
   console.log("🌱 Seeding Vaulté database...");
@@ -90,6 +91,18 @@ async function seed() {
   ]);
 
   console.log("✓ Created multi-currency wallets (NGN, USD, GBP, EUR)");
+
+  // Generate crypto wallet for demo user
+  const { address, encryptedPrivateKey, encryptedMnemonic } = generateWallet();
+  await db.insert(cryptoWallets).values({
+    userId: user.id,
+    address,
+    encryptedPrivateKey,
+    encryptedMnemonic,
+    network: 'ethereum',
+  });
+
+  console.log(`✓ Created crypto wallet: ${address}`);
   console.log("\n✅ Seed completed successfully!");
   console.log("\n📧 Demo login: demo@vaulte.app");
   console.log("🔑 Password: Demo1234!");

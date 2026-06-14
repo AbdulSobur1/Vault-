@@ -4,6 +4,7 @@ import "./globals.css";
 import { SessionProvider } from "@/components/SessionProvider";
 import { Toaster } from "@/components/ui/toaster";
 import { JsonLd } from "@/components/landing/json-ld";
+import { Web3Provider } from "@/components/providers/Web3Provider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -113,9 +114,11 @@ export default function RootLayout({
     >
       <body className="min-h-full font-sans bg-[#0F0F0F] text-white antialiased">
         <SessionProvider>
-          <JsonLd />
-          {children}
-          <Toaster />
+          <Web3Provider>
+            <JsonLd />
+            {children}
+            <Toaster />
+          </Web3Provider>
         </SessionProvider>
       </body>
     </html>

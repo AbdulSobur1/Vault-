@@ -5,17 +5,17 @@ import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
   ArrowLeftRight,
-  CreditCard,
   Globe,
-  Receipt,
+  Coins,
+  Settings,
 } from "lucide-react";
 
 const tabs = [
   { href: "/dashboard", label: "Home", icon: LayoutDashboard },
   { href: "/wallets", label: "Wallets", icon: Globe },
+  { href: "/crypto", label: "Crypto", icon: Coins },
   { href: "/transactions", label: "Transactions", icon: ArrowLeftRight },
-  { href: "/bills", label: "Bills", icon: Receipt },
-  { href: "/cards", label: "Cards", icon: CreditCard },
+  { href: "/settings", label: "Settings", icon: Settings },
 ];
 
 export function BottomNav() {
