@@ -13,6 +13,7 @@ import {
   Send,
   Globe,
   Coins,
+  ArrowUpDown,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -33,6 +34,7 @@ const navItems = [
   { href: "/accounts", label: "Accounts", icon: Wallet },
   { href: "/wallets", label: "Wallets", icon: Globe },
   { href: "/crypto", label: "Crypto", icon: Coins },
+  { href: "/crypto/convert", label: "  Convert", icon: ArrowUpDown },
   { href: "/fund", label: "Fund Account", icon: PlusCircle },
   { href: "/transfer", label: "Transfer", icon: Send },
   { href: "/transactions", label: "Transactions", icon: ArrowLeftRight },

@@ -5,7 +5,8 @@ import { CryptoWalletCard } from '@/components/crypto/CryptoWalletCard';
 import { CryptoBalanceRow } from '@/components/crypto/CryptoBalanceRow';
 import { SendCryptoSheet } from '@/components/crypto/SendCryptoSheet';
 import { ConnectExternalWallet } from '@/components/crypto/ConnectExternalWallet';
-import { RefreshCw } from 'lucide-react';
+import { RefreshCw, ArrowUpDown } from 'lucide-react';
+import Link from 'next/link';
 
 export default function CryptoPage() {
   const [data, setData]               = useState<any>(null);
@@ -46,12 +47,20 @@ export default function CryptoPage() {
           <h1 className="text-xl font-semibold text-white">Crypto</h1>
           <p className="text-sm text-[#8A8682] mt-1">Manage your digital assets</p>
         </div>
-        <button
-          onClick={handleRefresh}
-          className={`p-2 rounded-md text-[#8A8682] hover:text-white hover:bg-[#1C1C1C] transition-colors ${refreshing ? 'animate-spin' : ''}`}
-        >
-          <RefreshCw size={16} />
-        </button>
+        <div className="flex items-center gap-3">
+          <Link href="/crypto/convert">
+            <button className="flex items-center gap-2 h-9 px-4 rounded-md bg-[#C9A84C] text-[#0A0A0A] text-sm font-medium hover:bg-[#b8973d] transition-colors">
+              <ArrowUpDown size={14} />
+              Buy / Sell
+            </button>
+          </Link>
+          <button
+            onClick={handleRefresh}
+            className={`p-2 rounded-md text-[#8A8682] hover:text-white hover:bg-[#1C1C1C] transition-colors ${refreshing ? 'animate-spin' : ''}`}
+          >
+            <RefreshCw size={16} />
+          </button>
+        </div>
       </div>
 
       {loading ? (

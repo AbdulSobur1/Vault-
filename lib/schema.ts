@@ -198,6 +198,30 @@ export const cryptoTransactions = pgTable('crypto_transactions', {
   confirmedAt: timestamp('confirmed_at'),
 });
 
+// Crypto ↔ fiat conversion history
+export const cryptoFxTransactions = pgTable('crypto_fx_transactions', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  userId: uuid('user_id').references(() => users.id).notNull(),
+  direction: text('direction').notNull(), // 'buy' | 'sell'
+
+  // Buy: fiat → crypto | Sell: crypto → fiat
+  fiatCurrency: text('fiat_currency').notNull(),
+  cryptoCoin: text('crypto_coin').notNull(),
+
+  fiatAmount: numeric('fiat_amount', { precision: 20, scale: 8 }).notNull(),
+  cryptoAmount: numeric('crypto_amount', { precision: 20, scale: 8 }).notNull(),
+
+  pricePerCoinUSD: numeric('price_per_coin_usd', { precision: 20, scale: 8 }).notNull(),
+  pricePerCoinFiat: numeric('price_per_coin_fiat', { precision: 20, scale: 8 }).notNull(),
+
+  spreadRate: numeric('spread_rate', { precision: 5, scale: 4 }).notNull().default('0.015'),
+  spreadAmountFiat: numeric('spread_amount_fiat', { precision: 20, scale: 8 }).notNull(),
+
+  reference: text('reference').unique().notNull(),
+  status: text('status').notNull().default('completed'),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+});
+
 // Crypto price cache
 export const cryptoPriceCache = pgTable('crypto_price_cache', {
   id: uuid('id').primaryKey().defaultRandom(),
@@ -234,5 +258,8 @@ export type ConnectedWallet = typeof connectedWallets.$inferSelect;
 export type NewConnectedWallet = typeof connectedWallets.$inferInsert;
 export type CryptoTransaction = typeof cryptoTransactions.$inferSelect;
 export type NewCryptoTransaction = typeof cryptoTransactions.$inferInsert;
+export type CryptoFxTransaction = typeof cryptoFxTransactions.$inferSelect;
+export type NewCryptoFxTransaction = typeof cryptoFxTransactions.$inferInsert;
+
 export type CryptoPriceCache = typeof cryptoPriceCache.$inferSelect;
 export type NewCryptoPriceCache = typeof cryptoPriceCache.$inferInsert;
