@@ -1,26 +1,51 @@
 # Vaulté — Where wealth is kept.
 
-A modern, minimalist private banking web application built with Next.js 16, Auth.js, Neon (PostgreSQL), Drizzle ORM, and Tailwind CSS.
+A modern, minimalist private banking application built with Next.js 16, featuring multi-currency accounts, crypto wallet support, real-time FX conversion, and a sleek dark-mode interface.
 
-## Tech Stack
+[![Next.js](https://img.shields.io/badge/Next.js-16-black)](https://nextjs.org)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)](https://www.typescriptlang.org)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-38bdf8)](https://tailwindcss.com)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Neon-31648c)](https://neon.tech)
 
-- **Framework:** Next.js 16 (App Router, TypeScript)
-- **Auth:** Auth.js v5 (next-auth@beta) — credentials provider
-- **Database:** Neon (PostgreSQL, serverless)
-- **ORM:** Drizzle ORM
-- **Styling:** Tailwind CSS v4
-- **UI:** shadcn/ui (custom components)
-- **Icons:** Lucide React
-- **Password:** bcryptjs
+---
+
+## Overview
+
+Vaulté is a full-stack digital banking platform that combines traditional banking features with modern Web3 capabilities. Built with a focus on security, performance, and user experience.
+
+### Core Features
+
+- **Dashboard** — Real-time balance overview, transaction history, and monthly spending analytics
+- **Multi-Currency Accounts** — Hold and manage NGN, USD, GBP, EUR, and more
+- **Crypto Wallets** — Non-custodial Ethereum wallet for ETH, USDT, and USDC with on-chain sends
+- **FX Conversion** — Live exchange rates with built-in currency conversion
+- **Transfers** — Send money between accounts and internationally
+- **Cards** — Virtual and physical card management
+- **Transaction History** — Full searchable history with downloadable PDF receipts
+- **External Wallet Connect** — Connect MetaMask, WalletConnect, or Coinbase Wallet
+
+### Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Framework | Next.js 16 (App Router, TypeScript) |
+| Authentication | Auth.js v5 (Credentials provider) |
+| Database | Neon PostgreSQL (serverless) |
+| ORM | Drizzle ORM |
+| Styling | Tailwind CSS v4 |
+| UI Components | shadcn/ui + Radix Primitives |
+| Web3 | wagmi, viem, RainbowKit, ethers.js |
+| Charts | Recharts |
+| Icons | Lucide React |
 
 ## Getting Started
 
 ### Prerequisites
 
 - Node.js 18+
-- A [Neon](https://neon.tech) PostgreSQL database (or any PostgreSQL instance)
+- PostgreSQL database (Neon recommended)
 
-### 1. Clone & Install
+### Installation
 
 ```bash
 git clone <repository-url>
@@ -28,95 +53,83 @@ cd vaulte
 npm install
 ```
 
-### 2. Environment Variables
+### Environment Setup
 
-Copy `.env.local` and fill in your values:
+Configure the following environment variables:
 
-```bash
-DATABASE_URL=postgresql://<user>:<password>@<host>/<database>?sslmode=require
-AUTH_SECRET=<a-random-32-char-secret>
-AUTH_URL=http://localhost:3000
-NEXTAUTH_URL=http://localhost:3000
-```
+| Variable | Description |
+|----------|-------------|
+| `DATABASE_URL` | PostgreSQL connection string |
+| `AUTH_SECRET` | Random 32-char secret for session encryption |
+| `WALLET_ENCRYPTION_KEY` | Encryption key for crypto wallet private keys |
+| `ALCHEMY_API_KEY` | Alchemy RPC API key for blockchain reads |
+| `NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID` | WalletConnect Cloud project ID |
 
-Generate a secure random secret:
-```bash
-openssl rand -base64 32
-```
+### Database
 
-### 3. Push Database Schema
+Push the schema and seed demo data:
 
 ```bash
 npx drizzle-kit push
-```
-
-### 4. Seed Demo Data
-
-```bash
 npx tsx scripts/seed.ts
 ```
 
-This creates a demo user:
-- **Email:** demo@vaulte.app
-- **Password:** Demo1234!
-- **Account balance:** ₦250,000.00
-- **Sample transactions:** 10
-
-### 5. Run Development Server
+### Development
 
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Open [http://localhost:3000](http://localhost:3000) to view the application.
 
-## Project Structure
+## Architecture
 
 ```
-/app
-  /(auth)           → Login, Register, Forgot Password pages
-  /(dashboard)      → Dashboard, Accounts, Transfer, Transactions, Cards, Loans, Settings
-  /api              → API routes (auth, register, transfer, transactions)
-/components
-  /ui               → shadcn/ui base components
-  /layout           → Sidebar, Header, MobileNav
-  /dashboard        → BalanceCard, TransactionRow, QuickActions, SpendingChart
-/lib
-  schema.ts         → Drizzle ORM schema
-  db.ts             → Database client
-  auth.ts           → Auth.js configuration
-  utils.ts          → Utility functions
-/scripts
-  seed.ts           → Database seed script
-/drizzle            → Migration files (generated)
+app/
+├── (auth)/           → Login, Register, Forgot Password
+├── (dashboard)/      → Dashboard, Wallets, Crypto, Transfer, Cards
+├── api/              → Route handlers (REST endpoints)
+components/
+├── ui/               → Base UI primitives (shadcn/ui)
+├── layout/           → Sidebar, Header, Bottom navigation
+├── dashboard/        → Balance cards, transaction rows, receipts
+├── crypto/           → Wallet card, balance rows, send sheet
+├── landing/          → Marketing page sections
+lib/
+├── auth.ts           → Auth.js configuration
+├── schema.ts         → Drizzle ORM schema definitions
+├── db.ts             → Database client
+├── crypto-wallet.ts  → Wallet generation, encryption, on-chain operations
+├── crypto-prices.ts  → CoinGecko price integration
+└── utils.ts          → Utility functions
 ```
 
-## Features
+## Design Philosophy
 
-- 🔐 **Authentication** — Email/password login with Auth.js v5
-- 💰 **Dashboard** — Balance overview, recent transactions, monthly stats
-- 💳 **Accounts** — View and manage bank accounts
-- 💸 **Transfers** — Send money to other accounts
-- 📊 **Transactions** — Full transaction history with filters
-- 💳 **Cards** — Virtual and physical card management
-- 🏦 **Loans** — Loan product information
-- ⚙️ **Settings** — Profile, security, and preferences
-- 🌓 **Dark Mode** — Full dark mode support
-
-## Design
-
-- **Primary:** #0A0A0A (near black)
-- **Accent:** #C9A84C (muted gold)
-- **Surface:** #F9F8F6 (warm off-white)
-- **Font:** Inter (Google Fonts)
-- Clean, minimalist private banking aesthetic
+- **Dark-first UI** — Every screen built for a dark environment with gold accents
+- **Minimalist** — Clean layouts with deliberate whitespace and typographic hierarchy
+- **Responsive** — Desktop sidebar layout collapses to bottom tab navigation on mobile
+- **Performance** — Server components by default, streaming, and optimized bundle splits
 
 ## Deployment
 
-Deploy to Vercel:
+Deploy to Vercel with zero configuration:
 
 ```bash
 npm run build
 ```
 
-Set the same environment variables (`DATABASE_URL`, `AUTH_SECRET`, `AUTH_URL`) in your Vercel project settings.
+Set all required environment variables in your Vercel project dashboard.
+
+## Security
+
+- Passwords hashed with bcryptjs (12 rounds)
+- Crypto private keys encrypted with AES via crypto-js
+- Never expose private keys or mnemonics to the client
+- Server-side wallet address validation on all transactions
+- Rate-limited send endpoints (5 transactions per hour per user)
+- Session management via Auth.js with JWT strategy
+
+## License
+
+Private — All rights reserved. Vaulté Financial Technologies Ltd.
