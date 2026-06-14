@@ -3,7 +3,6 @@ import QRCode from "qrcode";
 import bcrypt from "bcryptjs";
 import { randomBytes } from "crypto";
 import { encrypt, decrypt } from "./crypto-wallet";
-import Twilio from "twilio";
 
 // ── TOTP ─────────────────────────────────────────────────────────────
 
@@ -53,14 +52,16 @@ export async function verifyOTPHash(otp: string, hash: string): Promise<boolean>
 }
 
 export async function sendSMSOTP(phoneNumber: string, otp: string): Promise<void> {
-  const client = Twilio(
-    process.env.TWILIO_ACCOUNT_SID,
-    process.env.TWILIO_AUTH_TOKEN
+  const twilio = (await import('twilio')).default;
+
+  const client = twilio(
+    process.env.TWILIO_ACCOUNT_SID!,
+    process.env.TWILIO_AUTH_TOKEN!
   );
 
   await client.messages.create({
     body: `Your Vaulté verification code is: ${otp}. Valid for 10 minutes. Do not share this code.`,
-    from: process.env.TWILIO_PHONE_NUMBER,
+    from: process.env.TWILIO_PHONE_NUMBER!,
     to: phoneNumber,
   });
 }
