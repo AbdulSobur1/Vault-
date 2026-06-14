@@ -25,6 +25,46 @@ export const users = pgTable("users", {
   nin: text("nin"), // nullable — filled in later during KYC
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow(),
+
+  // 2FA
+  twoFactorEnabled: boolean("two_factor_enabled").notNull().default(false),
+  twoFactorMethod: text("two_factor_method"), // 'totp' | 'sms' | null
+  twoFactorSetupComplete: boolean("two_factor_setup_complete").notNull().default(false),
+
+  // TOTP
+  totpSecret: text("totp_secret"), // encrypted TOTP secret
+
+  // SMS
+  phoneVerified: boolean("phone_verified").notNull().default(false),
+});
+
+export const twoFactorBackupCodes = pgTable("two_factor_backup_codes", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id").references(() => users.id, { onDelete: "cascade" }).notNull(),
+  codeHash: text("code_hash").notNull(),
+  used: boolean("used").notNull().default(false),
+  usedAt: timestamp("used_at"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const smsOtpCodes = pgTable("sms_otp_codes", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id").references(() => users.id, { onDelete: "cascade" }).notNull(),
+  codeHash: text("code_hash").notNull(),
+  expiresAt: timestamp("expires_at").notNull(),
+  used: boolean("used").notNull().default(false),
+  attempts: integer("attempts").notNull().default(0),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const twoFactorSessions = pgTable("two_factor_sessions", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id").references(() => users.id, { onDelete: "cascade" }).notNull(),
+  sessionToken: text("session_token").unique().notNull(),
+  verifiedAt: timestamp("verified_at").defaultNow().notNull(),
+  expiresAt: timestamp("expires_at").notNull(),
+  ipAddress: text("ip_address"),
+  userAgent: text("user_agent"),
 });
 
 export const accounts = pgTable("accounts", {

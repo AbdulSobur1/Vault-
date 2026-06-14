@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -7,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/components/ui/toast";
 import { User, Shield, Settings as SettingsIcon } from "lucide-react";
+import Link from "next/link";
 import type { User as UserType } from "@/lib/schema";
 
 interface SettingsClientProps {
@@ -15,6 +17,9 @@ interface SettingsClientProps {
 
 export function SettingsClient({ user }: SettingsClientProps) {
   const { toast } = useToast();
+
+  const userTwoFactorMethod = user.twoFactorMethod;
+  const twoFactorEnabled = user.twoFactorEnabled;
 
   const handleChangePassword = (e: React.FormEvent) => {
     e.preventDefault();
@@ -109,25 +114,88 @@ export function SettingsClient({ user }: SettingsClientProps) {
         <TabsContent value="security">
           <Card>
             <CardHeader>
-              <CardTitle>Change Password</CardTitle>
-              <CardDescription>Update your account password</CardDescription>
+              <CardTitle>Security Settings</CardTitle>
+              <CardDescription>Manage your account security</CardDescription>
             </CardHeader>
-            <CardContent>
-              <form onSubmit={handleChangePassword} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="currentPassword">Current Password</Label>
-                  <Input id="currentPassword" type="password" placeholder="Enter current password" />
+            <CardContent className="space-y-6">
+              {/* Change Password */}
+              <div>
+                <h3 className="text-sm font-medium mb-3">Change Password</h3>
+                <form onSubmit={handleChangePassword} className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="currentPassword">Current Password</Label>
+                    <Input id="currentPassword" type="password" placeholder="Enter current password" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="newPassword">New Password</Label>
+                    <Input id="newPassword" type="password" placeholder="Enter new password" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="confirmPassword">Confirm New Password</Label>
+                    <Input id="confirmPassword" type="password" placeholder="Confirm new password" />
+                  </div>
+                  <Button type="submit" variant="accent">Update Password</Button>
+                </form>
+              </div>
+
+              {/* Separator */}
+              <div className="border-t border-[#2A2A2A]" />
+
+              {/* 2FA Status */}
+              <div className="space-y-4">
+                <h3 className="text-sm font-medium">Two-Factor Authentication</h3>
+
+                <div className="flex items-center justify-between py-4 border-b border-[#2A2A2A]">
+                  <div>
+                    <p className="text-sm font-medium text-white">Status</p>
+                    <p className="text-xs text-[#8A8682] mt-0.5">
+                      {twoFactorEnabled
+                        ? `Currently using: ${userTwoFactorMethod === "totp" ? "Authenticator App" : "SMS"}`
+                        : "Not enabled"}
+                    </p>
+                  </div>
+                  {twoFactorEnabled ? (
+                    <span className="flex items-center gap-1.5 text-xs text-[#4CAF82] bg-[#2D6A4F]/20 px-3 py-1 rounded-full">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#4CAF82]" />
+                      Active
+                    </span>
+                  ) : (
+                    <Link href="/setup-2fa">
+                      <Button variant="accent" size="sm">Enable 2FA</Button>
+                    </Link>
+                  )}
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="newPassword">New Password</Label>
-                  <Input id="newPassword" type="password" placeholder="Enter new password" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="confirmPassword">Confirm New Password</Label>
-                  <Input id="confirmPassword" type="password" placeholder="Confirm new password" />
-                </div>
-                <Button type="submit" variant="accent">Update Password</Button>
-              </form>
+
+                {twoFactorEnabled && (
+                  <>
+                    {/* Switch method */}
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm text-white">Switch 2FA method</p>
+                        <p className="text-xs text-[#555250] mt-0.5">Change between authenticator app and SMS</p>
+                      </div>
+                      <Link href="/setup-2fa">
+                        <button className="h-8 px-3 rounded-md border border-[#2A2A2A] text-xs text-[#8A8682] hover:text-white hover:bg-[#1C1C1C] transition-colors">
+                          Change method
+                        </button>
+                      </Link>
+                    </div>
+
+                    {/* Regenerate backup codes */}
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm text-white">Backup codes</p>
+                        <p className="text-xs text-[#555250] mt-0.5">Generate new backup codes (invalidates old ones)</p>
+                      </div>
+                      <Link href="/setup-2fa">
+                        <button className="h-8 px-3 rounded-md border border-[#2A2A2A] text-xs text-[#8A8682] hover:text-white hover:bg-[#1C1C1C] transition-colors">
+                          Regenerate
+                        </button>
+                      </Link>
+                    </div>
+                  </>
+                )}
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
