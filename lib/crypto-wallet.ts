@@ -1,9 +1,13 @@
 import { ethers } from 'ethers';
 import CryptoJS from 'crypto-js';
 
-const ENCRYPTION_KEY = process.env.WALLET_ENCRYPTION_KEY!;
-
-if (!ENCRYPTION_KEY) throw new Error('WALLET_ENCRYPTION_KEY not set');
+function getEncryptionKey(): string {
+  const key = process.env.WALLET_ENCRYPTION_KEY;
+  if (!key) {
+    throw new Error('WALLET_ENCRYPTION_KEY not set');
+  }
+  return key;
+}
 
 const VALID_NETWORKS = ['mainnet', 'sepolia'] as const;
 export type CryptoNetwork = (typeof VALID_NETWORKS)[number];
@@ -17,11 +21,11 @@ export function parseNetwork(network?: string): CryptoNetwork {
 }
 
 export function encrypt(text: string): string {
-  return CryptoJS.AES.encrypt(text, ENCRYPTION_KEY).toString();
+  return CryptoJS.AES.encrypt(text, getEncryptionKey()).toString();
 }
 
 export function decrypt(ciphertext: string): string {
-  const bytes = CryptoJS.AES.decrypt(ciphertext, ENCRYPTION_KEY);
+  const bytes = CryptoJS.AES.decrypt(ciphertext, getEncryptionKey());
   return bytes.toString(CryptoJS.enc.Utf8);
 }
 
