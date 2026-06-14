@@ -3,6 +3,13 @@
 import { useRef, useState } from 'react';
 import { X, Download, Copy, Check, ArrowDownLeft, ArrowUpRight, CheckCircle2, Clock, XCircle } from 'lucide-react';
 
+interface PartyInfo {
+  name: string;
+  accountNumber: string;
+  accountType: string;
+  bank: string;
+}
+
 interface Transaction {
   id: string;
   type: 'credit' | 'debit';
@@ -12,11 +19,12 @@ interface Transaction {
   status: 'completed' | 'pending' | 'failed';
   createdAt: Date | string;
   accountId: string;
-  // Additional fields fetched for receipt:
   accountNumber?: string;
   accountType?: string;
   counterpartyName?: string | null;
   counterpartyAccount?: string | null;
+  sender?: PartyInfo | null;
+  recipient?: PartyInfo | null;
 }
 
 interface TransactionReceiptProps {
@@ -63,7 +71,6 @@ export function TransactionReceipt({ transaction, userName, onClose }: Transacti
   };
 
   const handleDownloadPDF = async () => {
-    // Dynamically import html2pdf to avoid SSR issues
     const html2pdf = (await import('html2pdf.js')).default;
     const element = receiptRef.current;
     if (!element) return;
@@ -94,9 +101,17 @@ export function TransactionReceipt({ transaction, userName, onClose }: Transacti
       />
 
       {/* Sheet — slides from right on desktop, from bottom on mobile */}
-      <div className="fixed right-0 top-0 bottom-0 z-50 w-full max-w-md bg-[#111111] border-l border-[#2A2A2A] flex flex-col shadow-2xl
-                      sm:translate-x-0 animate-in slide-in-from-right duration-300
-                      max-sm:top-auto max-sm:right-0 max-sm:left-0 max-sm:bottom-0 max-sm:max-w-full max-sm:rounded-t-2xl max-sm:border-l-0 max-sm:border-t max-sm:border-[#2A2A2A]">
+      <div className="
+        fixed z-50 bg-[#111111] border-[#2A2A2A] flex flex-col shadow-2xl
+
+        /* Desktop: right side panel */
+        lg:right-0 lg:top-0 lg:bottom-0 lg:w-full lg:max-w-md lg:border-l
+
+        /* Mobile: bottom sheet with safe area support */
+        max-lg:left-0 max-lg:right-0 max-lg:bottom-0
+        max-lg:rounded-t-2xl max-lg:border-t
+        max-lg:max-h-[92dvh]
+      ">
 
         {/* Sheet header */}
         <div className="flex items-center justify-between px-6 py-5 border-b border-[#2A2A2A] shrink-0">
@@ -113,7 +128,7 @@ export function TransactionReceipt({ transaction, userName, onClose }: Transacti
         </div>
 
         {/* Scrollable receipt body */}
-        <div className="flex-1 overflow-y-auto p-6">
+        <div className="flex-1 overflow-y-auto p-6 pb-safe">
           <div ref={receiptRef} className="bg-[#161616] rounded-xl border border-[#2A2A2A] overflow-hidden">
 
             {/* Receipt header — amount hero */}
@@ -150,7 +165,7 @@ export function TransactionReceipt({ transaction, userName, onClose }: Transacti
             {/* Receipt details */}
             <div className="px-6 py-6 space-y-0 divide-y divide-[#2A2A2A]">
 
-              {/* Date & Time */}
+              {/* 1. Date & Time */}
               <div className="flex justify-between items-start py-4">
                 <span className="text-xs text-[#555250] uppercase tracking-wider">Date & Time</span>
                 <span className="text-sm text-white text-right max-w-[55%] leading-relaxed">
@@ -158,7 +173,7 @@ export function TransactionReceipt({ transaction, userName, onClose }: Transacti
                 </span>
               </div>
 
-              {/* Description */}
+              {/* 2. Description */}
               <div className="flex justify-between items-start py-4">
                 <span className="text-xs text-[#555250] uppercase tracking-wider">Description</span>
                 <span className="text-sm text-white text-right max-w-[55%]">
@@ -166,43 +181,54 @@ export function TransactionReceipt({ transaction, userName, onClose }: Transacti
                 </span>
               </div>
 
-              {/* From/To account */}
-              {transaction.accountNumber && (
+              {/* 3. Sender */}
+              {transaction.sender && (
                 <div className="flex justify-between items-start py-4">
-                  <span className="text-xs text-[#555250] uppercase tracking-wider">
-                    {isCredit ? 'To Account' : 'From Account'}
-                  </span>
+                  <span className="text-xs text-[#555250] uppercase tracking-wider shrink-0 mr-4">Sender</span>
                   <div className="text-right">
-                    <p className="text-sm text-white font-mono">{transaction.accountNumber}</p>
-                    {transaction.accountType && (
-                      <p className="text-xs text-[#555250] mt-0.5 capitalize">{transaction.accountType} Account</p>
-                    )}
+                    <p className="text-sm text-white font-medium">{transaction.sender.name}</p>
+                    <p className="text-xs text-[#555250] font-mono mt-0.5">{transaction.sender.accountNumber}</p>
+                    <p className="text-xs text-[#555250] mt-0.5 capitalize">
+                      {transaction.sender.bank} · {transaction.sender.accountType} Account
+                    </p>
                   </div>
                 </div>
               )}
 
-              {/* Counterparty */}
-              {transaction.counterpartyName && (
+              {/* 4. Recipient */}
+              {transaction.recipient && (
                 <div className="flex justify-between items-start py-4">
-                  <span className="text-xs text-[#555250] uppercase tracking-wider">
-                    {isCredit ? 'Sender' : 'Recipient'}
-                  </span>
+                  <span className="text-xs text-[#555250] uppercase tracking-wider shrink-0 mr-4">Recipient</span>
                   <div className="text-right">
-                    <p className="text-sm text-white">{transaction.counterpartyName}</p>
-                    {transaction.counterpartyAccount && (
-                      <p className="text-xs text-[#555250] font-mono mt-0.5">{transaction.counterpartyAccount}</p>
-                    )}
+                    <p className="text-sm text-white font-medium">{transaction.recipient.name}</p>
+                    <p className="text-xs text-[#555250] font-mono mt-0.5">{transaction.recipient.accountNumber}</p>
+                    <p className="text-xs text-[#555250] mt-0.5 capitalize">
+                      {transaction.recipient.bank} · {transaction.recipient.accountType} Account
+                    </p>
                   </div>
                 </div>
               )}
 
-              {/* Transaction type */}
+              {/* Fallback account when no sender/recipient (funding, fees, etc.) */}
+              {!transaction.sender && !transaction.recipient && (
+                <div className="flex justify-between items-start py-4">
+                  <span className="text-xs text-[#555250] uppercase tracking-wider">Account</span>
+                  <div className="text-right">
+                    <p className="text-sm text-white">{transaction.accountNumber}</p>
+                    <p className="text-xs text-[#555250] capitalize mt-0.5">
+                      Vaulté · {transaction.accountType} Account
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {/* 5. Type */}
               <div className="flex justify-between items-center py-4">
                 <span className="text-xs text-[#555250] uppercase tracking-wider">Type</span>
                 <span className="text-sm text-white capitalize">{transaction.type}</span>
               </div>
 
-              {/* Reference */}
+              {/* 6. Reference */}
               <div className="flex justify-between items-center py-4">
                 <span className="text-xs text-[#555250] uppercase tracking-wider">Reference</span>
                 <div className="flex items-center gap-2">
@@ -220,7 +246,7 @@ export function TransactionReceipt({ transaction, userName, onClose }: Transacti
                 </div>
               </div>
 
-              {/* Transaction ID */}
+              {/* 7. Transaction ID */}
               <div className="flex justify-between items-center py-4">
                 <span className="text-xs text-[#555250] uppercase tracking-wider">Transaction ID</span>
                 <span className="text-xs text-[#555250] font-mono">{transaction.id.slice(0, 16)}...</span>

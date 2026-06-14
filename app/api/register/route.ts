@@ -2,27 +2,19 @@ import { NextResponse } from "next/server";
 import { hash } from "bcryptjs";
 import { db } from "@/lib/db";
 import { users, accounts, currencyWallets, cryptoWallets } from "@/lib/schema";
-import { eq, or } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { generateAccountNumber } from "@/lib/utils";
 import { generateWallet } from "@/lib/crypto-wallet";
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { surname, firstname, middlename, email, password, phone, dob, gender, nationality, address, nin } = body;
+    const { surname, firstname, middlename, email, password, phone, dob, gender, nationality, address } = body;
 
     // Validate required fields
-    if (!surname || !firstname || !email || !password || !nin) {
+    if (!surname || !firstname || !email || !password) {
       return NextResponse.json(
-        { success: false, message: "Surname, first name, email, password, and NIN are required." },
-        { status: 400 }
-      );
-    }
-
-    // Validate NIN length
-    if (nin.length !== 11) {
-      return NextResponse.json(
-        { success: false, message: "NIN must be exactly 11 characters." },
+        { success: false, message: "Surname, first name, email, and password are required." },
         { status: 400 }
       );
     }
@@ -51,15 +43,14 @@ export async function POST(request: Request) {
       );
     }
 
-    // Check for duplicate email or NIN
+    // Check for duplicate email
     const existingUser = await db.query.users.findFirst({
-      where: or(eq(users.email, email), eq(users.nin, nin)),
+      where: eq(users.email, email),
     });
 
     if (existingUser) {
-      const field = existingUser.email === email ? "Email" : "NIN";
       return NextResponse.json(
-        { success: false, message: `${field} is already registered.` },
+        { success: false, message: "Email is already registered." },
         { status: 409 }
       );
     }
@@ -81,7 +72,6 @@ export async function POST(request: Request) {
         gender: gender || null,
         nationality: nationality || null,
         address: address || null,
-        nin,
       })
       .returning();
 

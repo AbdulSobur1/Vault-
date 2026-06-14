@@ -22,7 +22,7 @@ export const users = pgTable("users", {
   gender: text("gender"),
   nationality: text("nationality"),
   address: text("address"),
-  nin: text("nin").unique(),
+  nin: text("nin"), // nullable — filled in later during KYC
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });

@@ -22,7 +22,7 @@ export default async function DashboardLayout({
   };
 
   return (
-    <div className="flex h-screen bg-bg-base overflow-hidden">
+    <div className="flex h-screen bg-[#0F0F0F] overflow-hidden">
       {/* Desktop sidebar — hidden on mobile */}
       <Sidebar user={user} />
 
@@ -32,7 +32,8 @@ export default async function DashboardLayout({
         <Header user={user} />
 
         {/* Page content — bottom padding on mobile to clear bottom nav */}
-        <main className="flex-1 overflow-y-auto overflow-x-hidden p-4 lg:p-8 pb-20 lg:pb-8">
+        {/* pt-14 on mobile clears the fixed/sticky header area; pt-0 on desktop (header in flow) */}
+        <main className="flex-1 overflow-y-auto overflow-x-hidden pt-14 lg:pt-0 p-4 lg:p-8 pb-24 lg:pb-8">
           {children}
         </main>
       </div>

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { ExternalLink, Eye, EyeOff } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -39,14 +39,12 @@ export default function RegisterPage() {
     gender: "",
     nationality: "Nigeria",
     phone: "",
-    nin: "",
     address: "",
     terms: false,
   });
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [ninVisible, setNinVisible] = useState(false);
 
   const selectedCountry = countries.find(c => c.name === form.nationality) || countries.find(c => c.code === 'NG')!;
 
@@ -74,17 +72,14 @@ export default function RegisterPage() {
   };
 
   const validate = (): string | null => {
-    if (!form.surname || !form.firstname || !form.email || !form.password || !form.nin) {
-      return "Surname, first name, email, password, and NIN are required.";
+    if (!form.surname || !form.firstname || !form.email || !form.password) {
+      return "Surname, first name, email, and password are required.";
     }
     if (form.password.length < 6) {
       return "Password must be at least 6 characters.";
     }
     if (form.password !== form.confirmPassword) {
       return "Passwords do not match.";
-    }
-    if (form.nin.length !== 11 || !/^\d+$/.test(form.nin)) {
-      return "NIN must be exactly 11 digits.";
     }
     if (!form.terms) {
       return "You must agree to the terms and conditions.";
@@ -108,7 +103,6 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
-      // Prepend dial code to phone number before sending
       const phoneWithCode = form.phone ? `${selectedCountry.dialCode}${form.phone}` : "";
 
       const res = await fetch("/api/register", {
@@ -143,7 +137,8 @@ export default function RegisterPage() {
     <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-bg-base">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <Link href="/" className="inline-block mb-4">              <span className="text-2xl font-medium tracking-tight">
+          <Link href="/" className="inline-block mb-4">
+            <span className="text-2xl font-medium tracking-tight">
               Vault<span className="text-accent-gold">é</span>
             </span>
           </Link>
@@ -242,29 +237,28 @@ export default function RegisterPage() {
               </div>
               <div className="space-y-2">
                 <Label>Gender</Label>
-                <div className="flex gap-4 pt-1">
-                  <label className="flex items-center gap-2 text-sm">
-                    <input
-                      type="radio"
-                      name="gender"
-                      value="male"
-                      checked={form.gender === "male"}
-                      onChange={(e) => updateField("gender", e.target.value)}
-                      className="text-accent-gold focus:ring-accent-gold"
-                    />
-                    Male
-                  </label>
-                  <label className="flex items-center gap-2 text-sm">
-                    <input
-                      type="radio"
-                      name="gender"
-                      value="female"
-                      checked={form.gender === "female"}
-                      onChange={(e) => updateField("gender", e.target.value)}
-                      className="text-accent-gold focus:ring-accent-gold"
-                    />
-                    Female
-                  </label>
+                <div className="grid grid-cols-2 gap-3">
+                  {(['Male', 'Female'] as const).map((option) => (
+                    <label
+                      key={option}
+                      className={`flex items-center justify-center gap-2 h-10 rounded-md border cursor-pointer transition-colors text-sm ${
+                        form.gender === option
+                          ? 'border-[#C9A84C] bg-[#C9A84C]/10 text-white'
+                          : 'border-[#2A2A2A] bg-[#1C1C1C] text-[#8A8682] hover:border-[#3A3A3A]'
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        name="gender"
+                        value={option}
+                        checked={form.gender === option}
+                        onChange={(e) => updateField("gender", e.target.value)}
+                        className="sr-only"
+                      />
+                      <span>{option === 'Male' ? '♂' : '♀'}</span>
+                      <span>{option}</span>
+                    </label>
+                  ))}
                 </div>
               </div>
             </div>
@@ -284,56 +278,20 @@ export default function RegisterPage() {
               </select>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="space-y-1.5">
-                <Label htmlFor="phone">Phone</Label>
-                <div className="flex items-stretch border border-border rounded-md focus-within:ring-1 focus-within:ring-accent-gold">
-                  <span className="flex items-center px-3 border-r border-border rounded-l-md text-sm text-text-secondary select-none whitespace-nowrap min-w-fit">
-                    {selectedCountry.dialCode}
-                  </span>
-                  <input
-                    type="tel"
-                    inputMode="numeric"
-                    placeholder="8012345678"
-                    value={form.phone}
-                    onChange={(e) => updateField("phone", e.target.value)}
-                    className="flex-1 min-w-0 bg-transparent px-3 py-2.5 text-sm text-white placeholder-[#555250] focus:outline-none"
-                  />
-                </div>
-              </div>
-              <div className="space-y-1.5">
-                <Label htmlFor="nin">
-                  NIN / BVN <span className="text-[#E05252]">*</span>
-                </Label>
-                <div className="relative">
-                  <input
-                    type={ninVisible ? "text" : "password"}
-                    inputMode="numeric"
-                    maxLength={11}
-                    placeholder="11 digits"
-                    value={form.nin}
-                    onChange={(e) => updateField("nin", e.target.value.replace(/\D/g, ""))}
-                    className="w-full bg-transparent border border-border rounded-md px-4 py-2.5 pr-9 text-sm text-white placeholder-[#555250] focus:outline-none focus:ring-1 focus:ring-accent-gold"
-                    required
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setNinVisible(!ninVisible)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#555250] hover:text-white"
-                  >
-                    {ninVisible ? <EyeOff size={15} /> : <Eye size={15} />}
-                  </button>
-                </div>
-                {/* Trust note */}
-                <div className="flex items-start gap-2 mt-1.5">
-                  <span className="text-[#C9A84C] mt-0.5 shrink-0">🔒</span>
-                  <p className="text-[11px] text-[#555250] leading-relaxed">
-                    Required by CBN regulations for identity verification. Your NIN/BVN is encrypted and never shared with third parties.{' '}
-                    <a href="/privacy" target="_blank" rel="noopener noreferrer" className="text-[#C9A84C] hover:underline">
-                      Learn more
-                    </a>
-                  </p>
-                </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="phone">Phone</Label>
+              <div className="flex items-stretch border border-border rounded-md focus-within:ring-1 focus-within:ring-accent-gold">
+                <span className="flex items-center px-3 border-r border-border rounded-l-md text-sm text-text-secondary select-none whitespace-nowrap min-w-fit">
+                  {selectedCountry.dialCode}
+                </span>
+                <input
+                  type="tel"
+                  inputMode="numeric"
+                  placeholder="8012345678"
+                  value={form.phone}
+                  onChange={(e) => updateField("phone", e.target.value)}
+                  className="flex-1 min-w-0 bg-transparent px-3 py-2.5 text-sm text-white placeholder-[#555250] focus:outline-none"
+                />
               </div>
             </div>
 
@@ -346,6 +304,15 @@ export default function RegisterPage() {
                 className="flex min-h-[60px] w-full rounded-md border border-border bg-transparent px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-1 focus:ring-accent-gold text-text-primary"
                 rows={2}
               />
+            </div>
+
+            {/* KYC notice — NIN/BVN collected later */}
+            <div className="flex items-start gap-2 bg-[#C9A84C]/5 border border-[#C9A84C]/20 rounded-lg px-4 py-3">
+              <span className="text-[#C9A84C] shrink-0 mt-0.5">ℹ️</span>
+              <p className="text-xs text-[#8A8682] leading-relaxed">
+                Identity verification (NIN/BVN) will be requested after account creation
+                to unlock higher transaction limits.
+              </p>
             </div>
 
             <label className="flex items-start gap-2 text-sm">

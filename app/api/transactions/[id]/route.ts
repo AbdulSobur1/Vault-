@@ -35,13 +35,27 @@ export async function GET(
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
 
-  // Try to find counterparty from same reference (opposite leg of transfer)
+  // Fetch this account's owner info
+  const [currentUser] = await db
+    .select({
+      firstname: users.firstname,
+      surname: users.surname,
+      middlename: users.middlename,
+    })
+    .from(users)
+    .where(eq(users.id, account.userId));
+
+  const formatName = (first: string, middle: string | null, last: string) =>
+    [first, middle, last].filter(Boolean).join(' ');
+
+  // Find counterparty by same reference (opposite leg of transfer)
   const counterpartyTxns = await db
     .select({
       accountNumber: accounts.accountNumber,
       accountType: accounts.accountType,
       firstName: users.firstname,
       surname: users.surname,
+      middlename: users.middlename,
     })
     .from(transactions)
     .innerJoin(accounts, eq(transactions.accountId, accounts.id))
@@ -49,19 +63,39 @@ export async function GET(
     .where(
       and(
         eq(transactions.reference, txn.reference),
-        ne(transactions.id, txn.id)
+        ne(transactions.id, txn.id),
+        ne(accounts.id, txn.accountId)
       )
     )
     .limit(2);
 
-  // The counterparty is the other transaction with the same reference
-  // but belonging to a different account
-  const counterparty = counterpartyTxns.length > 0 && counterpartyTxns[0].accountNumber !== account.accountNumber
-    ? counterpartyTxns[0]
-    : null;
+  const counterparty = counterpartyTxns.length > 0 ? counterpartyTxns[0] : null;
+
+  // Build sender/recipient based on transaction type
+  const isSender = txn.type === 'debit';
+
+  const currentParty = {
+    name: formatName(currentUser?.firstname ?? '', currentUser?.middlename ?? null, currentUser?.surname ?? ''),
+    accountNumber: account.accountNumber,
+    accountType: account.accountType,
+    bank: 'Vaulté',
+  };
+
+  const counterpartyParty = counterparty ? {
+    name: formatName(counterparty.firstName, counterparty.middlename ?? null, counterparty.surname),
+    accountNumber: counterparty.accountNumber,
+    accountType: counterparty.accountType,
+    bank: 'Vaulté',
+  } : null;
+
+  const sender = isSender ? currentParty : counterpartyParty;
+  const recipient = isSender ? counterpartyParty : currentParty;
 
   return NextResponse.json({
     ...txn,
+    sender,
+    recipient,
+    // Keep legacy fields for backward compat
     accountNumber: account.accountNumber,
     accountType: account.accountType,
     counterpartyName: counterparty

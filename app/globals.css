@@ -51,6 +51,7 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    scroll-padding-top: 4rem;
   }
 
   * {
@@ -68,6 +69,10 @@
 }
 
 @layer utilities {
+  .pb-safe {
+    padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
+  }
+
   .text-balance {
     text-wrap: balance;
   }
