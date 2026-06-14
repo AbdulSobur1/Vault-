@@ -1,23 +1,26 @@
 import { db } from '@/lib/db';
 import { cardTransactions, cards } from '@/lib/schema';
 import { eq } from 'drizzle-orm';
-import crypto from 'crypto';
 
 export async function POST(req: Request) {
   const body = await req.text();
-  const signature = req.headers.get('x-sudo-signature') ?? '';
 
-  // Verify webhook signature
-  const expectedSig = crypto
-    .createHmac('sha256', process.env.SUDO_WEBHOOK_SECRET!)
-    .update(body)
-    .digest('hex');
+  // Verify Authorization Token (Sudo sends this as Bearer token)
+  const authHeader = req.headers.get('authorization') ?? '';
+  const token = authHeader.replace('Bearer ', '').trim();
 
-  if (signature !== expectedSig) {
-    return Response.json({ error: 'Invalid signature' }, { status: 401 });
+  if (!token || token !== process.env.SUDO_WEBHOOK_SECRET) {
+    console.error('Sudo webhook: invalid or missing authorization token');
+    return Response.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const event = JSON.parse(body);
+  // Parse event
+  let event: any;
+  try {
+    event = JSON.parse(body);
+  } catch {
+    return Response.json({ error: 'Invalid JSON' }, { status: 400 });
+  }
 
   if (event.type === 'transaction.created' || event.type === 'transaction.updated') {
     const txn = event.data;
