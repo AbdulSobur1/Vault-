@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/components/ui/toast";
-import { User, Shield, Settings as SettingsIcon } from "lucide-react";
+import { User, Shield, Settings as SettingsIcon, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import type { User as UserType } from "@/lib/schema";
 
@@ -18,8 +18,20 @@ interface SettingsClientProps {
 export function SettingsClient({ user }: SettingsClientProps) {
   const { toast } = useToast();
 
-  const userTwoFactorMethod = user.twoFactorMethod;
-  const twoFactorEnabled = user.twoFactorEnabled;
+  const [twoFAEnabled, setTwoFAEnabled] = useState(false);
+  const [twoFAMethod, setTwoFAMethod] = useState<string | null>(null);
+  const [loading2FA, setLoading2FA] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/2fa/status")
+      .then(r => r.json())
+      .then(d => {
+        setTwoFAEnabled(d.enabled);
+        setTwoFAMethod(d.method);
+        setLoading2FA(false);
+      })
+      .catch(() => setLoading2FA(false));
+  }, []);
 
   const handleChangePassword = (e: React.FormEvent) => {
     e.preventDefault();
@@ -141,59 +153,50 @@ export function SettingsClient({ user }: SettingsClientProps) {
               {/* Separator */}
               <div className="border-t border-[#2A2A2A]" />
 
-              {/* 2FA Status */}
+              {/* 2FA Section */}
               <div className="space-y-4">
-                <h3 className="text-sm font-medium">Two-Factor Authentication</h3>
-
                 <div className="flex items-center justify-between py-4 border-b border-[#2A2A2A]">
-                  <div>
-                    <p className="text-sm font-medium text-white">Status</p>
-                    <p className="text-xs text-[#8A8682] mt-0.5">
-                      {twoFactorEnabled
-                        ? `Currently using: ${userTwoFactorMethod === "totp" ? "Authenticator App" : "SMS"}`
-                        : "Not enabled"}
-                    </p>
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-lg bg-[#C9A84C]/10 flex items-center justify-center">
+                      <Shield size={16} className="text-[#C9A84C]" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-white">Two-Factor Authentication</p>
+                      <p className="text-xs text-[#555250] mt-0.5">
+                        Add an extra layer of security to your account
+                      </p>
+                    </div>
                   </div>
-                  {twoFactorEnabled ? (
-                    <span className="flex items-center gap-1.5 text-xs text-[#4CAF82] bg-[#2D6A4F]/20 px-3 py-1 rounded-full">
+                  {loading2FA ? (
+                    <div className="h-8 w-16 rounded-md bg-[#1C1C1C] animate-pulse" />
+                  ) : twoFAEnabled ? (
+                    <span className="flex items-center gap-1.5 text-xs text-[#4CAF82] bg-[#2D6A4F]/20 px-3 py-1 rounded-full shrink-0">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#4CAF82]" />
                       Active
                     </span>
                   ) : (
                     <Link href="/setup-2fa">
-                      <Button variant="accent" size="sm">Enable 2FA</Button>
+                      <button className="flex items-center gap-1.5 h-8 px-3 rounded-md bg-[#C9A84C] text-[#0A0A0A] text-xs font-medium hover:bg-[#b8973d] transition-colors shrink-0">
+                        Enable
+                        <ChevronRight size={13} />
+                      </button>
                     </Link>
                   )}
                 </div>
 
-                {twoFactorEnabled && (
-                  <>
-                    {/* Switch method */}
+                {twoFAEnabled && (
+                  <div className="space-y-3 pl-12">
                     <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm text-white">Switch 2FA method</p>
-                        <p className="text-xs text-[#555250] mt-0.5">Change between authenticator app and SMS</p>
-                      </div>
+                      <p className="text-xs text-[#8A8682]">Method: <span className="text-white capitalize">{twoFAMethod === "totp" ? "Authenticator App" : "SMS"}</span></p>
                       <Link href="/setup-2fa">
-                        <button className="h-8 px-3 rounded-md border border-[#2A2A2A] text-xs text-[#8A8682] hover:text-white hover:bg-[#1C1C1C] transition-colors">
-                          Change method
-                        </button>
+                        <button className="text-xs text-[#555250] hover:text-white transition-colors">Change method</button>
                       </Link>
                     </div>
-
-                    {/* Regenerate backup codes */}
                     <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm text-white">Backup codes</p>
-                        <p className="text-xs text-[#555250] mt-0.5">Generate new backup codes (invalidates old ones)</p>
-                      </div>
-                      <Link href="/setup-2fa">
-                        <button className="h-8 px-3 rounded-md border border-[#2A2A2A] text-xs text-[#8A8682] hover:text-white hover:bg-[#1C1C1C] transition-colors">
-                          Regenerate
-                        </button>
-                      </Link>
+                      <p className="text-xs text-[#8A8682]">Backup codes</p>
+                      <button className="text-xs text-[#555250] hover:text-white transition-colors">Regenerate</button>
                     </div>
-                  </>
+                  </div>
                 )}
               </div>
             </CardContent>

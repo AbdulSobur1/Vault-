@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Shield, Smartphone, MessageSquare, Copy, Check } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/toast";
 
@@ -111,7 +112,7 @@ export default function Setup2FAPage() {
           </div>
           <h1 className="text-xl font-semibold text-white">Secure your account</h1>
           <p className="text-sm text-[#8A8682]">
-            Two-factor authentication is required to access Vaulté.
+            Add an extra layer of security to your Vaulté account.
           </p>
         </div>
 
@@ -301,6 +302,13 @@ export default function Setup2FAPage() {
               </button>
             </div>
           )}
+        </div>
+
+        {/* "Set up later" link */}
+        <div className="text-center pt-2">
+          <Link href="/settings" className="text-xs text-[#555250] hover:text-white transition-colors">
+            Set up later from Settings
+          </Link>
         </div>
       </div>
     </div>
