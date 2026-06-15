@@ -27,7 +27,7 @@ export default async function BillsPage() {
         {billCategories.map(({ icon: Icon, label, desc, soon }) => (
           <div
             key={label}
-            className={`relative rounded-xl border p-5 flex flex-col gap-3 transition-colors ${
+            className={`relative rounded-xl border p-4 sm:p-5 flex flex-col gap-3 min-h-[120px] transition-colors ${
               soon
                 ? "border-[#2A2A2A] bg-[#161616] opacity-60 cursor-not-allowed"
                 : "border-[#2A2A2A] bg-[#161616] hover:border-[#C9A84C]/40 hover:bg-[#1C1C1C] cursor-pointer"

@@ -28,7 +28,7 @@ export function Navbar() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-[#0A0A0B]/95 backdrop-blur-sm border-b border-[#222220]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 md:h-20">
+        <div className="flex items-center justify-between h-16 md:h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group">
             <svg
@@ -75,22 +75,22 @@ export function Navbar() {
           <div className="hidden md:flex items-center gap-3">
             <Link
               href="/login"
-              className="px-4 py-2 text-sm text-text-secondary hover:text-text-primary transition-colors duration-200"
+              className="h-10 min-w-[44px] inline-flex items-center px-4 text-sm text-text-secondary hover:text-text-primary transition-colors duration-200"
             >
               Sign In
             </Link>
             <Link
               href="/register"
-              className="px-5 py-2 text-sm font-medium text-[#0A0A0B] bg-accent-gold hover:bg-[#D4B96A] rounded-full transition-all duration-200"
+              className="h-10 min-w-[44px] inline-flex items-center justify-center px-5 text-sm font-medium text-[#0A0A0B] bg-accent-gold hover:bg-[#D4B96A] rounded-full transition-all duration-200"
             >
               Open Account
             </Link>
           </div>
 
-          {/* Mobile hamburger */}
+          {/* Mobile hamburger — minimum touch target */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="md:hidden p-2 text-text-primary"
+            className="md:hidden h-10 min-w-[44px] flex items-center justify-center text-text-primary"
             aria-label="Toggle menu"
           >
             {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -106,7 +106,7 @@ export function Navbar() {
               key={link.href}
               href={link.href}
               onClick={handleLinkClick}
-              className="text-lg text-text-secondary hover:text-text-primary transition-colors"
+              className="text-lg text-text-secondary hover:text-text-primary transition-colors h-10 min-w-[44px] flex items-center"
             >
               {link.label}
             </a>
@@ -115,14 +115,14 @@ export function Navbar() {
           <a
             href="/login"
             onClick={handleLinkClick}
-            className="text-sm text-text-secondary hover:text-text-primary transition-colors"
+            className="h-10 min-w-[44px] flex items-center text-sm text-text-secondary hover:text-text-primary transition-colors"
           >
             Sign In
           </a>
           <a
             href="/register"
             onClick={handleLinkClick}
-            className="h-9 px-6 rounded-md bg-accent-gold text-[#0A0A0B] text-sm font-medium flex items-center"
+            className="h-10 min-w-[44px] px-6 rounded-md bg-accent-gold text-[#0A0A0B] text-sm font-medium flex items-center"
           >
             Open Account
           </a>

@@ -70,7 +70,7 @@
 
 @layer utilities {
   .pb-safe {
-    padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
   }
 
   .text-balance {
@@ -95,6 +95,14 @@
     background-clip: text;
     filter: drop-shadow(0 0 12px rgba(201, 168, 76, 0.35));
   }
+
+  /* Hide scrollbar for tab overflow */
+  .scrollbar-none::-webkit-scrollbar { display: none; }
+  .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
+
+  /* Dynamic viewport height for mobile sheets */
+  .h-dvh { height: 100dvh; }
+  .max-h-dvh-92 { max-height: 92dvh; }
 }
 
 @keyframes float {

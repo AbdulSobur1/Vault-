@@ -38,11 +38,12 @@ const socialLinks = [
 
 export function Footer() {
   return (
-    <footer className="border-t border-[#222220] bg-[#0A0A0B]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-8">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-8 md:gap-12 mb-12">
-          {/* Brand column */}
-          <div className="col-span-2 md:col-span-2">
+    <footer className="border-t border-[#222220] bg-[#0A0A0B] py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Top: brand + links */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 mb-12">
+          {/* Brand column — spans full width on mobile */}
+          <div className="col-span-2 sm:col-span-1">
             <Link href="/" className="flex items-center gap-2 mb-4">
               <svg
                 width="24"
@@ -59,20 +60,9 @@ export function Footer() {
                 Vault<span className="text-accent-gold">é</span>
               </span>
             </Link>
-            <p className="text-sm text-text-secondary mb-6 max-w-xs">
+            <p className="text-xs text-[#555250] mt-2 leading-relaxed max-w-xs">
               Private banking for the modern era. Where wealth is kept.
             </p>
-            <div className="flex items-center gap-4">
-              {socialLinks.map((social) => (
-                <Link
-                  key={social.label}
-                  href={social.href}
-                  className="text-text-tertiary hover:text-text-secondary transition-colors text-sm"
-                >
-                  {social.label}
-                </Link>
-              ))}
-            </div>
           </div>
 
           {/* Link columns */}
@@ -98,10 +88,21 @@ export function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="pt-8 border-t border-[#222220]">
-          <p className="text-xs text-text-tertiary text-center leading-relaxed">
+        <div className="border-t border-[#222220] pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-xs text-text-tertiary text-center sm:text-left leading-relaxed">
             &copy; 2026 Vaulté Financial Technologies Ltd. Regulated by the CBN. Member NDIC.
           </p>
+          <div className="flex items-center gap-4">
+            {socialLinks.map((social) => (
+              <Link
+                key={social.label}
+                href={social.href}
+                className="text-text-tertiary hover:text-text-secondary transition-colors text-sm"
+              >
+                {social.label}
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     </footer>

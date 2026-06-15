@@ -21,7 +21,7 @@ export function ComingSoon({ title, description }: ComingSoonProps) {
       </header>
 
       {/* Content */}
-      <main className="flex-1 flex flex-col items-center justify-center text-center px-6 max-w-lg mx-auto">
+      <main className="flex-1 flex flex-col items-center justify-center text-center px-4 py-16 max-w-lg mx-auto w-full">
         <div className="w-12 h-12 rounded-full border border-[#2A2A2A] flex items-center justify-center mb-6">
           <span className="text-[#C9A84C] text-xl">✦</span>
         </div>

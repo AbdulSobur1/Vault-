@@ -33,25 +33,26 @@ const testimonials = [
 
 export function Testimonials() {
   return (
-    <section className="py-24 md:py-32 px-4 sm:px-6 lg:px-8 bg-[#0D0D0E]">
-      <div className="max-w-7xl mx-auto">
+    <section className="py-16 sm:py-20 lg:py-24 bg-[#0D0D0E]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <FadeUp>
-          <div className="text-center mb-16">
-            <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl text-text-primary mb-4">
+          <div className="text-center mb-12">
+            <h2 className="font-serif text-2xl sm:text-3xl text-text-primary mb-4">
               Trusted by those who value discretion
             </h2>
-            <p className="text-lg text-text-secondary">
+            <p className="text-base text-text-secondary">
               Hear from our clients.
             </p>
           </div>
         </FadeUp>
 
-        <FadeUpStagger className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Mobile: horizontal scroll. Desktop: grid */}
+        <FadeUpStagger className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory lg:grid lg:grid-cols-3 lg:overflow-visible">
           {testimonials.map((t) => (
             <motion.div
               key={t.author}
               variants={fadeUpItem}
-              className="rounded-xl border border-[#222220] bg-[#111113] p-6 md:p-8 relative"
+              className="min-w-[280px] sm:min-w-[320px] lg:min-w-0 snap-start rounded-xl border border-[#222220] bg-[#111113] p-6 md:p-8 relative flex-shrink-0 lg:flex-shrink"
             >
               {/* Gold quote mark */}
               <div className="absolute top-6 right-6">

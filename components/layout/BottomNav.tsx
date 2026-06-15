@@ -22,7 +22,10 @@ export function BottomNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 lg:hidden bg-bg-surface border-t border-border">
+    <nav
+      className="fixed bottom-0 left-0 right-0 z-50 lg:hidden bg-bg-surface border-t border-border"
+      style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+    >
       <div className="flex items-stretch h-16">
         {tabs.map(({ href, label, icon: Icon }) => {
           const isActive =
@@ -32,7 +35,7 @@ export function BottomNav() {
             <Link
               key={href}
               href={href}
-              className={`flex flex-col items-center justify-center flex-1 gap-1 text-[10px] tracking-wide transition-colors relative ${
+              className={`flex flex-col items-center justify-center flex-1 gap-0.5 text-[10px] tracking-wide transition-colors ${
                 isActive
                   ? "text-accent-gold"
                   : "text-text-tertiary hover:text-text-secondary"
@@ -43,9 +46,9 @@ export function BottomNav() {
                 strokeWidth={isActive ? 2 : 1.5}
               />
               <span>{label}</span>
-              {/* Active indicator dot */}
+              {/* Active indicator dot — uses flex gap instead of absolute */}
               {isActive && (
-                <span className="absolute bottom-1 w-1 h-1 rounded-full bg-accent-gold" />
+                <span className="w-1 h-1 rounded-full bg-accent-gold" />
               )}
             </Link>
           );

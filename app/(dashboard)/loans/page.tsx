@@ -180,7 +180,7 @@ export default function LoansPage() {
       </div>
 
       {/* Loan Types */}
-      <div className="grid gap-6 md:grid-cols-3">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         {loanTypes.map((loan) => {
           const Icon = loan.icon;
           return (

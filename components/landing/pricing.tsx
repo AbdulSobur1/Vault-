@@ -57,20 +57,21 @@ const plans = [
 
 export function Pricing() {
   return (
-    <section id="pricing" className="py-24 md:py-32 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
+    <section id="pricing" className="py-16 sm:py-20 lg:py-24">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <FadeUp>
-          <div className="text-center mb-16">
-            <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl text-text-primary mb-4">
+          <div className="text-center mb-12">
+            <h2 className="font-serif text-2xl sm:text-3xl text-text-primary mb-4">
               Simple, transparent pricing
             </h2>
-            <p className="text-lg text-text-secondary">
+            <p className="text-base text-text-secondary">
               No hidden fees. No surprises.
             </p>
           </div>
         </FadeUp>
 
-        <FadeUpStagger className="grid md:grid-cols-3 gap-6 lg:gap-8 max-w-5xl mx-auto">
+        {/* Grid: 1 col mobile, 3 col desktop */}
+        <FadeUpStagger className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 max-w-5xl mx-auto">
           {plans.map((plan) => (
             <motion.div
               key={plan.name}
@@ -128,7 +129,7 @@ export function Pricing() {
 
               <Link
                 href={plan.href}
-                className={`inline-flex items-center justify-center px-6 py-3 rounded-full text-sm font-medium transition-all duration-200 ${
+                className={`w-full inline-flex items-center justify-center px-6 h-10 rounded-full text-sm font-medium transition-all duration-200 ${
                   plan.featured
                     ? "bg-accent-gold text-[#0A0A0B] hover:bg-[#D4B96A]"
                     : "border border-[#222220] text-text-secondary hover:text-text-primary hover:border-text-secondary"

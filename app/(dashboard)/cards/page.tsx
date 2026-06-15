@@ -91,11 +91,11 @@ export default function CardsPage() {
         )}
       </div>
 
-      {/* Request new card modal */}
+      {/* Request new card modal — full screen on mobile, centered on desktop */}
       {showRequest && (
         <>
           <div className="fixed inset-0 bg-black/60 z-40" onClick={() => setShowRequest(false)} />
-          <div className="fixed inset-x-4 top-1/2 -translate-y-1/2 z-50 bg-[#161616] border border-[#2A2A2A] rounded-xl p-6 max-w-sm mx-auto space-y-5">
+          <div className="fixed inset-x-3 sm:inset-x-auto sm:left-1/2 sm:-translate-x-1/2 top-1/2 -translate-y-1/2 z-50 bg-[#161616] border border-[#2A2A2A] rounded-xl p-6 w-auto sm:w-full sm:max-w-sm space-y-5">
             <h2 className="text-white font-semibold">Request Virtual Card</h2>
             <p className="text-sm text-[#8A8682]">
               Choose the currency for your new virtual card. You can hold one active card per currency.

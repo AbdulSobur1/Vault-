@@ -92,14 +92,14 @@ export function FXConverter() {
       {/* From */}
       <div className="space-y-2">
         <label className="text-xs text-[#555250]">You send</label>
-        <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row gap-2">
           <select
             value={fromCurrency}
             onChange={(e) => {
               setFromCurrency(e.target.value);
               setQuote(null);
             }}
-            className="w-28 bg-[#1C1C1C] border border-[#2A2A2A] rounded-md px-3 py-2.5 text-sm text-white focus:outline-none focus:border-[#C9A84C]"
+            className="w-full sm:w-28 bg-[#1C1C1C] border border-[#2A2A2A] rounded-md px-3 py-2.5 text-sm text-white focus:outline-none focus:border-[#C9A84C]"
           >
             {SUPPORTED_CURRENCIES.map((c) => (
               <option key={c.code} value={c.code}>
@@ -111,7 +111,7 @@ export function FXConverter() {
             value={fromAmount}
             onChange={setFromAmount}
             placeholder="0.00"
-            className="flex-1"
+            className="flex-1 w-full"
           />
         </div>
       </div>
@@ -133,14 +133,14 @@ export function FXConverter() {
       {/* To */}
       <div className="space-y-2">
         <label className="text-xs text-[#555250]">They receive</label>
-        <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row gap-2">
           <select
             value={toCurrency}
             onChange={(e) => {
               setToCurrency(e.target.value);
               setQuote(null);
             }}
-            className="w-28 bg-[#1C1C1C] border border-[#2A2A2A] rounded-md px-3 py-2.5 text-sm text-white focus:outline-none focus:border-[#C9A84C]"
+            className="w-full sm:w-28 bg-[#1C1C1C] border border-[#2A2A2A] rounded-md px-3 py-2.5 text-sm text-white focus:outline-none focus:border-[#C9A84C]"
           >
             {SUPPORTED_CURRENCIES.map((c) => (
               <option key={c.code} value={c.code}>
@@ -148,7 +148,7 @@ export function FXConverter() {
               </option>
             ))}
           </select>
-          <div className="flex-1 bg-[#1C1C1C] border border-[#2A2A2A] rounded-md px-4 py-2.5 text-sm text-white flex items-center">
+          <div className="flex-1 w-full bg-[#1C1C1C] border border-[#2A2A2A] rounded-md px-4 py-2.5 text-sm text-white flex items-center">
             {loadingQuote ? (
               <Loader2 size={14} className="animate-spin text-[#555250]" />
             ) : (

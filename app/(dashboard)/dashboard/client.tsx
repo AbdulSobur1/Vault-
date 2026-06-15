@@ -48,29 +48,27 @@ export function DashboardClient({
         currency={primaryAccount.currency ?? "NGN"}
       />
 
-      {/* Quick Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div className="rounded-lg border border-border bg-bg-elevated p-4">
-          <div className="flex items-center gap-3">
-            <div className="flex items-center justify-center w-10 h-10 rounded-full bg-success/10">
-              <TrendingUp className="h-5 w-5 text-success" />
+      {/* Quick Stats — side by side on mobile */}
+      <div className="grid grid-cols-2 gap-3">
+        <div className="rounded-xl border border-[#2A2A2A] bg-[#161616] p-4">
+          <div className="flex items-center gap-2 mb-2">
+            <div className="w-7 h-7 rounded-full bg-[#2D6A4F]/20 flex items-center justify-center">
+              <TrendingUp size={13} className="text-[#4CAF82]" />
             </div>
-            <div>
-              <p className="text-xs text-text-secondary">Total Credits (Month)</p>
-              <p className="text-lg font-medium text-success">{formatCurrency(totalCredits)}</p>
-            </div>
+            <span className="text-xs text-[#8A8682]">Total Credits</span>
           </div>
+          <p className="text-lg font-semibold text-[#4CAF82]">{formatCurrency(totalCredits)}</p>
+          <p className="text-[10px] text-[#555250] mt-0.5">This month</p>
         </div>
-        <div className="rounded-lg border border-border bg-bg-elevated p-4">
-          <div className="flex items-center gap-3">
-            <div className="flex items-center justify-center w-10 h-10 rounded-full bg-red-500/10">
-              <TrendingDown className="h-5 w-5 text-red-500" />
+        <div className="rounded-xl border border-[#2A2A2A] bg-[#161616] p-4">
+          <div className="flex items-center gap-2 mb-2">
+            <div className="w-7 h-7 rounded-full bg-[#E05252]/10 flex items-center justify-center">
+              <TrendingDown size={13} className="text-[#E05252]" />
             </div>
-            <div>
-              <p className="text-xs text-text-secondary">Total Debits (Month)</p>
-              <p className="text-lg font-medium text-red-500">{formatCurrency(totalDebits)}</p>
-            </div>
+            <span className="text-xs text-[#8A8682]">Total Debits</span>
           </div>
+          <p className="text-lg font-semibold text-[#E05252]">{formatCurrency(totalDebits)}</p>
+          <p className="text-[10px] text-[#555250] mt-0.5">This month</p>
         </div>
       </div>
 
@@ -90,34 +88,35 @@ export function DashboardClient({
       {/* Quick Actions */}
       <QuickActions />
 
-      {/* Recent Transactions */}
-      <div className="rounded-lg border border-border bg-bg-elevated">
-        <div className="flex items-center justify-between px-4 py-3 border-b border-border">
-          <h3 className="text-sm font-medium">Recent Transactions</h3>
-          <Link
-            href="/transactions"
-            className="text-xs text-accent-gold flex items-center gap-1"
-          >
-            View all <ArrowRight className="h-3 w-3" />
-          </Link>
-        </div>
-        <div className="divide-y divide-border">
-          {transactions.length > 0 ? (
-            transactions.map((t) => (
-              <TransactionRow
-                key={t.id}
-                date={t.createdAt}
-                description={t.description}
-                reference={t.reference}
-                amount={t.amount}
-                type={t.type as "credit" | "debit"}
-                status={t.status as "completed" | "pending" | "failed"}
-              />
-            ))
-          ) : (
-            <p className="text-sm text-text-secondary text-center py-8">No transactions yet</p>
-          )}
-        </div>
+      {/* Recent Transactions — table scrolls on mobile */}
+      <div className="rounded-xl border border-[#2A2A2A] overflow-x-auto">
+        <table className="w-full min-w-[500px]">
+          <thead>
+            <tr className="border-b border-[#2A2A2A]">
+              <th className="text-left px-4 py-3 text-xs text-[#555250] font-medium uppercase tracking-wider">Transaction</th>
+              <th className="text-right px-4 py-3 text-xs text-[#555250] font-medium uppercase tracking-wider">Amount</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-[#2A2A2A]">
+            {transactions.length > 0 ? (
+              transactions.map((t) => (
+                <TransactionRow
+                  key={t.id}
+                  date={t.createdAt}
+                  description={t.description}
+                  reference={t.reference}
+                  amount={t.amount}
+                  type={t.type as "credit" | "debit"}
+                  status={t.status as "completed" | "pending" | "failed"}
+                />
+              ))
+            ) : (
+              <tr>
+                <td colSpan={2} className="text-sm text-[#8A8682] text-center py-8">No transactions yet</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
     </div>
   );

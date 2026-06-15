@@ -15,9 +15,11 @@ export const revalidate = 3600;
 
 export default function LandingPage() {
   return (
-    <main className="min-h-screen bg-bg-base pt-16 md:pt-20">
+    <main className="min-h-screen bg-bg-base overflow-x-hidden w-full">
       <Navbar />
-      <Hero />
+      <div className="pt-16">
+        <Hero />
+      </div>
       <MarqueeBar />
       <Features />
       <Stats />

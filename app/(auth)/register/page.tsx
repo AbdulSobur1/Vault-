@@ -7,7 +7,6 @@ import { ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { useToast } from "@/components/ui/toast";
 import { countries } from "@/lib/countries";
 
@@ -134,20 +133,22 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-bg-base">
-      <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-          <Link href="/" className="inline-block mb-4">
-            <span className="text-2xl font-medium tracking-tight">
-              Vault<span className="text-accent-gold">é</span>
-            </span>
-          </Link>
-          <CardTitle>Open an Account</CardTitle>
-          <CardDescription>Create your Vaulté account to get started</CardDescription>
-        </CardHeader>
-        <CardContent>
+    <div className="min-h-screen bg-bg-base flex items-start justify-center py-8 px-4">
+      <div className="w-full max-w-lg">
+        <div className="bg-bg-surface border border-border rounded-2xl p-6 sm:p-8 space-y-6">
+          {/* Header */}
+          <div className="text-center">
+            <Link href="/" className="inline-block mb-4">
+              <span className="text-2xl font-medium tracking-tight">
+                Vault<span className="text-accent-gold">é</span>
+              </span>
+            </Link>
+            <h1 className="text-lg font-semibold text-white">Open an Account</h1>
+            <p className="text-sm text-text-secondary mt-1">Create your Vaulté account to get started</p>
+          </div>
+
           {/* Trust banner */}
-          <div className="flex items-center gap-2 bg-[#C9A84C]/5 border border-[#C9A84C]/20 rounded-lg px-4 py-3 mb-6">
+          <div className="flex items-center gap-2 bg-[#C9A84C]/5 border border-[#C9A84C]/20 rounded-lg px-4 py-3">
             <span className="text-[#C9A84C] shrink-0">🛡️</span>
             <p className="text-xs text-[#8A8682] leading-relaxed">
               <span className="text-white font-medium">Your data is safe.</span>{' '}
@@ -157,7 +158,8 @@ export default function RegisterPage() {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-2 gap-3">
+            {/* Name fields: side by side on sm+ */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="surname">Surname *</Label>
                 <Input
@@ -198,7 +200,8 @@ export default function RegisterPage() {
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            {/* Password fields: side by side on sm+ */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="password">Password *</Label>
                 <Input
@@ -221,7 +224,8 @@ export default function RegisterPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            {/* DOB + Gender: side by side on sm+ */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="dob">Date of Birth</Label>
                 <Input
@@ -278,10 +282,11 @@ export default function RegisterPage() {
               </select>
             </div>
 
+            {/* Phone: full width with country code prefix */}
             <div className="space-y-1.5">
               <Label htmlFor="phone">Phone</Label>
               <div className="flex items-stretch border border-border rounded-md focus-within:ring-1 focus-within:ring-accent-gold">
-                <span className="flex items-center px-3 border-r border-border rounded-l-md text-sm text-text-secondary select-none whitespace-nowrap min-w-fit">
+                <span className="flex items-center px-3 border-r border-border rounded-l-md text-sm text-text-secondary select-none whitespace-nowrap min-w-fit shrink-0">
                   {selectedCountry.dialCode}
                 </span>
                 <input
@@ -306,7 +311,7 @@ export default function RegisterPage() {
               />
             </div>
 
-            {/* KYC notice — NIN/BVN collected later */}
+            {/* KYC notice */}
             <div className="flex items-start gap-2 bg-[#C9A84C]/5 border border-[#C9A84C]/20 rounded-lg px-4 py-3">
               <span className="text-[#C9A84C] shrink-0 mt-0.5">ℹ️</span>
               <p className="text-xs text-[#8A8682] leading-relaxed">
@@ -340,19 +345,19 @@ export default function RegisterPage() {
               </div>
             )}
 
-            <Button type="submit" className="w-full" variant="accent" disabled={loading || !!ageError}>
+            <Button type="submit" className="w-full h-11" variant="accent" disabled={loading || !!ageError}>
               {loading ? "Creating account..." : "Create Account"}
             </Button>
           </form>
 
-          <p className="mt-6 text-center text-sm text-text-secondary">
+          <p className="text-center text-sm text-text-secondary">
             Already have an account?{" "}
             <Link href="/login" className="text-accent-gold hover:text-accent-gold font-medium">
               Sign In
             </Link>
           </p>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 }

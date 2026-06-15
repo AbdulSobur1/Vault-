@@ -3,7 +3,7 @@ import { LoginForm } from "./login-form";
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 bg-bg-base">
+    <div className="min-h-screen bg-[#0F0F0F] flex items-center justify-center px-4 py-8">
       <Suspense fallback={
         <div className="w-full max-w-sm animate-pulse">
           <div className="rounded-lg border border-border bg-bg-elevated p-8 space-y-6">

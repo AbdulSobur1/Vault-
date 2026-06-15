@@ -57,7 +57,7 @@ export function Sidebar({ user }: SidebarProps) {
     : "U";
 
   return (
-    <aside className="w-60 shrink-0 hidden lg:flex flex-col h-screen sticky top-0 border-r border-border bg-bg-surface">
+    <aside className="w-60 shrink-0 hidden lg:flex flex-col h-screen sticky top-0 border-r border-border bg-bg-surface overflow-y-auto">
       {/* Logo */}
       <div className="flex items-center h-16 px-6 border-b border-border">
         <Link href="/dashboard" className="flex items-center gap-2">            <span className="text-xl font-medium tracking-tight">
@@ -79,8 +79,8 @@ export function Sidebar({ user }: SidebarProps) {
               className={cn(
                 "flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors",
                 isActive
-                  ? "bg-bg-surface text-text-primary border-l-2 border-accent-gold"
-                  : "text-[#8A8682] hover:text-white hover:bg-bg-surface"
+                  ? "bg-[#C9A84C]/5 text-white border-l-2 border-accent-gold pl-[10px]"
+                  : "text-[#8A8682] hover:text-white hover:bg-[#1C1C1C] border-l-2 border-transparent pl-[10px]"
               )}
             >
               <Icon className="h-4 w-4 shrink-0" />
@@ -96,8 +96,8 @@ export function Sidebar({ user }: SidebarProps) {
           <Avatar className="h-8 w-8">
             <AvatarFallback className="text-xs">{initials}</AvatarFallback>
           </Avatar>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium truncate">{user.name || "User"}</p>
+          <div className="min-w-0 flex-1">
+            <p className="text-sm font-medium text-white truncate">{user.name || "User"}</p>
             <p className="text-xs text-text-secondary truncate">{user.email || ""}</p>
           </div>
         </div>

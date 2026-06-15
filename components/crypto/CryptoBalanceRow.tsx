@@ -51,7 +51,8 @@ export function CryptoBalanceRow({ coin, balance, balanceUSD, price, onClick }: 
         </p>
       </div>
 
-      <div className="w-16 h-8 shrink-0">
+      {/* Sparkline — hidden on very small screens */}
+      <div className="w-16 h-8 shrink-0 hidden sm:block">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={sparkData}>
             <Line

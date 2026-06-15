@@ -34,46 +34,36 @@ export function BalanceCard({
   };
 
   return (
-    <div className="w-full rounded-xl border border-[#2A2A2A] bg-[#161616] p-6">
+    <div className="w-full rounded-xl border border-[#2A2A2A] bg-[#161616] p-5 sm:p-6">
       {/* Top row: account type badge + currency tag */}
-      <div className="flex items-center justify-between mb-5">
-        <span className="text-[10px] font-semibold tracking-[0.12em] uppercase text-[#8A8682]">
+      <div className="flex items-center justify-between mb-4">
+        <span className="text-xs text-[#8A8682] uppercase tracking-wider">
           {accountType === "savings" ? "Savings Account" : "Current Account"}
         </span>
-        <span className="text-[10px] font-medium tracking-widest text-[#C9A84C] border border-[#C9A84C]/30 rounded-full px-2.5 py-0.5">
+        <span className="text-xs text-[#C9A84C] border border-[#C9A84C]/30 rounded-full px-2 py-0.5">
           {currency}
         </span>
       </div>
 
       {/* Balance */}
-      <div className="mb-5">
-        <p className="text-xs text-[#555250] mb-1 tracking-wide">Available Balance</p>
-        <p className="text-3xl font-semibold text-[#C9A84C] tracking-tight leading-none">
+      <div className="mb-4">
+        <p className="text-xs text-[#555250] mb-1">Available Balance</p>
+        <p className="text-3xl sm:text-4xl font-semibold text-[#C9A84C] tracking-tight leading-none">
           {formatNGN(balance)}
         </p>
       </div>
 
       {/* Account number row with copy button */}
-      <div className="flex items-center gap-2 mb-6 group">
+      <div className="flex items-center gap-2 mt-3 mb-5">
         <p className="text-sm text-[#8A8682] font-mono tracking-widest">
           {accountNumber.replace(/(\d{4})(\d{3})(\d{4})/, "$1 $2 $3")}
         </p>
         <button
           onClick={handleCopy}
           aria-label="Copy account number"
-          className="flex items-center gap-1 text-[11px] text-[#555250] hover:text-[#C9A84C] transition-colors"
+          className="text-[#555250] hover:text-[#C9A84C] transition-colors"
         >
-          {copied ? (
-            <>
-              <Check size={13} className="text-[#4CAF82]" />
-              <span className="text-[#4CAF82]">Copied</span>
-            </>
-          ) : (
-            <>
-              <Copy size={13} />
-              <span>Copy</span>
-            </>
-          )}
+          {copied ? <Check size={13} className="text-[#4CAF82]" /> : <Copy size={13} />}
         </button>
       </div>
 
@@ -89,15 +79,15 @@ export function BalanceCard({
       {/* Divider */}
       <div className="border-t border-[#2A2A2A] mb-5" />
 
-      {/* Action buttons */}
-      <div className="flex flex-wrap items-center gap-3 mt-6">
-        <Link href="/fund">
-          <button className="h-9 px-4 rounded-md border border-[#C9A84C] text-[#C9A84C] text-sm font-medium whitespace-nowrap hover:bg-[#C9A84C]/10 transition-colors">
+      {/* Action buttons — always on one line, whitespace-nowrap */}
+      <div className="flex items-center gap-3">
+        <Link href="/fund" className="flex-1 sm:flex-none">
+          <button className="w-full sm:w-auto h-9 px-5 rounded-md border border-[#C9A84C] text-[#C9A84C] text-sm font-medium whitespace-nowrap hover:bg-[#C9A84C]/10 transition-colors">
             Fund Account
           </button>
         </Link>
-        <Link href="/transfer">
-          <button className="h-9 px-4 rounded-md bg-[#C9A84C] text-[#0A0A0A] text-sm font-medium whitespace-nowrap hover:bg-[#b8973d] transition-colors">
+        <Link href="/transfer" className="flex-1 sm:flex-none">
+          <button className="w-full sm:w-auto h-9 px-5 rounded-md bg-[#C9A84C] text-[#0A0A0A] text-sm font-medium whitespace-nowrap hover:bg-[#b8973d] transition-colors">
             Transfer
           </button>
         </Link>

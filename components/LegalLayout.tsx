@@ -18,12 +18,12 @@ export function LegalLayout({ title, lastUpdated, children }: {
         </Link>
       </header>
 
-      <main className="max-w-3xl mx-auto px-6 py-16">
+      <main className="max-w-3xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
         <div className="mb-10">
-          <h1 className="text-3xl font-semibold text-white mb-2">{title}</h1>
+          <h1 className="text-2xl sm:text-3xl font-semibold text-white mb-2">{title}</h1>
           <p className="text-sm text-[#555250]">Last updated: {lastUpdated}</p>
         </div>
-        <div className="prose prose-invert prose-sm max-w-none text-[#8A8682] leading-relaxed space-y-8">
+        <div className="space-y-8 text-[#8A8682] text-sm leading-relaxed">
           {children}
         </div>
       </main>

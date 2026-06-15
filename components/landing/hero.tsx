@@ -8,7 +8,7 @@ export function Hero() {
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden bg-gradient-to-br from-[#1a1400] via-[#0F0F0F] to-[#0A0A0A]">
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16 w-full">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16 w-full">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
           {/* Left: Text content */}
           <div className="relative z-10">
@@ -20,7 +20,7 @@ export function Hero() {
             </FadeUp>
 
             <FadeUp delay={0.2}>
-              <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl xl:text-[72px] leading-[1.1] tracking-tight mb-6">
+              <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl leading-[1.1] tracking-tight mb-6 sm:text-left">
                 <span className="text-text-primary">Where wealth</span>
                 <br />
                 <span className="text-gradient-gold italic">is kept.</span>
@@ -28,24 +28,24 @@ export function Hero() {
             </FadeUp>
 
             <FadeUp delay={0.3}>
-              <p className="text-white/90 text-base sm:text-lg leading-relaxed max-w-lg mb-10">
+              <p className="text-white/90 text-sm sm:text-base leading-relaxed max-w-lg mb-8">
                 Vaulté is a digital bank for the world. Send money globally, hold 20+ currencies,
                 convert at live rates, and manage virtual cards — all in one account.
               </p>
             </FadeUp>
 
             <FadeUp delay={0.4}>
-              <div className="flex flex-col sm:flex-row gap-4 mb-8">
+              <div className="flex flex-col sm:flex-row gap-3 mb-6">
                 <Link
                   href="/register"
-                  className="group inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-accent-gold text-[#0A0A0B] font-medium rounded-full text-base hover:bg-[#D4B96A] transition-all duration-200"
+                  className="w-full sm:w-auto h-11 min-w-[44px] inline-flex items-center justify-center gap-2 px-8 bg-accent-gold text-[#0A0A0B] font-medium rounded-full text-sm hover:bg-[#D4B96A] transition-all duration-200"
                 >
                   Open Account
                   <ArrowDown className="h-4 w-4 -rotate-90 group-hover:translate-x-0.5 transition-transform" />
                 </Link>
                 <Link
                   href="#how-it-works"
-                  className="group inline-flex items-center justify-center gap-2 px-8 py-3.5 border border-[#222220] text-text-secondary hover:text-text-primary rounded-full text-base transition-all duration-200"
+                  className="w-full sm:w-auto h-11 min-w-[44px] inline-flex items-center justify-center gap-2 px-8 border border-[#222220] text-text-secondary hover:text-text-primary rounded-full text-sm transition-all duration-200"
                 >
                   <span className="flex items-center justify-center w-6 h-6 rounded-full border border-current">
                     <Play className="h-3 w-3 fill-current ml-0.5" />
@@ -53,13 +53,13 @@ export function Hero() {
                   See how it works
                 </Link>
               </div>
-              <p className="text-xs text-[#555250] mt-0">
+              <p className="text-xs text-[#555250]">
                 Not just another Nigerian fintech — built for Nigerians going global.
               </p>
             </FadeUp>
 
             <FadeUp delay={0.5}>
-              <div className="flex flex-wrap gap-6">
+              <div className="flex flex-wrap gap-6 mt-8">
                 {[
                   { value: "50K+", label: "accounts" },
                   { value: "₦2B+", label: "transferred" },

@@ -9,14 +9,14 @@ export function MarqueeBar() {
   ];
 
   return (
-    <section className="py-10 border-y border-[#222220] bg-[#0D0D0E] overflow-hidden">
+    <section className="py-10 border-y border-[#222220] bg-[#0D0D0E] overflow-hidden w-full">
       <div className="flex flex-col items-center gap-4 mb-6">
         <span className="text-[10px] uppercase tracking-[3px] text-text-tertiary">
           Featured in
         </span>
       </div>
-      <div className="relative overflow-hidden">
-        <div className="flex animate-marquee gap-16 md:gap-24">
+      <div className="relative overflow-hidden w-full">
+        <div className="flex animate-marquee gap-16 md:gap-24 whitespace-nowrap">
           {/* First set */}
           {logos.map((logo) => (
             <span
